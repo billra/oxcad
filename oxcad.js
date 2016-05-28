@@ -31,20 +31,22 @@ function makeEdge(angleDeg, length) {
 
 function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var halfAngleOpenDeg = angleOpenDeg / 2;
-	var angleInDeg = angleDeg - halfAngleOpenDeg;
-	var angleOutDeg = angleDeg + halfAngleOpenDeg - 180;
-	var endIn = move(angleInDeg, length * (1 - smooth));
-	var endOut = move(angleOutDeg, length * (1 - smooth));
-	var endInBez = move(angleInDeg, length * smooth);
-	var endOutBez = move(angleOutDeg, length * smooth);
-	var tipIn = move(angleDeg, length * smooth);
-	var tipOut = move(angleDeg - 180, length * smooth);
+	var a12 = angleDeg - halfAngleOpenDeg;
+	var a56 = angleDeg + halfAngleOpenDeg - 180;
+	var lenV = length * (1 - smooth);
+	var lenB = length * smooth;
+	var m1 = move(a12, lenV);
+	var m2 = move(a12, lenB);
+	var m3 = move(angleDeg, lenB);
+	var m4 = move(angleDeg - 180, lenB);
+	var m5 = move(a56, lenB);
+	var m6 = move(a56, lenV);
 	return {
 		part: function () {
-			return 'l' + endIn.x + ',' + endIn.y +
-				   'q' + endInBez.x + ',' + endInBez.y + ' ' + (endInBez.x + tipIn.x) + ',' + (endInBez.y + tipIn.y) +
-				   'q' + tipOut.x + ',' + tipOut.y + ' ' + (tipOut.x + endOutBez.x) + ',' + (tipOut.y + endOutBez.y) +
-				   'l' + endOut.x + ',' + endOut.y;
+			return 'l' + m1.x + ',' + m1.y +
+				   'q' + m2.x + ',' + m2.y + ' ' + (m2.x + m3.x) + ',' + (m2.y + m3.y) +
+				   'q' + m4.x + ',' + m4.y + ' ' + (m4.x + m5.x) + ',' + (m4.y + m5.y) +
+				   'l' + m6.x + ',' + m6.y;
 		},
 		perimeterLength: function () { return 0; }
 	};
@@ -137,7 +139,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.01, Log Entries:');
+	logEdit.setValue('OxCad v0.02, Log Entries:');
 	logEdit.clearSelection();
 }
 
