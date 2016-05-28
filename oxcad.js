@@ -29,16 +29,26 @@ function makeEdge(angleDeg, length) {
 	};
 }
 
-function makeNotch(angleDeg, angleOpenDeg, length) {
+function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var halfAngleOpenDeg = angleOpenDeg / 2;
 	var angleInDeg = angleDeg - halfAngleOpenDeg;
 	var angleOutDeg = angleDeg + halfAngleOpenDeg - 180;
-	var endIn = move(angleInDeg, length);
-	var endOut = move(angleOutDeg, length);
+	var endIn = move(angleInDeg, length * (1 - smooth));
+	var endOut = move(angleOutDeg, length * (1 - smooth));
+	var endInBez = move(angleInDeg, length * smooth);
+	var endOutBez = move(angleOutDeg, length * smooth);
+	var tipIn = move(angleDeg, length * smooth);
+	var tipOut = move(angleDeg - 180, length * smooth);
 	return {
-		part: function () { return 'l' + endIn.x + ',' + endIn.y + 'l' + endOut.x + ',' + endOut.y; },
+		part: function () {
+			return 'l' + endIn.x + ',' + endIn.y +
+				   'q' + endInBez.x + ',' + endInBez.y + ' ' + (endInBez.x + tipIn.x) + ',' + (endInBez.y + tipIn.y) +
+				   'q' + tipOut.x + ',' + tipOut.y + ' ' + (tipOut.x + endOutBez.x) + ',' + (tipOut.y + endOutBez.y) +
+				   'l' + endOut.x + ',' + endOut.y;
+		},
 		perimeterLength: function () { return 0; }
 	};
+	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
 
 function move(angleDeg, length) {
@@ -153,7 +163,7 @@ function setupCodeWindow() {
 'var x = makePath()\n' +
 '  .add(makeCurrentLocation(200,100))\n' +
 '  .add(makeEdge(25,500))\n' +
-'  .add(makeNotch(180,20,100))\n' +
+'  .add(makeNotch(180,20,100,0.34))\n' +
 '  .add(makeEdge(50,200));\n' +
 'logMsg("len:",x.perimeterLength());\n' +
 'logMsg("svg:",x.svgStr());\n' +
