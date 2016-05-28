@@ -2,7 +2,7 @@ function makePath() { // closure style classes
 	var elements = [];
 	return {
 		svgStr: function () {
-			return elements.reduce(function (x, elem) { return x + elem.part(); }, '<path d="') + '"stroke="black"stroke-width="1pt"fill="none"/>';
+			return elements.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="black"stroke-width="1pt"fill="none"/>';
 		},
 		add: function (element) {
 			elements.push(element);
@@ -16,7 +16,7 @@ function makePath() { // closure style classes
 
 function makeCurrentLocation(x, y) {
 	return {
-		part: function () { return 'M' + x + ',' + y; },
+		part: 'M' + x + ',' + y,
 		perimeterLength: function () { return 0; }
 	};
 }
@@ -24,7 +24,7 @@ function makeCurrentLocation(x, y) {
 function makeEdge(angleDeg, length) {
 	var end = move(angleDeg, length);
 	return {
-		part: function () { return 'l' + end.x + ',' + end.y; },
+		part: 'l' + end.x + ',' + end.y,
 		perimeterLength: function () { return length; }
 	};
 }
@@ -42,12 +42,10 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var m5 = move(a56, lenB, m4);
 	var m6 = move(a56, lenV);
 	return {
-		part: function () {
-			return 'l' + m1.x + ',' + m1.y +
-				   'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
-				   'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
-				   'l' + m6.x + ',' + m6.y;
-		},
+		part: 'l' + m1.x + ',' + m1.y +
+			  'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
+			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
+			  'l' + m6.x + ',' + m6.y,
 		perimeterLength: function () { return 0; }
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
