@@ -37,15 +37,15 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var lenB = length * smooth;
 	var m1 = move(a12, lenV);
 	var m2 = move(a12, lenB);
-	var m3 = move(angleDeg, lenB);
+	var m3 = move(angleDeg, lenB, m2);
 	var m4 = move(angleDeg - 180, lenB);
-	var m5 = move(a56, lenB);
+	var m5 = move(a56, lenB, m4);
 	var m6 = move(a56, lenV);
 	return {
 		part: function () {
 			return 'l' + m1.x + ',' + m1.y +
-				   'q' + m2.x + ',' + m2.y + ' ' + (m2.x + m3.x) + ',' + (m2.y + m3.y) +
-				   'q' + m4.x + ',' + m4.y + ' ' + (m4.x + m5.x) + ',' + (m4.y + m5.y) +
+				   'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
+				   'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
 				   'l' + m6.x + ',' + m6.y;
 		},
 		perimeterLength: function () { return 0; }
@@ -53,11 +53,12 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
 
-function move(angleDeg, length) {
+function move(angleDeg, length, from) {
 	var angleRad = radians(angleDeg);
+	from = typeof from !== 'undefined' ? from : { x: 0, y: 0 };
 	return {
-		x: length * Math.cos(angleRad),
-		y: length * Math.sin(angleRad)
+		x: length * Math.cos(angleRad) + from.x,
+		y: length * Math.sin(angleRad) + from.y
 	};
 }
 
