@@ -53,47 +53,33 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
 
-function makeEdges(count, angleDeg, length) {
-	var incAng = (angleDeg.last - angleDeg.first) / count;
-	var incLen = (length.last - length.first) / count;
-	var edges = [];
-	var ang = angleDeg.first;
-	var len = length.first;
-	for (var i = 0; i < count; ++i) {
-		edges.push(makeEdge(ang, len));
-		ang += incAng;
-		len += incLen;
+function makeRange(count, func) { // plus additional parameters for func
+	var args = Array.prototype.slice.call(arguments);
+	var parm = [];
+	var inc = [];
+	var ret = [];
+	// setup parameters for call to func
+	for (var i = 2; i < args.length; ++i) {
+		// func parameters are single number or {first:n,last:n} objects
+		var po = typeof args[i] !== 'number' ? args[i] : { first: args[i], last: args[i] };
+		parm.push(po.first);
+		inc.push((po.last - po.first) / (count - 1));
 	}
-	return edges;
-}
-
-function makeNotches(count, angleDeg, angleOpenDeg, length, smooth) {
-	var incAng = (angleDeg.last - angleDeg.first) / count;
-	var incOpAng = (angleOpenDeg.last - angleOpenDeg.first) / count;
-	var incLen = (length.last - length.first) / count;
-	var incSmo = (smooth.last - smooth.first) / count;
-	var motches = [];
-	var ang = angleDeg.first;
-	var ango = angleOpenDeg.first;
-	var len = length.first;
-	var smo = smooth.first;
+	// make calls to func
 	for (var i = 0; i < count; ++i) {
-		edges.push(makeEdge(ang, len));
-		ang += incAng;
-		ango += incOpAng;
-		len += incLen;
-		smo += incSmo;
+		ret.push(func.apply(this, parm));
+		parm.forEach(function (x, i, vec) { vec[i] += inc[i]; });
 	}
-	return notches;
+	return ret;
 }
 
 function merge(a1, a2) {
-	out = [];
+	var ret = [];
 	for (var i = 0; i < a1.length || i < a2.length; ++i) {
-		if (i < a1.length) { out.push(a1[i]) }
-		if (i < a2.length) { out.push(a2[i]) }
+		if (i < a1.length) { ret.push(a1[i]) }
+		if (i < a2.length) { ret.push(a2[i]) }
 	}
-	return out;
+	return ret;
 }
 
 function move(angleDeg, length, from) {
