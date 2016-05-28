@@ -53,6 +53,49 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
 
+function makeEdges(count, angleDeg, length) {
+	var incAng = (angleDeg.last - angleDeg.first) / count;
+	var incLen = (length.last - length.first) / count;
+	var edges = [];
+	var ang = angleDeg.first;
+	var len = length.first;
+	for (var i = 0; i < count; ++i) {
+		edges.push(makeEdge(ang, len));
+		ang += incAng;
+		len += incLen;
+	}
+	return edges;
+}
+
+function makeNotches(count, angleDeg, angleOpenDeg, length, smooth) {
+	var incAng = (angleDeg.last - angleDeg.first) / count;
+	var incOpAng = (angleOpenDeg.last - angleOpenDeg.first) / count;
+	var incLen = (length.last - length.first) / count;
+	var incSmo = (smooth.last - smooth.first) / count;
+	var motches = [];
+	var ang = angleDeg.first;
+	var ango = angleOpenDeg.first;
+	var len = length.first;
+	var smo = smooth.first;
+	for (var i = 0; i < count; ++i) {
+		edges.push(makeEdge(ang, len));
+		ang += incAng;
+		ango += incOpAng;
+		len += incLen;
+		smo += incSmo;
+	}
+	return notches;
+}
+
+function merge(a1, a2) {
+	out = [];
+	for (var i = 0; i < a1.length || i < a2.length; ++i) {
+		if (i < a1.length) { out.push(a1[i]) }
+		if (i < a2.length) { out.push(a2[i]) }
+	}
+	return out;
+}
+
 function move(angleDeg, length, from) {
 	var angleRad = radians(angleDeg);
 	from = typeof from !== 'undefined' ? from : { x: 0, y: 0 };
