@@ -9,7 +9,7 @@ function makePath() { // closure style classes
 			return this; // enable method chaining
 		},
 		perimeterLength: function () {
-			return elements.reduce(function (x, elem) { return x + elem.perimeterLength(); }, 0);
+			return elements.reduce(function (x, elem) { return x + elem.perimLen; }, 0);
 		}
 	};
 }
@@ -17,7 +17,7 @@ function makePath() { // closure style classes
 function makeCurrentLocation(x, y) {
 	return {
 		part: 'M' + x + ',' + y,
-		perimeterLength: function () { return 0; }
+		perimLen: 0
 	};
 }
 
@@ -25,7 +25,7 @@ function makeEdge(angleDeg, length) {
 	var end = move(angleDeg, length);
 	return {
 		part: 'l' + end.x + ',' + end.y,
-		perimeterLength: function () { return length; }
+		perimLen: length
 	};
 }
 
@@ -46,7 +46,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 			  'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
 			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
 			  'l' + m6.x + ',' + m6.y,
-		perimeterLength: function () { return 0; }
+		perimLen: 0
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
