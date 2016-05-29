@@ -65,7 +65,6 @@ function makeRange(count, func) { // plus additional parameters for func
 	});
 	// make calls to func
 	for (var i = 0; i < count; ++i) {
-		logMsg(parm);
 		ret.push(func.apply(this, parm));
 		parm.forEach(function (x, i, vec) { vec[i] += inc[i]; });
 	}
