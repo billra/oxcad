@@ -1,16 +1,7 @@
-function makePath() { // closure style classes
-	var elements = [];
+function makePath(objs) { // closure style classes
 	return {
-		svgStr: function () {
-			return elements.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="black"stroke-width="1pt"fill="none"/>';
-		},
-		add: function (element) {
-			elements.push(element);
-			return this; // enable method chaining
-		},
-		perimeterLength: function () {
-			return elements.reduce(function (x, elem) { return x + elem.perimLen; }, 0);
-		}
+		svgStr: objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="black"stroke-width="1pt"fill="none"/>',
+		perimLen: objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0)
 	};
 }
 
@@ -167,7 +158,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.02, Log Entries:');
+	logEdit.setValue('OxCad v0.03, Log Entries:');
 	logEdit.clearSelection();
 }
 
@@ -189,15 +180,17 @@ function setupCodeWindow() {
 	codeEdit.getSession().setMode("ace/mode/javascript");
 	// codeEdit.setValue('// your JavaScript code here\nlogMsg("hello world");')
 	codeEdit.setValue('// your JavaScript code here\n' +
-'logMsg("hello world");\n' +
-'var x = makePath()\n' +
-'  .add(makeCurrentLocation(200,100))\n' +
-'  .add(makeEdge(25,500))\n' +
-'  .add(makeNotch(180,20,100,0.34))\n' +
-'  .add(makeEdge(50,200));\n' +
-'logMsg("len:",x.perimeterLength());\n' +
-'logMsg("svg:",x.svgStr());\n' +
-'svgAppend(x.svgStr());');
+		'logMsg("hello world");\n' +
+		'var edges = makeRange(3,makeEdge,{first:315,last:360},200);\n' +
+		'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
+		'var start = [makeCurrentLocation(10,390)];\n' +
+		'var ns = merge(start,notches);\n' +
+		'var le = merge(ns,edges);\n' +
+		'var path = makePath(le);\n' +
+		'svgAppend(path.svgStr);\n' +
+		'logMsg("len:",path.perimLen);\n' +
+		'logMsg("svg:",path.svgStr);\n' +
+		'logMsg("svg:","done.");');
 	codeEdit.clearSelection();
 }
 
