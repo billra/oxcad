@@ -183,9 +183,8 @@ function setupCodeWindow() {
 		'logMsg("hello world");\n' +
 		'var edges = makeRange(3,makeEdge,{first:315,last:360},200);\n' +
 		'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
-		'var start = [makeCurrentLocation(10,390)];\n' +
-		'var ns = merge(start,notches);\n' +
-		'var le = merge(ns,edges);\n' +
+		'var le = merge(edges,notches);\n' +
+		'le.unshift(makeCurrentLocation(10,390));\n' +
 		'var path = makePath(le);\n' +
 		'svgAppend(path.svgStr);\n' +
 		'logMsg("len:",path.perimLen);\n' +
