@@ -57,14 +57,15 @@ function makeRange(count, func) { // plus additional parameters for func
 	var inc = [];
 	var ret = [];
 	// setup parameters for call to func
-	for (var i = 2; i < args.length; ++i) {
+	args.slice(2).forEach(function (arg) {
 		// func parameters are single number or {first:n,last:n} objects
-		var po = typeof args[i] !== 'number' ? args[i] : { first: args[i], last: args[i] };
+		var po = typeof arg !== 'number' ? arg : { first: arg, last: arg };
 		parm.push(po.first);
 		inc.push((po.last - po.first) / (count - 1));
-	}
+	});
 	// make calls to func
 	for (var i = 0; i < count; ++i) {
+		logMsg(parm);
 		ret.push(func.apply(this, parm));
 		parm.forEach(function (x, i, vec) { vec[i] += inc[i]; });
 	}
