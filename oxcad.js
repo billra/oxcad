@@ -62,11 +62,15 @@ function makeRange(count, func) { // plus additional parameters for func
 	return ret;
 }
 
-function merge(a1, a2) {
+function merge() { // generic merge any number of arrays
+	var args = Array.prototype.slice.call(arguments);
+	args.forEach(function (x, i, vec) { vec[i] = [].concat(x); }); // ensure array parameters
+	var maxLen = args.reduce(function (p, c) { return Math.max(p, c.length) }, 0);
 	var ret = [];
-	for (var i = 0; i < a1.length || i < a2.length; ++i) {
-		if (i < a1.length) { ret.push(a1[i]) }
-		if (i < a2.length) { ret.push(a2[i]) }
+	for (var i = 0; i < maxLen; ++i) {
+		for (var j = 0; j < args.length; ++j) {
+			if (i < args[j].length) { ret.push(args[j][i]); }
+		}
 	}
 	return ret;
 }
@@ -158,7 +162,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.04, Log Entries:');
+	logEdit.setValue('OxCad v0.05, Log Entries:');
 	logEdit.clearSelection();
 }
 
@@ -181,10 +185,10 @@ function setupCodeWindow() {
 	// codeEdit.setValue('// your JavaScript code here\nlogMsg("hello world");')
 	codeEdit.setValue('// your JavaScript code here\n' +
 		'logMsg("hello world");\n' +
+		'var start = makeCurrentLocation(10,390);\n' +
 		'var edges = makeRange(3,makeEdge,{first:315,last:360},200);\n' +
 		'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
-		'var le = merge(edges,notches);\n' +
-		'le.unshift(makeCurrentLocation(10,390));\n' +
+		'var le = merge(start,edges,notches);\n' +
 		'var path = makePath(le);\n' +
 		'svgAppend(path.svgStr);\n' +
 		'logMsg("len:",path.perimLen);\n' +
