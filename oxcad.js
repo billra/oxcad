@@ -94,6 +94,17 @@ function svgClear() {
 	svgEdit.innerHTML = '';
 }
 
+function svgSmaller() {
+	var bcr = svgEdit.getBoundingClientRect();
+	if (bcr.height < 200) { return; }
+	svgEdit.style.height = bcr.height - 100 + 'px';
+}
+
+function svgLarger() {
+	var bcr = svgEdit.getBoundingClientRect();
+	svgEdit.style.height = bcr.height + 100 + 'px';
+}
+
 function svgSerialize() {
 	var svgXml = (new XMLSerializer).serializeToString(svgEdit);
 	logMsg(svgXml);
@@ -162,7 +173,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.05, Log Entries:');
+	logEdit.setValue('OxCad v0.06, Log Entries:');
 	logEdit.clearSelection();
 }
 
