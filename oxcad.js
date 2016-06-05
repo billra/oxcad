@@ -1,6 +1,14 @@
-function makePath(objs) { // closure style classes
+function drawPath(objs,color,width) {
+	var path = makePath(objs,color,width);
+	svgAppend(path.svgStr);
+	return path;
+}
+
+function makePath(objs, color, width) {
+	color = typeof color !== 'undefined' ? color : 'black';
+	width = typeof width !== 'undefined' ? width : '1pt';
 	return {
-		svgStr: objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="black"stroke-width="1pt"fill="none"/>',
+		svgStr: objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>',
 		perimLen: objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0)
 	};
 }
@@ -173,7 +181,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.06, Log Entries:');
+	logEdit.setValue('OxCad v0.07, Log Entries:');
 	logEdit.clearSelection();
 }
 
@@ -200,8 +208,7 @@ function setupCodeWindow() {
 		'var edges = makeRange(3,makeEdge,{first:315,last:360},200);\n' +
 		'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
 		'var le = merge(start,edges,notches);\n' +
-		'var path = makePath(le);\n' +
-		'svgAppend(path.svgStr);\n' +
+		'var path = drawPath(le);\n' +
 		'logMsg("len:",path.perimLen);\n' +
 		'logMsg("svg:",path.svgStr);\n' +
 		'logMsg("svg:","done.");');
