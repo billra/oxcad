@@ -29,6 +29,7 @@ function makeEdge(angleDeg, length) {
 }
 
 function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
+	length = length / (1 + smooth); // make overall length the same for straight and smooth notches
 	var halfAngleOpenDeg = angleOpenDeg / 2;
 	var a12 = angleDeg - halfAngleOpenDeg;
 	var a56 = angleDeg + halfAngleOpenDeg - 180;
@@ -181,7 +182,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.07, Log Entries:');
+	logEdit.setValue('OxCad v0.08, Log Entries:');
 	logEdit.clearSelection();
 }
 
@@ -211,7 +212,16 @@ function setupCodeWindow() {
 		'var path = drawPath(le);\n' +
 		'logMsg("len:",path.perimLen);\n' +
 		'logMsg("svg:",path.svgStr);\n' +
-		'logMsg("svg:","done.");');
+		'logMsg("smoothness variation demo");\n' +
+		'start = makeCurrentLocation(10, 50);\n' +
+		'edges = makeRange(6, makeEdge, 0, 40);\n' +
+		'notches = makeRange(5, makeNotch, 90, 20, 200, { first: 0, last: 1 });\n' +
+		'le = merge(start, edges, notches);\n' +
+		'path = drawPath(le);\n' +
+		'logMsg("len:", path.perimLen);\n' +
+		'logMsg("svg:", path.svgStr);\n' +
+		'logMsg("done.");');
+
 	codeEdit.clearSelection();
 }
 
