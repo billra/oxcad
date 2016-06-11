@@ -9,14 +9,16 @@ function makePath(objs, color, width) {
 	width = typeof width !== 'undefined' ? width : '1pt';
 	return {
 		svgStr: objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>',
-		perimLen: objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0)
+		perimLen: objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0),
+		end: objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 })
 	};
 }
 
 function makeCurrentLocation(x, y) {
 	return {
 		part: 'M' + x + ',' + y,
-		perimLen: 0
+		perimLen: 0,
+		end: { x: 0, y: 0 }
 	};
 }
 
@@ -24,7 +26,8 @@ function makeEdge(angleDeg, length) {
 	var end = move(angleDeg, length);
 	return {
 		part: 'l' + end.x + ',' + end.y,
-		perimLen: length
+		perimLen: length,
+		end: end
 	};
 }
 
@@ -41,14 +44,21 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var m4 = move(angleDeg - 180, lenB);
 	var m5 = move(a56, lenB, m4);
 	var m6 = move(a56, lenV);
+	var smv = sumMove(m1, m3, m5, m6);
 	return {
 		part: 'l' + m1.x + ',' + m1.y +
 			  'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
 			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
 			  'l' + m6.x + ',' + m6.y,
-		perimLen: 0
+		perimLen: 0,
+		end: smv
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
+}
+
+function sumMove() {
+	var args = Array.prototype.slice.call(arguments); // ensure array
+	return args.reduce(function (sum, elem) { return { x: sum.x + elem.x, y: sum.y + elem.y }; }, { x: 0, y: 0 });
 }
 
 function makeRange(count, func) { // plus additional parameters for func
@@ -182,7 +192,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.08, Log Entries:');
+	logEdit.setValue('OxCad v0.09, Log Entries:');
 	logEdit.clearSelection();
 }
 
