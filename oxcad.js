@@ -1,5 +1,5 @@
-function drawPath(objs,color,width) {
-	var path = makePath(objs,color,width);
+function drawPath(objs, color, width) {
+	var path = makePath(objs, color, width);
 	svgAppend(path.svgStr);
 	return path;
 }
@@ -10,6 +10,10 @@ function makePath(objs, color, width) {
 	return {
 		svgStr: objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>',
 		perimLen: objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0),
+		clone: function (scale) {
+			var vt = objs.map(function (obj) { return obj.clone(scale); });
+			return makePath(vt, color, width);
+		},
 		end: objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 })
 	};
 }
@@ -18,6 +22,7 @@ function makeCurrentLocation(x, y) {
 	return {
 		part: 'M' + x + ',' + y,
 		perimLen: 0,
+		clone: function () { return makeCurrentLocation(x, y); }, // no movement, scale is relative
 		end: { x: 0, y: 0 }
 	};
 }
@@ -27,6 +32,7 @@ function makeEdge(angleDeg, length) {
 	return {
 		part: 'l' + end.x + ',' + end.y,
 		perimLen: length,
+		clone: function (scale) { return makeEdge(angleDeg, length * scale); },
 		end: end
 	};
 }
@@ -51,6 +57,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
 			  'l' + m6.x + ',' + m6.y,
 		perimLen: 0,
+		clone: function (scale) { return makeNotch(angleDeg, angleOpenDeg, length*scale, smooth); },
 		end: smv
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
@@ -192,7 +199,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.09, Log Entries:');
+	logEdit.setValue('OxCad v0.10, Log Entries:');
 	logEdit.clearSelection();
 }
 
@@ -220,6 +227,8 @@ function setupCodeWindow() {
 		'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
 		'var le = merge(start,edges,notches);\n' +
 		'var path = drawPath(le);\n' +
+		'var p2 = path.clone(.5);\n' +
+		'svgAppend(p2.svgStr);\n' +
 		'logMsg("len:",path.perimLen);\n' +
 		'logMsg("svg:",path.svgStr);\n' +
 		'logMsg("smoothness variation demo");\n' +
