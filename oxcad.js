@@ -194,12 +194,11 @@ function logMsg() {
 	session.insert({
 		row: session.getLength(),
 		column: 0
-	}, "\n" + args.join(' '));
-	logEdit.scrollToLine(session.getLength());
+	}, args.join(' ') + "\n");
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.10, Log Entries:');
+	logEdit.setValue('OxCad v0.11, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
