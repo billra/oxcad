@@ -190,6 +190,20 @@ var presetMap = {
 	'logMsg("svg:",path2);\n' +
 	'logMsg("done.");',
 
+	'nomirrordemo':
+	'// example not using mirror\n' +
+	'var leAng = 20;\n' +
+	'var edges = makeRange(5,makeEdge,{first:-leAng,last:leAng},200);\n' +
+	'var ntAng = 15;\n' +
+	'var notches = makeRange(4,makeNotch,{first:90-ntAng,last:90+ntAng},20,100,2/3);\n' +
+	'var start = makeCurrentLocation(10,150);\n' +
+	'var le = merge(start,edges,notches);\n' +
+	'var path = drawPath(le);\n' +
+	'logMsg("len:",epaPerimLen(le));\n' +
+	'var size=epaEnd(le);\n' +
+	'logMsg("size:",size.x,size.y);\n' +
+	'logMsg("done.");',
+
 	'svgappend':
 	'// demo raw svg usage\n' +
 	'svgAppend(\'<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>\');\n' +
