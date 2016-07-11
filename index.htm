@@ -32,8 +32,14 @@
 			<td class="half">
 
 				<div id="codeWindow" class="acedit"></div>
-				<button onclick="todo();">Fn1</button><button onclick="runCode();">Run</button><button onclick="codeClear();">Clear</button><button onclick="codeUndo();">Undo</button><button onclick="codeRedo();">Redo</button>
-
+				<button onclick="runCode();">Run</button>
+presets: 
+<select id="selectBox" onchange="presetChangeFunc(value);">
+	<option disabled selected>-- choose --</option>
+	<option value="notchdemo">Notch Demo</option>
+	<option value="blank">Blank</option>
+</select>
+				<button onclick="codeUndo();">Undo</button><button onclick="codeRedo();">Redo</button>
 			</td>
 			<td class="half">
 
