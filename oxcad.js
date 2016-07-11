@@ -1,22 +1,15 @@
 function drawPath(objs, color, width) {
-	var path = makePath(objs, color, width);
-	svgAppend(path.svgStr);
-	return path;
-}
-
-function makePath(objs, color, width) {
 	color = typeof color !== 'undefined' ? color : 'black';
 	width = typeof width !== 'undefined' ? width : '1pt';
-	return {
-		svgStr: objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>',
-		perimLen: objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0),
-		clone: function (scale) {
-			var vt = objs.map(function (obj) { return obj.clone(scale); });
-			return makePath(vt, color, width);
-		},
-		end: objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 })
-	};
+	var str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>';
+	svgAppend(str);
+	return str;
 }
+
+// helper functions for edge part array
+function epaPerimLen(objs) { return objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0); }
+function epaClone(objs, scale) { return objs.map(function (obj) { return obj.clone(scale); }); }
+function epaEnd(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 }); }
 
 function makeCurrentLocation(x, y) {
 	return {
@@ -190,10 +183,11 @@ var presetMap = {
 	'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
 	'var le = merge(start,edges,notches);\n' +
 	'var path = drawPath(le);\n' +
-	'var p2 = path.clone(.5);\n' +
-	'svgAppend(p2.svgStr);\n' +
-	'logMsg("len:",path.perimLen);\n' +
-	'logMsg("svg:",path.svgStr);\n' +
+	'logMsg("len:",epaPerimLen(le));\n' +
+	'var le2 = epaClone(le,0.5);\n' +
+	'var path2 = drawPath(le2);\n' +
+	'logMsg("len:",epaPerimLen(le2));\n' +
+	'logMsg("svg:",path2);\n' +
 	'logMsg("done.");',
 
 	'svgappend':
@@ -232,7 +226,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.12, Log Entries:\n');
+	logEdit.setValue('OxCad v0.13, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
