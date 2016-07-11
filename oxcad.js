@@ -196,6 +196,12 @@ var presetMap = {
 	'logMsg("svg:",path.svgStr);\n' +
 	'logMsg("done.");',
 
+	'svgappend':
+	'// demo raw svg usage\n' +
+	'svgAppend(\'<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>\');\n' +
+	'svgAppend(\'<circle id="orangeCircle1" style="stroke:blue;stroke-width:4;fill:darkorange;" cx="230" cy="200" r="20"/>\');\n' +
+	'svgAppend(\'<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>\')\n',
+
 	'blank': ''
 }
 
@@ -258,9 +264,6 @@ function setupLogWindow() {
 
 function setupSvgWindow() {
 	svgEdit = document.getElementById("svgWindow");
-	svgAppend('<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>'); // example initialization
-	svgAppend('<circle id="orangeCircle1" style="stroke:blue;stroke-width:4;fill:darkorange;" cx="230" cy="200" r="20"/>');
-	svgAppend('<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>')
 	svgGrid();
 }
 
