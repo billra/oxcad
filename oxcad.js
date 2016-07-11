@@ -181,7 +181,22 @@ var presetMap = {
 	'var le = merge(start, edges, notches);\n' +
 	'var path = drawPath(le);\n' +
 	'logMsg("done.");',
-	'blank':''
+
+	'clonedemo':
+	'// your JavaScript code here\n' +
+	'logMsg("hello world");\n' +
+	'var start = makeCurrentLocation(10,390);\n' +
+	'var edges = makeRange(3,makeEdge,{first:315,last:360},200);\n' +
+	'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
+	'var le = merge(start,edges,notches);\n' +
+	'var path = drawPath(le);\n' +
+	'var p2 = path.clone(.5);\n' +
+	'svgAppend(p2.svgStr);\n' +
+	'logMsg("len:",path.perimLen);\n' +
+	'logMsg("svg:",path.svgStr);\n' +
+	'logMsg("done.");',
+
+	'blank': ''
 }
 
 function presetChangeFunc(id) {
@@ -231,29 +246,7 @@ function setupCodeWindow() {
 	codeEdit = ace.edit("codeWindow");
 	codeEdit.setTheme("ace/theme/chrome");
 	codeEdit.getSession().setMode("ace/mode/javascript");
-	// codeEdit.setValue('// your JavaScript code here\nlogMsg("hello world");')
-	codeEdit.setValue('// your JavaScript code here\n' +
-		'logMsg("hello world");\n' +
-		'var start = makeCurrentLocation(10,390);\n' +
-		'var edges = makeRange(3,makeEdge,{first:315,last:360},200);\n' +
-		'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
-		'var le = merge(start,edges,notches);\n' +
-		'var path = drawPath(le);\n' +
-		'var p2 = path.clone(.5);\n' +
-		'svgAppend(p2.svgStr);\n' +
-		'logMsg("len:",path.perimLen);\n' +
-		'logMsg("svg:",path.svgStr);\n' +
-		'logMsg("smoothness variation demo");\n' +
-		'start = makeCurrentLocation(10, 50);\n' +
-		'edges = makeRange(6, makeEdge, 0, 40);\n' +
-		'notches = makeRange(5, makeNotch, 90, 20, 200, { first: 0, last: 1 });\n' +
-		'le = merge(start, edges, notches);\n' +
-		'path = drawPath(le);\n' +
-		'logMsg("len:", path.perimLen);\n' +
-		'logMsg("svg:", path.svgStr);\n' +
-		'logMsg("done.");');
-
-	codeEdit.clearSelection();
+	presetChangeFunc('clonedemo'); // preload sample code
 }
 
 function setupLogWindow() {
