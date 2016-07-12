@@ -9,7 +9,7 @@ function drawPath(x, y, objs, color, width) {
 // helper functions for edge part array
 function edgeLength(objs) { return objs.reduce(function (x, elem) { return x + elem.edgeLen; }, 0); }
 function epaClone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
-function extent(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 }); }
+function extent(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.x, y: sum.y + elem.y }; }, { x: 0, y: 0 }); }
 
 function reflect(objs, mirrorAngleDeg) {
 	mirrorAngleDeg = 'undefined' === typeof mirrorAngleDeg ? 90 : mirrorAngleDeg; // mirror default Y axis
@@ -27,7 +27,7 @@ function makeEdge(angleDeg, length) {
 		part: 'l' + end.x + ',' + end.y,
 		edgeLen: length,
 		clone: function (scale, mirrorAngleDeg) { return makeEdge(mirror(angleDeg, mirrorAngleDeg+90), length * scale); },
-		end: end
+		x: end.x, y: end.y
 	};
 }
 
@@ -44,6 +44,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var m4 = move(angleDeg - 180, lenB);
 	var m5 = move(a56, lenB, m4);
 	var m6 = move(a56, lenV);
+	var end = extent([m1, m3, m5, m6]);
 	return {
 		part: 'l' + m1.x + ',' + m1.y +
 			  'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
@@ -51,14 +52,9 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 			  'l' + m6.x + ',' + m6.y,
 		edgeLen: 0,
 		clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, length * scale, smooth); },
-		end: sumMove(m1, m3, m5, m6)
+		x: end.x, y: end.y
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
-}
-
-function sumMove() { // todo: this is very close to the extent() function
-	var args = Array.prototype.slice.call(arguments); // ensure array
-	return args.reduce(function (sum, elem) { return { x: sum.x + elem.x, y: sum.y + elem.y }; }, { x: 0, y: 0 });
 }
 
 function move(angleDeg, length, from) {
@@ -222,7 +218,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.18, Log Entries:\n');
+	logEdit.setValue('OxCad v0.19, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
