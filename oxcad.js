@@ -9,7 +9,7 @@ function drawPath(x, y, objs, color, width) {
 // helper functions for edge part array
 function epaPerimLen(objs) { return objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0); }
 function epaClone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
-function epaEnd(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 }); }
+function extent(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 }); }
 
 function epaMirror(objs, mirrorAngleDeg) {
 	mirrorAngleDeg = 'undefined' === typeof mirrorAngleDeg ? 90 : mirrorAngleDeg; // mirror default Y axis
@@ -183,8 +183,8 @@ var presetMap = {
 	'var le = epaMirror(halfle);\n' +
 	'var path = drawPath(10,200,le);\n' +
 	'logMsg("len:",epaPerimLen(le));\n' +
-	'var size=epaEnd(le);\n' +
-	'logMsg("size:",size.x,size.y);\n' +
+	'var leExt=extent(le);\n' +
+	'logMsg("leading edge extent:",leExt.x,leExt.y);\n' +
 	'logMsg("done.");',
 
 	'svgappend':
