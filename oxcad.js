@@ -8,14 +8,24 @@ function drawPath(objs, color, width) {
 
 // helper functions for edge part array
 function epaPerimLen(objs) { return objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0); }
-function epaClone(objs, scale) { return objs.map(function (obj) { return obj.clone(scale); }); }
+function epaClone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
 function epaEnd(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 }); }
+
+function epaMirror(objs, mirrorAngleDeg) {
+	mirrorAngleDeg = 'undefined' === typeof mirrorAngleDeg ? 90 : mirrorAngleDeg; // mirror default Y axis
+	var tail = epaClone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg);
+	return objs.concat(tail);
+}
+
+function mirror(angleDeg, mirrorAngleDeg) { // mirror angle through plane, no plane: no mirror
+	return 'undefined' === typeof mirrorAngleDeg ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
+}
 
 function makeCurrentLocation(x, y) {
 	return {
 		part: 'M' + x + ',' + y,
 		perimLen: 0,
-		clone: function () { return makeCurrentLocation(x, y); }, // no movement, scale is relative
+		clone: function () { return makeCurrentLocation(x, y); }, // point unaffected by scale and mirror
 		end: { x: 0, y: 0 }
 	};
 }
@@ -25,12 +35,13 @@ function makeEdge(angleDeg, length) {
 	return {
 		part: 'l' + end.x + ',' + end.y,
 		perimLen: length,
-		clone: function (scale) { return makeEdge(angleDeg, length * scale); },
+		clone: function (scale, mirrorAngleDeg) { return makeEdge(mirror(angleDeg, mirrorAngleDeg+90), length * scale); },
 		end: end
 	};
 }
 
 function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
+	var originalLength = length;
 	length = length / (1 + smooth); // make overall length the same for straight and smooth notches
 	var halfAngleOpenDeg = angleOpenDeg / 2;
 	var a12 = angleDeg - halfAngleOpenDeg;
@@ -50,7 +61,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
 			  'l' + m6.x + ',' + m6.y,
 		perimLen: 0,
-		clone: function (scale) { return makeNotch(angleDeg, angleOpenDeg, length*scale, smooth); },
+		clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, originalLength * scale, smooth); },
 		end: smv
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
@@ -204,6 +215,20 @@ var presetMap = {
 	'logMsg("size:",size.x,size.y);\n' +
 	'logMsg("done.");',
 
+	'mirrordemo':
+	'// example using mirror\n' +
+	'var edges = makeRange(3,makeEdge,{first:-20,last:0},200);\n' +
+	'var notches = makeRange(2,makeNotch,{first:75,last:85},20,100,2/3);\n' +
+	'var halfedge = merge(edges,notches);\n' +
+	'var edge = epaMirror(halfedge);\n' +
+	'var start = makeCurrentLocation(10,200);\n' +
+	'var le = merge(start,edge);\n' +
+	'var path = drawPath(le);\n' +
+	'logMsg("len:",epaPerimLen(le));\n' +
+	'var size=epaEnd(le);\n' +
+	'logMsg("size:",size.x,size.y);\n' +
+	'logMsg("done.");',
+
 	'svgappend':
 	'// demo raw svg usage\n' +
 	'svgAppend(\'<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>\');\n' +
@@ -240,7 +265,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.13, Log Entries:\n');
+	logEdit.setValue('OxCad v0.14, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
