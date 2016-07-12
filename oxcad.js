@@ -44,7 +44,6 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var m4 = move(angleDeg - 180, lenB);
 	var m5 = move(a56, lenB, m4);
 	var m6 = move(a56, lenV);
-	var smv = sumMove(m1, m3, m5, m6);
 	return {
 		part: 'l' + m1.x + ',' + m1.y +
 			  'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
@@ -52,7 +51,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 			  'l' + m6.x + ',' + m6.y,
 		edgeLen: 0,
 		clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, length * scale, smooth); },
-		end: smv
+		end: sumMove(m1, m3, m5, m6)
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
@@ -223,7 +222,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.17, Log Entries:\n');
+	logEdit.setValue('OxCad v0.18, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
