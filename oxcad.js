@@ -11,13 +11,13 @@ function edgeLength(objs) { return objs.reduce(function (x, elem) { return x + e
 function epaClone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
 function extent(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 }); }
 
-function epaMirror(objs, mirrorAngleDeg) {
+function reflect(objs, mirrorAngleDeg) {
 	mirrorAngleDeg = 'undefined' === typeof mirrorAngleDeg ? 90 : mirrorAngleDeg; // mirror default Y axis
-	var tail = epaClone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg);
+	var tail = epaClone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
 	return objs.concat(tail);
 }
 
-function mirror(angleDeg, mirrorAngleDeg) { // mirror angle through plane, no plane: no mirror
+function mirror(angleDeg, mirrorAngleDeg) { // undefined mirrorAngleDeg returns original angleDeg
 	return 'undefined' === typeof mirrorAngleDeg ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
 }
 
@@ -179,8 +179,8 @@ var presetMap = {
 	'// example using mirror\n' +
 	'var edges = makeRange(3,makeEdge,{first:-20,last:0},200);\n' +
 	'var notches = makeRange(2,makeNotch,{first:75,last:85},20,100,2/3);\n' +
-	'var halfle = merge(edges,notches);\n' +
-	'var le = epaMirror(halfle);\n' +
+	'var side = merge(edges,notches);\n' +
+	'var le = reflect(side);\n' +
 	'var path = drawPath(10,200,le);\n' +
 	'logMsg("edge length:",edgeLength(le));\n' +
 	'var leExt=extent(le);\n' +
@@ -223,7 +223,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.16, Log Entries:\n');
+	logEdit.setValue('OxCad v0.17, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
