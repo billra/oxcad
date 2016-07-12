@@ -1,6 +1,6 @@
 function drawPath(x, y, objs, color, width) {
-	color = typeof color !== 'undefined' ? color : 'black';
-	width = typeof width !== 'undefined' ? width : '1pt';
+	color = 'undefined' === typeof color ? 'black' : color;
+	width = 'undefined' === typeof width ? '1pt' : width;
 	var str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>';
 	svgAppend(str);
 	return str;
@@ -59,7 +59,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 
 function move(angleDeg, length, from) {
 	var angleRad = radians(angleDeg);
-	from = typeof from !== 'undefined' ? from : { x: 0, y: 0 };
+	from = 'undefined' === typeof from ? { x: 0, y: 0 } : from;
 	return {
 		x: length * Math.cos(angleRad) + from.x,
 		y: length * Math.sin(angleRad) + from.y
@@ -74,9 +74,9 @@ function makeRange(count, func) { // plus additional parameters for func
 	// setup parameters for call to func
 	args.slice(2).forEach(function (arg) {
 		// func parameters are single number or {first:n,last:n} objects
-		var po = typeof arg !== 'number' ? arg : { first: arg, last: arg };
-		parm.push(po.first);
-		inc.push((po.last - po.first) / (count - 1));
+		arg = 'number' === typeof arg ? { first: arg, last: arg } : arg;
+		parm.push(arg.first);
+		inc.push((arg.last - arg.first) / (count - 1));
 	});
 	// make calls to func
 	for (var i = 0; i < count; ++i) {
@@ -218,7 +218,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.19, Log Entries:\n');
+	logEdit.setValue('OxCad v0.20, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
