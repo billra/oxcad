@@ -26,7 +26,7 @@ function makeEdge(angleDeg, length) {
 	return {
 		part: 'l' + end.x + ',' + end.y,
 		edgeLen: length,
-		clone: function (scale, mirrorAngleDeg) { return makeEdge(mirror(angleDeg, mirrorAngleDeg+90), length * scale); },
+		clone: function (scale, mirrorAngleDeg) { return makeEdge(mirror(angleDeg, mirrorAngleDeg + 90), length * scale); },
 		x: end.x, y: end.y
 	};
 }
