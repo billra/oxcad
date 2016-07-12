@@ -32,13 +32,12 @@ function makeEdge(angleDeg, length) {
 }
 
 function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
-	var originalLength = length;
-	length = length / (1 + smooth); // make overall length the same for straight and smooth notches
+	var resLen = length / (1 + smooth); // make overall length the same for straight and smooth notches
 	var halfAngleOpenDeg = angleOpenDeg / 2;
 	var a12 = angleDeg - halfAngleOpenDeg;
 	var a56 = angleDeg + halfAngleOpenDeg - 180;
-	var lenV = length * (1 - smooth);
-	var lenB = length * smooth;
+	var lenV = resLen * (1 - smooth);
+	var lenB = resLen * smooth;
 	var m1 = move(a12, lenV);
 	var m2 = move(a12, lenB);
 	var m3 = move(angleDeg, lenB, m2);
@@ -52,7 +51,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
 			  'l' + m6.x + ',' + m6.y,
 		perimLen: 0,
-		clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, originalLength * scale, smooth); },
+		clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, length * scale, smooth); },
 		end: smv
 	};
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
