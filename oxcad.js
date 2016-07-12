@@ -56,9 +56,18 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
 
-function sumMove() {
+function sumMove() { // todo: this is very close to the extent() function
 	var args = Array.prototype.slice.call(arguments); // ensure array
 	return args.reduce(function (sum, elem) { return { x: sum.x + elem.x, y: sum.y + elem.y }; }, { x: 0, y: 0 });
+}
+
+function move(angleDeg, length, from) {
+	var angleRad = radians(angleDeg);
+	from = typeof from !== 'undefined' ? from : { x: 0, y: 0 };
+	return {
+		x: length * Math.cos(angleRad) + from.x,
+		y: length * Math.sin(angleRad) + from.y
+	};
 }
 
 function makeRange(count, func) { // plus additional parameters for func
@@ -92,15 +101,6 @@ function merge() { // generic merge any number of arrays
 		}
 	}
 	return ret;
-}
-
-function move(angleDeg, length, from) {
-	var angleRad = radians(angleDeg);
-	from = typeof from !== 'undefined' ? from : { x: 0, y: 0 };
-	return {
-		x: length * Math.cos(angleRad) + from.x,
-		y: length * Math.sin(angleRad) + from.y
-	};
 }
 
 function radians(degrees) { return degrees * Math.PI / 180; };
