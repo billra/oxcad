@@ -1,7 +1,7 @@
-function drawPath(objs, color, width) {
+function drawPath(x, y, objs, color, width) {
 	color = typeof color !== 'undefined' ? color : 'black';
 	width = typeof width !== 'undefined' ? width : '1pt';
-	var str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="') + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>';
+	var str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>';
 	svgAppend(str);
 	return str;
 }
@@ -19,15 +19,6 @@ function epaMirror(objs, mirrorAngleDeg) {
 
 function mirror(angleDeg, mirrorAngleDeg) { // mirror angle through plane, no plane: no mirror
 	return 'undefined' === typeof mirrorAngleDeg ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
-}
-
-function makeCurrentLocation(x, y) {
-	return {
-		part: 'M' + x + ',' + y,
-		perimLen: 0,
-		clone: function () { return makeCurrentLocation(x, y); }, // point unaffected by scale and mirror
-		end: { x: 0, y: 0 }
-	};
 }
 
 function makeEdge(angleDeg, length) {
@@ -179,51 +170,19 @@ function svgProperties() {
 var presetMap = {
 	'notchdemo':
 	'// demo notch smoothness range\n' +
-	'var start = makeCurrentLocation(10, 50);\n' +
 	'var edges = makeRange(6, makeEdge, 0, 40);\n' +
 	'var notches = makeRange(5, makeNotch, 90, 20, 200, { first: 0, last: 1 });\n' +
-	'var le = merge(start, edges, notches);\n' +
-	'var path = drawPath(le);\n' +
-	'logMsg("done.");',
-
-	'clonedemo':
-	'// your JavaScript code here\n' +
-	'logMsg("hello world");\n' +
-	'var start = makeCurrentLocation(10,390);\n' +
-	'var edges = makeRange(3,makeEdge,{first:315,last:360},200);\n' +
-	'var notches = makeRange(2,makeNotch,{first:45,last:60},20,100,1/3);\n' +
-	'var le = merge(start,edges,notches);\n' +
-	'var path = drawPath(le);\n' +
-	'logMsg("len:",epaPerimLen(le));\n' +
-	'var le2 = epaClone(le,0.5);\n' +
-	'var path2 = drawPath(le2);\n' +
-	'logMsg("len:",epaPerimLen(le2));\n' +
-	'logMsg("svg:",path2);\n' +
-	'logMsg("done.");',
-
-	'nomirrordemo':
-	'// example not using mirror\n' +
-	'var leAng = 20;\n' +
-	'var edges = makeRange(5,makeEdge,{first:-leAng,last:leAng},200);\n' +
-	'var ntAng = 15;\n' +
-	'var notches = makeRange(4,makeNotch,{first:90-ntAng,last:90+ntAng},20,100,2/3);\n' +
-	'var start = makeCurrentLocation(10,150);\n' +
-	'var le = merge(start,edges,notches);\n' +
-	'var path = drawPath(le);\n' +
-	'logMsg("len:",epaPerimLen(le));\n' +
-	'var size=epaEnd(le);\n' +
-	'logMsg("size:",size.x,size.y);\n' +
+	'var le = merge(edges, notches);\n' +
+	'var path = drawPath(10,50,le);\n' +
 	'logMsg("done.");',
 
 	'mirrordemo':
 	'// example using mirror\n' +
 	'var edges = makeRange(3,makeEdge,{first:-20,last:0},200);\n' +
 	'var notches = makeRange(2,makeNotch,{first:75,last:85},20,100,2/3);\n' +
-	'var halfedge = merge(edges,notches);\n' +
-	'var edge = epaMirror(halfedge);\n' +
-	'var start = makeCurrentLocation(10,200);\n' +
-	'var le = merge(start,edge);\n' +
-	'var path = drawPath(le);\n' +
+	'var halfle = merge(edges,notches);\n' +
+	'var le = epaMirror(halfle);\n' +
+	'var path = drawPath(10,200,le);\n' +
 	'logMsg("len:",epaPerimLen(le));\n' +
 	'var size=epaEnd(le);\n' +
 	'logMsg("size:",size.x,size.y);\n' +
@@ -265,7 +224,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.14, Log Entries:\n');
+	logEdit.setValue('OxCad v0.15, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
@@ -285,7 +244,7 @@ function setupCodeWindow() {
 	codeEdit = ace.edit("codeWindow");
 	codeEdit.setTheme("ace/theme/chrome");
 	codeEdit.getSession().setMode("ace/mode/javascript");
-	presetChangeFunc('clonedemo'); // preload sample code
+	presetChangeFunc('mirrordemo'); // preload sample code
 }
 
 function setupLogWindow() {
