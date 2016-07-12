@@ -7,7 +7,7 @@ function drawPath(x, y, objs, color, width) {
 }
 
 // helper functions for edge part array
-function epaPerimLen(objs) { return objs.reduce(function (x, elem) { return x + elem.perimLen; }, 0); }
+function edgeLength(objs) { return objs.reduce(function (x, elem) { return x + elem.edgeLen; }, 0); }
 function epaClone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
 function extent(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.end.x, y: sum.y + elem.end.y }; }, { x: 0, y: 0 }); }
 
@@ -25,7 +25,7 @@ function makeEdge(angleDeg, length) {
 	var end = move(angleDeg, length);
 	return {
 		part: 'l' + end.x + ',' + end.y,
-		perimLen: length,
+		edgeLen: length,
 		clone: function (scale, mirrorAngleDeg) { return makeEdge(mirror(angleDeg, mirrorAngleDeg+90), length * scale); },
 		end: end
 	};
@@ -50,7 +50,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 			  'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
 			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
 			  'l' + m6.x + ',' + m6.y,
-		perimLen: 0,
+		edgeLen: 0,
 		clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, length * scale, smooth); },
 		end: smv
 	};
@@ -182,7 +182,7 @@ var presetMap = {
 	'var halfle = merge(edges,notches);\n' +
 	'var le = epaMirror(halfle);\n' +
 	'var path = drawPath(10,200,le);\n' +
-	'logMsg("len:",epaPerimLen(le));\n' +
+	'logMsg("edge length:",edgeLength(le));\n' +
 	'var leExt=extent(le);\n' +
 	'logMsg("leading edge extent:",leExt.x,leExt.y);\n' +
 	'logMsg("done.");',
@@ -223,7 +223,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.15, Log Entries:\n');
+	logEdit.setValue('OxCad v0.16, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
