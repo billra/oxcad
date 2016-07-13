@@ -237,6 +237,23 @@ function codeRedo() {
 	codeEdit.redo();
 }
 
+function codeSmaller() {
+	var height = document.getElementById('codeWindow').clientHeight;
+	if (height < 200) { return; }
+	document.getElementById("codeWindow").style.height = height - 100 + 'px';
+	document.getElementById("logWindow").style.height = height - 100 + 'px';
+	codeEdit.resize();
+	logEdit.resize();
+}
+
+function codeLarger() {
+	var height = document.getElementById('codeWindow').clientHeight;
+	document.getElementById("codeWindow").style.height = height + 100 + 'px';
+	document.getElementById("logWindow").style.height = height + 100 + 'px';
+	codeEdit.resize();
+	logEdit.resize();
+}
+
 var logEdit;
 
 function logMsg() {
