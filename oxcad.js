@@ -266,7 +266,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.21, Log Entries:\n');
+	logEdit.setValue('OxCad v0.22, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
