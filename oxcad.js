@@ -106,7 +106,13 @@ function merge() { // generic merge any number of arrays
 function radians(degrees) { return degrees * Math.PI / 180; };
 function degrees(radians) { return radians * 180 / Math.PI; };
 
-function specifySvgUnitsAndSize(str,width,height,units) {
+/*
+Browser support for svg viewbox and units change is immature in 2016.
+This results in blurry lines and very poor scaling accuracy.
+New strategy: entirely unitless and viewBoxless, calculate own scaling for paths.
+*/
+
+function specifySvgUnitsAndSize(str, width, height, units) {
 	// <svg id="svgWindow" class="expand" ...
 	// 0123456789
 	str = str.slice(0, 4) + ' width="' + width + units + '" height="' + height + units + '" viewBox="0 0 ' + width + ' ' + height + '"' + str.slice(4);
