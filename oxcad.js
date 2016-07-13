@@ -106,6 +106,33 @@ function merge() { // generic merge any number of arrays
 function radians(degrees) { return degrees * Math.PI / 180; };
 function degrees(radians) { return radians * 180 / Math.PI; };
 
+function specifySvgUnitsAndSize(str,width,height,units) {
+	// <svg id="svgWindow" class="expand" ...
+	// 0123456789
+	str = str.slice(0, 4) + ' width="' + width + units + '" height="' + height + units + '" viewBox="0 0 ' + width + ' ' + height + '"' + str.slice(4);
+	return str;
+}
+function minEncode(str) { // see https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
+	//str = str.replace(/"/g, "'");
+	str = str.replace(/</g, "%3C");
+	str = str.replace(/>/g, "%3E");
+	str = str.replace(/&/g, "%26");
+	str = str.replace(/#/g, "%23");
+	return str;
+}
+function printPlans() {
+	var str = svgEdit.outerHTML;
+	str = specifySvgUnitsAndSize(str, 400, 200, "mm");
+	str = minEncode(str);
+	var link = document.createElement("a");
+	// link.download = "drawing.svg"; // download
+	link.target = "_blank"; // open in new tab
+	link.href = "data:image/svg+xml;utf8," + str;
+	document.body.appendChild(link);
+	link.click();
+	document.body.removeChild(link);
+}
+
 var svgEdit;
 var svgNS = "http://www.w3.org/2000/svg";
 
@@ -211,6 +238,7 @@ var presetMap = {
 	'// draw leading and trailing edges\n' +
 	'drawPath(10, 150, le);\n' +
 	'drawPath(10, 150, teScaled);\n' +
+	'//printPlans();\n' +
 	'logMsg("done.");',
 
 	'svgappend':
@@ -249,7 +277,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.23, Log Entries:\n');
+	logEdit.setValue('OxCad v0.24, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
