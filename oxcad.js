@@ -1,3 +1,13 @@
+function drawSurface(x, y, edge1, edge2, color, width) {
+	color = 'undefined' === typeof color ? 'black' : color;
+	width = 'undefined' === typeof width ? '1pt' : width;
+	// todo: center drawing on nearest major grid line
+	var outline = edge1.concat(edge2);
+	var str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z"stroke="' + color + '"stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
+	svgAppend(str);
+	return str;
+}
+
 function drawPath(x, y, objs, color, width) {
 	color = 'undefined' === typeof color ? 'black' : color;
 	width = 'undefined' === typeof width ? '1pt' : width;
@@ -222,28 +232,27 @@ var presetMap = {
 	'alfa':
 	'// --- Alfa ---\n' +
 	'// leading edge\n' +
-	'var leEdges = makeRange(3, makeEdge, { first: -20, last: 0 }, 200);\n' +
-	'var leNotches = makeRange(2, makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);\n' +
-	'var leSide = merge(leEdges, leNotches);\n' +
-	'var le = reflect(leSide);\n' +
-	'logMsg("leading edge length:", edgeLength(le));\n' +
-	'var leExt = extent(le);\n' +
-	'logMsg("leading edge extent:", leExt.x, leExt.y);\n' +
+	'var leEdges=makeRange(3,makeEdge,{first:-20,last:0},200);\n' +
+	'var leNotches=makeRange(2,makeNotch,{first:75,last:85},20,{first:100,last:140},2/3);\n' +
+	'var leSide=merge(leEdges,leNotches);\n' +
+	'var le=reflect(leSide);\n' +
+	'logMsg("leading edge length:",edgeLength(le));\n' +
+	'var leExt=extent(le);\n' +
+	'logMsg("leading edge extent:",leExt.x,leExt.y);\n' +
 	'// trailing edge\n' +
-	'var teEdges = makeRange(2, makeEdge, { first: 45, last: 0 }, 100);\n' +
-	'var teNotches = makeNotch(285, -30, 60, 2 / 3);\n' +
-	'var teSide = merge(teEdges, teNotches);\n' +
-	'var te = reflect(teSide);\n' +
-	'logMsg("trailing edge length:", edgeLength(te));\n' +
-	'var teExt = extent(te);\n' +
-	'logMsg("trailing edge extent:", teExt.x, teExt.y);\n' +
+	'var teEdges=makeRange(2,makeEdge,{first:135,last:180},100);\n' +
+	'var teNotches=makeNotch(255,30,60,2/3);\n' +
+	'var teSide=merge(teEdges,teNotches);\n' +
+	'var te=reflect(teSide);\n' +
+	'logMsg("trailing edge length:",edgeLength(te));\n' +
+	'var teExt=extent(te);\n' +
+	'logMsg("trailing edge extent:",teExt.x,teExt.y);\n' +
 	'// scale trailing edge to match leading edge extent\n' +
-	'var scale = leExt.x / teExt.x;\n' +
-	'logMsg("trailing edge scale factor:", scale);\n' +
-	'var teScaled = epaClone(te, scale);\n' +
-	'// draw leading and trailing edges\n' +
-	'drawPath(10, 150, le);\n' +
-	'drawPath(10, 150, teScaled);\n' +
+	'var scale=leExt.x/-teExt.x;\n' +
+	'logMsg("trailing edge scale factor:",scale);\n' +
+	'var teScaled=epaClone(te,scale);\n' +
+	'// draw canopy\n' +
+	'drawSurface(10,150,le,teScaled);\n' +
 	'//printPlans();\n' +
 	'logMsg("done.");',
 
