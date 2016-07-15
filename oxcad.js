@@ -206,7 +206,7 @@ function svgProperties() {
 	logMsg("path len", len, 'end xy', pos.x, pos.y, 'bbox:', bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);
 }
 
-var presetMap = {
+var codeExamples = {
 	'notchdemo':
 	'// demo notch smoothness range\n' +
 	'var edges = makeRange(6, makeEdge, 0, 40);\n' +
@@ -263,8 +263,8 @@ var presetMap = {
 	'blank': ''
 }
 
-function presetChangeFunc(id) {
-	codeEdit.setValue(presetMap[id]);
+function exampleChangeFunc(id) {
+	codeEdit.setValue(codeExamples[id]);
 	codeEdit.clearSelection();
 }
 
@@ -327,7 +327,7 @@ function setupCodeWindow() {
 	codeEdit = ace.edit("codeWindow");
 	codeEdit.setTheme("ace/theme/chrome");
 	codeEdit.getSession().setMode("ace/mode/javascript");
-	presetChangeFunc('mirrordemo'); // preload sample code
+	exampleChangeFunc('mirrordemo'); // preload sample code
 }
 
 function setupLogWindow() {
