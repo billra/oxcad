@@ -210,6 +210,15 @@ function exampleChangeFunc(id) {
 	codeEdit.setValue(codeExamples[id]);
 	codeEdit.clearSelection();
 }
+function fillExampleDropdown() {
+	var select = document.getElementById("selectBox");
+	for (var key in codeExamples) {
+		var el = document.createElement("option");
+		el.textContent = key;
+		el.value = key;
+		select.appendChild(el);
+	};
+}
 
 var codeEdit;
 
@@ -233,7 +242,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.27, Log Entries:\n');
+	logEdit.setValue('OxCad v0.28, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
@@ -270,6 +279,7 @@ function setupCodeWindow() {
 	codeEdit = ace.edit("codeWindow");
 	codeEdit.setTheme("ace/theme/chrome");
 	codeEdit.getSession().setMode("ace/mode/javascript");
+	fillExampleDropdown();
 	exampleChangeFunc('mirrordemo'); // preload sample code
 }
 
