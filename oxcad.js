@@ -18,12 +18,12 @@ function drawPath(x, y, objs, color, width) {
 
 // helper functions for edge part array
 function edgeLength(objs) { return objs.reduce(function (x, elem) { return x + elem.edgeLen; }, 0); }
-function epaClone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
+function clone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
 function extent(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.x, y: sum.y + elem.y }; }, { x: 0, y: 0 }); }
 
 function reflect(objs, mirrorAngleDeg) {
 	mirrorAngleDeg = 'undefined' === typeof mirrorAngleDeg ? 90 : mirrorAngleDeg; // mirror default Y axis
-	var tail = epaClone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
+	var tail = clone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
 	return objs.concat(tail);
 }
 
@@ -242,7 +242,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.29, Log Entries:\n');
+	logEdit.setValue('OxCad v0.30, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
