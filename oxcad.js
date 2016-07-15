@@ -176,20 +176,18 @@ function svgBall() {
 	svgAppend('<circle id="todo" style="stroke:blue;stroke-width:4;fill:cyan;" cx="290" cy="200" r="20"/>');
 }
 
-function svgGrid() {
-
+function svgGrid(size) {
 	var code =
-'<defs>\
-  <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">\
-	<path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>\
-  </pattern>\
-  <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">\
-	<rect width="100" height="100" fill="url(#smallGrid)"/>\
-	<path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>\
-  </pattern>\
-</defs>\
-<rect width="100%" height="100%" fill="url(#grid)" />'
-
+		'<defs>\n' +
+		'<pattern id="smallGrid" width="' + size + '" height="' + size + '" patternUnits="userSpaceOnUse">\n' +
+		'<path d="M ' + size + ' 0 L 0 0 0 ' + size + '" fill="none" stroke="gray" stroke-width="0.5"/>\n' +
+		'</pattern>\n' +
+		'<pattern id="grid" width="' + 10 * size + '" height="' + 10 * size + '" patternUnits="userSpaceOnUse">\n' +
+		'<rect width="' + 10 * size + '" height="' + 10 * size + '" fill="url(#smallGrid)"/>\n' +
+		'<path d="M ' + 10 * size + ' 0 L 0 0 0 ' + 10 * size + '" fill="none" stroke="gray" stroke-width="1"/>\n' +
+		'</pattern>\n' +
+		'</defs>\n' +
+		'<rect width="100%" height="100%" fill="url(#grid)" />';
 	svgAppend(code);
 }
 
@@ -292,7 +290,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.25, Log Entries:\n');
+	logEdit.setValue('OxCad v0.26, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
@@ -341,7 +339,7 @@ function setupLogWindow() {
 
 function setupSvgWindow() {
 	svgEdit = document.getElementById("svgWindow");
-	svgGrid();
+	svgGrid(10);
 }
 
 window.onload = function () {
