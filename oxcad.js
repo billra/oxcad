@@ -167,11 +167,6 @@ function svgLarger() {
 	svgEdit.style.height = bcr.height + 100 + 'px';
 }
 
-function svgSerialize() {
-	var svgXml = (new XMLSerializer).serializeToString(svgEdit);
-	logMsg(svgXml);
-}
-
 function svgBall() {
 	svgAppend('<circle id="todo" style="stroke:blue;stroke-width:4;fill:cyan;" cx="290" cy="200" r="20"/>');
 }
@@ -234,7 +229,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.31, Log Entries:\n');
+	logEdit.setValue('OxCad v0.32, Log Entries:\n');
 	logEdit.clearSelection();
 }
 

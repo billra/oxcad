@@ -51,5 +51,9 @@ var codeExamples = {
 	'// note that properties ignores surrounding transform\n' +
 	'logMsg("path len", len, "end xy", pos.x, pos.y, "bbox:", bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);\n',
 
+	'svg serialize':
+	'var svgXml = (new XMLSerializer).serializeToString(svgEdit);\n' +
+	'logMsg(svgXml);\n',
+
 	'blank': ''
 }
