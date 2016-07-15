@@ -167,10 +167,6 @@ function svgLarger() {
 	svgEdit.style.height = bcr.height + 100 + 'px';
 }
 
-function svgBall() {
-	svgAppend('<circle id="todo" style="stroke:blue;stroke-width:4;fill:cyan;" cx="290" cy="200" r="20"/>');
-}
-
 function svgGrid(size) {
 	var code =
 		'<defs>\n' +
