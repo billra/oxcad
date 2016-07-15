@@ -24,21 +24,13 @@ var codeExamples = {
 	'// leading edge\n' +
 	'var leEdges=makeRange(3,makeEdge,{first:-20,last:0},200);\n' +
 	'var leNotches=makeRange(2,makeNotch,{first:75,last:85},20,{first:100,last:140},2/3);\n' +
-	'var leSide=merge(leEdges,leNotches);\n' +
-	'var le=reflect(leSide);\n' +
-	'logMsg("leading edge length:",edgeLength(le));\n' +
-	'var leExt=extent(le);\n' +
-	'logMsg("leading edge extent:",leExt.x,leExt.y);\n' +
+	'var le=reflect(merge(leEdges,leNotches));\n' +
 	'// trailing edge\n' +
 	'var teEdges=makeRange(2,makeEdge,{first:135,last:180},100);\n' +
 	'var teNotches=makeNotch(255,30,60,2/3);\n' +
-	'var teSide=merge(teEdges,teNotches);\n' +
-	'var te=reflect(teSide);\n' +
-	'logMsg("trailing edge length:",edgeLength(te));\n' +
-	'var teExt=extent(te);\n' +
-	'logMsg("trailing edge extent:",teExt.x,teExt.y);\n' +
+	'var te=reflect(merge(teEdges,teNotches));\n' +
 	'// scale trailing edge to match leading edge extent\n' +
-	'var scale=leExt.x/-teExt.x;\n' +
+	'var scale=extent(le).x/-extent(te).x;\n' +
 	'logMsg("trailing edge scale factor:",scale);\n' +
 	'var teScaled=epaClone(te,scale);\n' +
 	'// draw canopy\n' +
