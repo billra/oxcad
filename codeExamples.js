@@ -22,19 +22,19 @@ var codeExamples = {
 	'alfa':
 	'// --- Alfa ---\n' +
 	'// leading edge\n' +
-	'var leEdges=makeRange(3,makeEdge,{first:-20,last:0},200);\n' +
+	'var leEdges=makeRange(3,makeEdge,{first:-20,last:0},180);\n' +
 	'var leNotches=makeRange(2,makeNotch,{first:75,last:85},20,{first:100,last:140},2/3);\n' +
 	'var le=reflect(merge(leEdges,leNotches));\n' +
 	'// trailing edge\n' +
 	'var teEdges=makeRange(2,makeEdge,{first:135,last:180},100);\n' +
-	'var teNotches=makeNotch(255,30,60,2/3);\n' +
+	'var teNotches=makeNotch(255,30,50,2/3);\n' +
 	'var te=reflect(merge(teEdges,teNotches));\n' +
 	'// scale trailing edge to match leading edge extent\n' +
 	'var scale=extent(le).x/-extent(te).x;\n' +
 	'logMsg("trailing edge scale factor:",scale);\n' +
 	'var teScaled=epaClone(te,scale);\n' +
 	'// draw canopy\n' +
-	'drawSurface(10,150,le,teScaled);\n' +
+	'drawSurface(10,110,le,teScaled);\n' +
 	'//printPlans();\n' +
 	'logMsg("done.");',
 
