@@ -43,7 +43,13 @@ var codeExamples = {
 	'// demo raw svg usage\n' +
 	'svgAppend(\'<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>\');\n' +
 	'svgAppend(\'<circle id="orangeCircle1" style="stroke:blue;stroke-width:4;fill:darkorange;" cx="230" cy="200" r="20"/>\');\n' +
-	'svgAppend(\'<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>\')\n',
+	'svgAppend(\'<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>\')\n' +
+	'var curve = document.getElementById("testPath");\n' +
+	'var len = curve.getTotalLength();\n' +
+	'var pos = curve.getPointAtLength(len);\n' +
+	'var bbox = curve.getBBox();\n' +
+	'// note that properties ignores surrounding transform\n' +
+	'logMsg("path len", len, "end xy", pos.x, pos.y, "bbox:", bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);\n',
 
 	'blank': ''
 }

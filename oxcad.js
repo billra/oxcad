@@ -198,14 +198,6 @@ function svgAppend(code) {
 	Array.prototype.slice.call(container.childNodes[0].childNodes).forEach(function (el) { svgEdit.appendChild(el) });
 }
 
-function svgProperties() {
-	var curve = document.getElementById("testPath");
-	var len = curve.getTotalLength();
-	var pos = curve.getPointAtLength(len);
-	var bbox = curve.getBBox();
-	logMsg("path len", len, 'end xy', pos.x, pos.y, 'bbox:', bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);
-}
-
 function exampleChangeFunc(id) {
 	codeEdit.setValue(codeExamples[id]);
 	codeEdit.clearSelection();
@@ -242,7 +234,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.30, Log Entries:\n');
+	logEdit.setValue('OxCad v0.31, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
