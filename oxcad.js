@@ -154,6 +154,7 @@ var svgNS = "http://www.w3.org/2000/svg";
 
 function svgClear() {
 	svgEdit.innerHTML = '';
+	svgGrid(10);
 }
 
 function svgSmaller() {
@@ -225,7 +226,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.32, Log Entries:\n');
+	logEdit.setValue('OxCad v0.33, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
@@ -275,7 +276,7 @@ function setupLogWindow() {
 
 function setupSvgWindow() {
 	svgEdit = document.getElementById("svgWindow");
-	svgGrid(10);
+	svgClear();
 }
 
 window.onload = function () {
