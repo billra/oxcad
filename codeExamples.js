@@ -34,6 +34,7 @@ var codeExamples = {
 	'logMsg("trailing edge scale factor:",scale);\n' +
 	'var teScaled=epaClone(te,scale);\n' +
 	'// draw canopy\n' +
+	'var xpos = 600-extent(le).x/2; // center at major grid line\n' +
 	'drawSurface(10,110,le,teScaled);\n' +
 	'//printPlans();\n' +
 	'logMsg("done.");',
