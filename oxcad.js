@@ -154,7 +154,7 @@ var svgNS = "http://www.w3.org/2000/svg";
 
 function svgClear() {
 	svgEdit.innerHTML = '';
-	svgGrid(10);
+	svgAppend(svgGrid(10));
 }
 
 function svgSmaller() {
@@ -180,7 +180,7 @@ function svgGrid(size) {
 		'</pattern>\n' +
 		'</defs>\n' +
 		'<rect width="100%" height="100%" fill="url(#grid)" />';
-	svgAppend(code);
+	return code;
 }
 
 function svgAppend(code) {
@@ -226,7 +226,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.33, Log Entries:\n');
+	logEdit.setValue('OxCad v0.34, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
