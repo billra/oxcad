@@ -1,11 +1,14 @@
-function drawSurface(x, y, edge1, edge2, color, width) {
+function svgSurface(x, y, edge1, edge2, color, width) {
 	color = 'undefined' === typeof color ? 'black' : color;
 	width = 'undefined' === typeof width ? '1pt' : width;
 	// todo: center drawing on nearest major grid line
 	var outline = edge1.concat(edge2);
 	var str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z"stroke="' + color + '"stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
-	svgAppend(str);
 	return str;
+}
+
+function drawSurface(x, y, edge1, edge2, color, width) {
+	svgAppend(svgSurface(x, y, edge1, edge2, color, width));
 }
 
 function drawPath(x, y, objs, color, width) {
