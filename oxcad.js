@@ -3,18 +3,20 @@ function svgSurface(x, y, edge1, edge2, color, width) {
 	width = 'undefined' === typeof width ? '1pt' : width;
 	// todo: center drawing on nearest major grid line
 	var outline = edge1.concat(edge2);
-	var str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z"stroke="' + color + '"stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
+	var str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z" stroke="' + color + '" stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
 	return str;
 }
 
 function drawSurface(x, y, edge1, edge2, color, width) {
-	svgAppend(svgSurface(x, y, edge1, edge2, color, width));
+	var str = svgSurface(x, y, edge1, edge2, color, width);
+	svgAppend(str);
+	return str;
 }
 
 function drawPath(x, y, objs, color, width) {
 	color = 'undefined' === typeof color ? 'black' : color;
 	width = 'undefined' === typeof width ? '1pt' : width;
-	var str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '"stroke="' + color + '"stroke-width="' + width + '"fill="none"/>';
+	var str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '" stroke="' + color + '" stroke-width="' + width + '" fill="none"/>';
 	svgAppend(str);
 	return str;
 }
@@ -119,34 +121,21 @@ function merge() { // generic merge any number of arrays
 function radians(degrees) { return degrees * Math.PI / 180; };
 function degrees(radians) { return radians * 180 / Math.PI; };
 
-/*
-Browser support for svg viewbox and units change is immature in 2016.
-This results in blurry lines and very poor scaling accuracy.
-New strategy: entirely unitless and viewBoxless, calculate own scaling for paths.
-*/
-
-function specifySvgUnitsAndSize(str, width, height, units) {
-	// <svg id="svgWindow" class="expand" ...
-	// 0123456789
-	str = str.slice(0, 4) + ' width="' + width + units + '" height="' + height + units + '" viewBox="0 0 ' + width + ' ' + height + '"' + str.slice(4);
-	return str;
-}
 function minEncode(str) { // see https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
-	//str = str.replace(/"/g, "'");
+	str = str.replace(/"/g, "'");
 	str = str.replace(/</g, "%3C");
 	str = str.replace(/>/g, "%3E");
 	str = str.replace(/&/g, "%26");
 	str = str.replace(/#/g, "%23");
 	return str;
 }
-function printPlans() {
-	var str = svgEdit.outerHTML;
-	str = specifySvgUnitsAndSize(str, 400, 200, "mm");
-	str = minEncode(str);
+function printPlans(svgStr) {
+	svgStr = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100cm" height="50cm">' +svgStr + '</svg>';
+	svgStr = minEncode(svgStr);
 	var link = document.createElement("a");
 	// link.download = "drawing.svg"; // download
 	link.target = "_blank"; // open in new tab
-	link.href = "data:image/svg+xml;utf8," + str;
+	link.href = "data:image/svg+xml;utf8," + svgStr;
 	document.body.appendChild(link);
 	link.click();
 	document.body.removeChild(link);
@@ -229,7 +218,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.34, Log Entries:\n');
+	logEdit.setValue('OxCad v0.35, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
