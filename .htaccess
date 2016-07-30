@@ -1,3 +1,0 @@
-RewriteEngine On 
-RewriteCond %{HTTP_HOST} ^www.oxcad.com$ [NC]
-RewriteRule ^(.*)$ http://oxcad.com/$1 [R=301,L]
