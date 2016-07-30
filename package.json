@@ -1,6 +1,11 @@
 {
   "name": "oxcad",
   "version": "0.35.0",
+  "author": {
+    "name": "Bill Ola Rasmussen",
+    "email": "billra@gmail.com",
+    "url": "http://2e5.com"
+  },
   "dependencies": {
     "blob-stream": "^0.1.3",
     "brace": "^0.8.0",
