@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<TITLE>oxcad</TITLE>
+	<TITLE>OxCad</TITLE>
 	<meta charset="utf-8">
 	<meta name="author" content="Bill Ola Rasmussen">
 	<meta name="keywords" content="cad svg javascript">
@@ -19,7 +19,6 @@
 </head>
 <body>
 	<p>OxCad</p>
-
 	<table>
 		<tr>
 			<td colspan="2">
@@ -30,27 +29,23 @@
 		</tr>
 		<tr>
 			<td class="half">
-
 				<div id="codeWindow" class="acedit"></div>
 				<button onclick="runCode();">Run</button>
-examples: 
-<select id="selectBox" onchange="exampleChangeFunc(value);">
-	<option disabled selected>-- choose --</option>
-</select>
+				examples:
+				<select id="selectBox" onchange="exampleChangeFunc(value);">
+					<option disabled selected>-- choose --</option>
+				</select>
 				<button onclick="codeUndo();">Undo</button><button onclick="codeRedo();">Redo</button>
 			</td>
 			<td class="half">
-
 				<div id="logWindow" class="acedit"></div>
 				<button onclick="logClear();">Clear</button>
 				<button onclick="logSmaller();">Smaller</button><button onclick="logLarger();">Larger</button>
 			</td>
 		</tr>
 	</table>
-
 	<div id="dynamicCode"></div>
-
-<hr>
-&copy;2016 Bill Ola Rasmussen
+	<hr>
+	&copy;2016 Bill Ola Rasmussen
 </body>
 </html>
