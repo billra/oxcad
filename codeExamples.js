@@ -57,3 +57,5 @@ var codeExamples = {
 
 	'blank': ''
 }
+
+module.exports = codeExamples;
