@@ -182,8 +182,6 @@ function svgAppend(code) {
 	Array.prototype.slice.call(container.childNodes[0].childNodes).forEach(function (el) { svgEdit.appendChild(el) });
 }
 
-var codeExamples = require('./codeExamples.js');
-
 function exampleChangeFunc(id) {
 	codeEdit.setValue(codeExamples[id]);
 	codeEdit.clearSelection();
@@ -220,7 +218,7 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.36, Log Entries:\n');
+	logEdit.setValue('OxCad v0.37, Log Entries:\n');
 	logEdit.clearSelection();
 }
 
@@ -253,10 +251,6 @@ function runCode() {
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=- main -=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-var ace = require('brace');
-require('brace/mode/javascript');
-require('brace/theme/chrome');
-
 function setupCodeWindow() {
 	codeEdit = ace.edit("codeWindow");
 	codeEdit.setTheme("ace/theme/chrome");
@@ -283,30 +277,3 @@ window.onload = function () {
 	setupSvgWindow();
 	dynCode = document.getElementById("dynamicCode");
 }
-
-// look for better solution...
-
-// html page
-global.svgClear = svgClear;
-global.svgSmaller = svgSmaller;
-global.svgLarger = svgLarger;
-global.runCode = runCode;
-global.codeUndo = codeUndo;
-global.codeRedo = codeRedo;
-global.logClear = logClear;
-global.logSmaller = logSmaller;
-global.logLarger = logLarger;
-global.exampleChangeFunc = exampleChangeFunc;
-
-// commands
-global.logMsg = logMsg;
-global.merge = merge;
-global.makeRange = makeRange;
-global.makeNotch = makeNotch;
-global.reflect = reflect;
-global.drawSurface = drawSurface;
-global.extent = extent;
-global.clone = clone;
-global.makeEdge = makeEdge;
-global.drawPath = drawPath;
-global.edgeLength = edgeLength;
