@@ -218,8 +218,9 @@ function logMsg() {
 }
 
 function logClear() {
-	logEdit.setValue('OxCad v0.37, Log Entries:\n');
-	logEdit.clearSelection();
+    const metaVersion = document.querySelector('meta[name="version"]');
+    logEdit.setValue('OxCad v' + metaVersion.content + ', Log Entries:\n');
+    logEdit.clearSelection();
 }
 
 function logSmaller() {
@@ -276,4 +277,9 @@ window.onload = function () {
 	setupLogWindow();
 	setupSvgWindow();
 	dynCode = document.getElementById("dynamicCode");
+
+	// Set page title and version label
+	document.getElementById('page-title').innerText = document.title;
+	const metaVersion = document.querySelector('meta[name="version"]');
+	document.getElementById('version').innerText = 'v' + metaVersion.content;
 };
