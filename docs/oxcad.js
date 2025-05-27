@@ -2,13 +2,13 @@ function svgSurface(x, y, edge1, edge2, color, width) {
 	color = 'undefined' === typeof color ? 'black' : color;
 	width = 'undefined' === typeof width ? '1pt' : width;
 	// todo: center drawing on nearest major grid line
-	var outline = edge1.concat(edge2);
-	var str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z" stroke="' + color + '" stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
+	const outline = edge1.concat(edge2);
+	const str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z" stroke="' + color + '" stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
 	return str;
 }
 
 function drawSurface(x, y, edge1, edge2, color, width) {
-	var str = svgSurface(x, y, edge1, edge2, color, width);
+	const str = svgSurface(x, y, edge1, edge2, color, width);
 	svgAppend(str);
 	return str;
 }
@@ -16,7 +16,7 @@ function drawSurface(x, y, edge1, edge2, color, width) {
 function drawPath(x, y, objs, color, width) {
 	color = 'undefined' === typeof color ? 'black' : color;
 	width = 'undefined' === typeof width ? '1pt' : width;
-	var str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '" stroke="' + color + '" stroke-width="' + width + '" fill="none"/>';
+	const str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '" stroke="' + color + '" stroke-width="' + width + '" fill="none"/>';
 	svgAppend(str);
 	return str;
 }
@@ -28,7 +28,7 @@ function extent(objs) { return objs.reduce(function (sum, elem) { return { x: su
 
 function reflect(objs, mirrorAngleDeg) {
 	mirrorAngleDeg = 'undefined' === typeof mirrorAngleDeg ? 90 : mirrorAngleDeg; // mirror default Y axis
-	var tail = clone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
+	const tail = clone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
 	return objs.concat(tail);
 }
 
@@ -37,7 +37,7 @@ function mirror(angleDeg, mirrorAngleDeg) { // undefined mirrorAngleDeg returns 
 }
 
 function makeEdge(angleDeg, length) {
-	var end = move(angleDeg, length);
+	const end = move(angleDeg, length);
 	return {
 		part: 'l' + end.x + ',' + end.y,
 		edgeLen: length,
@@ -51,19 +51,19 @@ function makeEdge(angleDeg, length) {
 }
 
 function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
-	var resLen = length / (1 + smooth); // make overall length the same for straight and smooth notches
-	var halfAngleOpenDeg = angleOpenDeg / 2;
-	var a12 = angleDeg - halfAngleOpenDeg;
-	var a56 = angleDeg + halfAngleOpenDeg - 180;
-	var lenV = resLen * (1 - smooth);
-	var lenB = resLen * smooth;
-	var m1 = move(a12, lenV);
-	var m2 = move(a12, lenB);
-	var m3 = move(angleDeg, lenB, m2);
-	var m4 = move(angleDeg - 180, lenB);
-	var m5 = move(a56, lenB, m4);
-	var m6 = move(a56, lenV);
-	var end = extent([m1, m3, m5, m6]);
+	const resLen = length / (1 + smooth); // make overall length the same for straight and smooth notches
+	const halfAngleOpenDeg = angleOpenDeg / 2;
+	const a12 = angleDeg - halfAngleOpenDeg;
+	const a56 = angleDeg + halfAngleOpenDeg - 180;
+	const lenV = resLen * (1 - smooth);
+	const lenB = resLen * smooth;
+	const m1 = move(a12, lenV);
+	const m2 = move(a12, lenB);
+	const m3 = move(angleDeg, lenB, m2);
+	const m4 = move(angleDeg - 180, lenB);
+	const m5 = move(a56, lenB, m4);
+	const m6 = move(a56, lenV);
+	const end = extent([m1, m3, m5, m6]);
 	return {
 		part: 'l' + m1.x + ',' + m1.y +
 			'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
@@ -77,7 +77,7 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 }
 
 function move(angleDeg, length, from) {
-	var angleRad = radians(angleDeg);
+	const angleRad = radians(angleDeg);
 	from = 'undefined' === typeof from ? { x: 0, y: 0 } : from;
 	return {
 		x: length * Math.cos(angleRad) + from.x,
@@ -86,10 +86,10 @@ function move(angleDeg, length, from) {
 }
 
 function makeRange(count, func) { // plus additional parameters for func
-	var args = Array.prototype.slice.call(arguments);
-	var parm = [];
-	var inc = [];
-	var ret = [];
+	const args = Array.prototype.slice.call(arguments);
+	const parm = [];
+	const inc = [];
+	const ret = [];
 	// setup parameters for call to func
 	args.slice(2).forEach(function (arg) {
 		// func parameters are single number or {first:n,last:n} objects
@@ -98,7 +98,7 @@ function makeRange(count, func) { // plus additional parameters for func
 		inc.push((arg.last - arg.first) / (count - 1));
 	});
 	// make calls to func
-	for (var i = 0; i < count; ++i) {
+	for (let i = 0; i < count; ++i) {
 		ret.push(func.apply(this, parm));
 		parm.forEach(function (x, j, vec) { vec[j] += inc[j]; });
 	}
@@ -106,12 +106,12 @@ function makeRange(count, func) { // plus additional parameters for func
 }
 
 function merge() { // generic merge any number of arrays
-	var args = Array.prototype.slice.call(arguments);
+	const args = Array.prototype.slice.call(arguments);
 	args.forEach(function (x, i, vec) { vec[i] = [].concat(x); }); // ensure array parameters
-	var maxLen = args.reduce(function (p, c) { return Math.max(p, c.length); }, 0);
-	var ret = [];
-	for (var i = 0; i < maxLen; ++i) {
-		for (var j = 0; j < args.length; ++j) {
+	const maxLen = args.reduce(function (p, c) { return Math.max(p, c.length); }, 0);
+	const ret = [];
+	for (let i = 0; i < maxLen; ++i) {
+		for (let j = 0; j < args.length; ++j) {
 			if (i < args[j].length) { ret.push(args[j][i]); }
 		}
 	}
@@ -132,7 +132,7 @@ function minEncode(str) { // see https://codepen.io/tigt/post/optimizing-svgs-in
 function printPlans(svgStr) {
 	svgStr = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100cm" height="50cm">' + svgStr + '</svg>';
 	svgStr = minEncode(svgStr);
-	var link = document.createElement("a");
+	const link = document.createElement("a");
 	// link.download = "drawing.svg"; // download
 	link.target = "_blank"; // open in new tab
 	link.href = "data:image/svg+xml;utf8," + svgStr;
@@ -141,8 +141,8 @@ function printPlans(svgStr) {
 	document.body.removeChild(link);
 }
 
-var svgEdit;
-var svgNS = "http://www.w3.org/2000/svg";
+let svgEdit;
+const svgNS = "http://www.w3.org/2000/svg";
 
 function svgClear() {
 	svgEdit.innerHTML = '';
@@ -150,18 +150,18 @@ function svgClear() {
 }
 
 function svgSmaller() {
-	var bcr = svgEdit.getBoundingClientRect();
+	const bcr = svgEdit.getBoundingClientRect();
 	if (bcr.height < 200) { return; }
 	svgEdit.style.height = bcr.height - 100 + 'px';
 }
 
 function svgLarger() {
-	var bcr = svgEdit.getBoundingClientRect();
+	const bcr = svgEdit.getBoundingClientRect();
 	svgEdit.style.height = bcr.height + 100 + 'px';
 }
 
 function svgGrid(size) {
-	var code =
+	const code =
 		'<defs>\n' +
 		'<pattern id="smallGrid" width="' + size + '" height="' + size + '" patternUnits="userSpaceOnUse">\n' +
 		'<path d="M ' + size + ' 0 L 0 0 0 ' + size + '" fill="none" stroke="gray" stroke-width="0.5"/>\n' +
@@ -177,7 +177,7 @@ function svgGrid(size) {
 
 function svgAppend(code) {
 	// svg from string, one way to do it: render and copy
-	var container = document.createElement('div');
+	const container = document.createElement('div');
 	container.innerHTML = '<svg>' + code + '</svg>';
 	Array.prototype.slice.call(container.childNodes[0].childNodes).forEach(function (el) { svgEdit.appendChild(el); });
 }
@@ -187,16 +187,16 @@ function exampleChangeFunc(id) {
 	codeEdit.clearSelection();
 }
 function fillExampleDropdown() {
-	var select = document.getElementById("selectBox");
-	for (var key in codeExamples) {
-		var el = document.createElement("option");
+	const select = document.getElementById("selectBox");
+	for (const key in codeExamples) {
+		const el = document.createElement("option");
 		el.textContent = key;
 		el.value = key;
 		select.appendChild(el);
 	};
 }
 
-var codeEdit;
+let codeEdit;
 
 function codeUndo() {
 	codeEdit.undo();
@@ -206,11 +206,11 @@ function codeRedo() {
 	codeEdit.redo();
 }
 
-var logEdit;
+let logEdit;
 
 function logMsg() {
-	var args = Array.prototype.slice.call(arguments);
-	var session = logEdit.getSession();
+	const args = Array.prototype.slice.call(arguments);
+	const session = logEdit.getSession();
 	session.insert({
 		row: session.getLength(),
 		column: 0
@@ -223,7 +223,7 @@ function logClear() {
 }
 
 function logSmaller() {
-	var height = document.getElementById('codeWindow').clientHeight;
+	const height = document.getElementById('codeWindow').clientHeight;
 	if (height < 200) { return; }
 	document.getElementById("codeWindow").style.height = height - 100 + 'px';
 	document.getElementById("logWindow").style.height = height - 100 + 'px';
@@ -232,18 +232,18 @@ function logSmaller() {
 }
 
 function logLarger() {
-	var height = document.getElementById('codeWindow').clientHeight;
+	const height = document.getElementById('codeWindow').clientHeight;
 	document.getElementById("codeWindow").style.height = height + 100 + 'px';
 	document.getElementById("logWindow").style.height = height + 100 + 'px';
 	codeEdit.resize();
 	logEdit.resize();
 }
 
-var dynCode;
+let dynCode;
 
 function runCode() {
-	var code = codeEdit.getValue();
-	var script = document.createElement('script');
+	const code = codeEdit.getValue();
+	const script = document.createElement('script');
 	script.innerHTML = 'try{' + code + '}catch(e){logMsg("Code Error:",e.message);}';
 	dynCode.innerHTML = ''; // clear previous children
 	dynCode.appendChild(script);
