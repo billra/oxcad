@@ -1,46 +1,46 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-	<TITLE>OxCad</TITLE>
-	<meta name="version" content="0.38">
-	<meta charset="utf-8">
-	<meta name="author" content="Bill Ola Rasmussen">
-	<meta name="keywords" content="cad svg javascript">
-	<link rel="stylesheet" type="text/css" href="oxcad.css">
-	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-	<script type="text/javascript" src="oxcad.js"></script>
-	<script type="text/javascript" src="codeExamples.js"></script>
-	<script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
+    <TITLE>OxCad</TITLE>
+    <meta name="version" content="0.38">
+    <meta charset="utf-8">
+    <meta name="author" content="Bill Ola Rasmussen">
+    <meta name="keywords" content="cad svg javascript">
+    <link rel="stylesheet" type="text/css" href="oxcad.css">
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+    <script type="text/javascript" src="oxcad.js"></script>
+    <script type="text/javascript" src="codeExamples.js"></script>
+    <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
 </head>
 <body>
-	<h1 id="page-title"></h1>
-	<div id="version"></div>
-	<table>
-		<tr>
-			<td colspan="2">
-				<svg id="svgWindow" class="expand" xmlns="http://www.w3.org/2000/svg" version="1.1"
-					xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
-				<button onclick="svgClear();">Clear</button>
-				<button onclick="svgSmaller();">Smaller</button><button onclick="svgLarger();">Larger</button>
-			</td>
-		</tr>
-		<tr>
-			<td class="half">
-				<div id="codeWindow" class="acedit"></div>
-				<button onclick="runCode();">Run</button> examples: <select id="selectBox"
-					onchange="exampleChangeFunc(value);">
-					<option disabled selected>-- choose --</option>
-				</select>
-				<button onclick="codeUndo();">Undo</button><button onclick="codeRedo();">Redo</button>
-			</td>
-			<td class="half">
-				<div id="logWindow" class="acedit"></div>
-				<button onclick="logClear();">Clear</button>
-				<button onclick="logSmaller();">Smaller</button><button onclick="logLarger();">Larger</button>
-			</td>
-		</tr>
-	</table>
-	<div id="dynamicCode"></div>
-	<hr> &copy;2025 Bill Ola Rasmussen
+    <h1 id="page-title"></h1>
+    <div id="version"></div>
+    <table>
+        <tr>
+            <td colspan="2">
+                <svg id="svgWindow" class="expand" xmlns="http://www.w3.org/2000/svg" version="1.1"
+                    xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+                <button onclick="svgClear();">Clear</button>
+                <button onclick="svgSmaller();">Smaller</button><button onclick="svgLarger();">Larger</button>
+            </td>
+        </tr>
+        <tr>
+            <td class="half">
+                <div id="codeWindow" class="acedit"></div>
+                <button onclick="runCode();">Run</button> examples: <select id="selectBox"
+                    onchange="exampleChangeFunc(value);">
+                    <option disabled selected>-- choose --</option>
+                </select>
+                <button onclick="codeUndo();">Undo</button><button onclick="codeRedo();">Redo</button>
+            </td>
+            <td class="half">
+                <div id="logWindow" class="acedit"></div>
+                <button onclick="logClear();">Clear</button>
+                <button onclick="logSmaller();">Smaller</button><button onclick="logLarger();">Larger</button>
+            </td>
+        </tr>
+    </table>
+    <div id="dynamicCode"></div>
+    <hr> &copy;2025 Bill Ola Rasmussen
 </body>
 </html>
