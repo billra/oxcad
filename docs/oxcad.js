@@ -43,8 +43,8 @@ function makeEdge(angleDeg, length) {
 		edgeLen: length,
 		clone: function (scale, mirrorAngleDeg) {
 			return makeEdge(mirror(angleDeg,
-'undefined' === typeof mirrorAngleDeg ? mirrorAngleDeg : mirrorAngleDeg + 90 // todo!
-), length * scale);
+				'undefined' === typeof mirrorAngleDeg ? mirrorAngleDeg : mirrorAngleDeg + 90 // todo!
+			), length * scale);
 		},
 		x: end.x, y: end.y
 	};
@@ -66,9 +66,9 @@ function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
 	var end = extent([m1, m3, m5, m6]);
 	return {
 		part: 'l' + m1.x + ',' + m1.y +
-			  'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
-			  'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
-			  'l' + m6.x + ',' + m6.y,
+			'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
+			'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
+			'l' + m6.x + ',' + m6.y,
 		edgeLen: 0,
 		clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, length * scale, smooth); },
 		x: end.x, y: end.y
@@ -108,7 +108,7 @@ function makeRange(count, func) { // plus additional parameters for func
 function merge() { // generic merge any number of arrays
 	var args = Array.prototype.slice.call(arguments);
 	args.forEach(function (x, i, vec) { vec[i] = [].concat(x); }); // ensure array parameters
-	var maxLen = args.reduce(function (p, c) { return Math.max(p, c.length) }, 0);
+	var maxLen = args.reduce(function (p, c) { return Math.max(p, c.length); }, 0);
 	var ret = [];
 	for (var i = 0; i < maxLen; ++i) {
 		for (var j = 0; j < args.length; ++j) {
@@ -130,7 +130,7 @@ function minEncode(str) { // see https://codepen.io/tigt/post/optimizing-svgs-in
 	return str;
 }
 function printPlans(svgStr) {
-	svgStr = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100cm" height="50cm">' +svgStr + '</svg>';
+	svgStr = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100cm" height="50cm">' + svgStr + '</svg>';
 	svgStr = minEncode(svgStr);
 	var link = document.createElement("a");
 	// link.download = "drawing.svg"; // download
@@ -179,7 +179,7 @@ function svgAppend(code) {
 	// svg from string, one way to do it: render and copy
 	var container = document.createElement('div');
 	container.innerHTML = '<svg>' + code + '</svg>';
-	Array.prototype.slice.call(container.childNodes[0].childNodes).forEach(function (el) { svgEdit.appendChild(el) });
+	Array.prototype.slice.call(container.childNodes[0].childNodes).forEach(function (el) { svgEdit.appendChild(el); });
 }
 
 function exampleChangeFunc(id) {
@@ -276,4 +276,4 @@ window.onload = function () {
 	setupLogWindow();
 	setupSvgWindow();
 	dynCode = document.getElementById("dynamicCode");
-}
+};

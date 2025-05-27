@@ -16,7 +16,8 @@
 	<table>
 		<tr>
 			<td colspan="2">
-				<svg id="svgWindow" class="expand" xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
+				<svg id="svgWindow" class="expand" xmlns="http://www.w3.org/2000/svg" version="1.1"
+					xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
 				<button onclick="svgClear();">Clear</button>
 				<button onclick="svgSmaller();">Smaller</button><button onclick="svgLarger();">Larger</button>
 			</td>
@@ -24,9 +25,8 @@
 		<tr>
 			<td class="half">
 				<div id="codeWindow" class="acedit"></div>
-				<button onclick="runCode();">Run</button>
-				examples:
-				<select id="selectBox" onchange="exampleChangeFunc(value);">
+				<button onclick="runCode();">Run</button> examples: <select id="selectBox"
+					onchange="exampleChangeFunc(value);">
 					<option disabled selected>-- choose --</option>
 				</select>
 				<button onclick="codeUndo();">Undo</button><button onclick="codeRedo();">Redo</button>
@@ -39,7 +39,6 @@
 		</tr>
 	</table>
 	<div id="dynamicCode"></div>
-	<hr>
-	&copy;2021 Bill Ola Rasmussen
+	<hr> &copy;2025 Bill Ola Rasmussen
 </body>
 </html>
