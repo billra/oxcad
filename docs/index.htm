@@ -2,7 +2,7 @@
 <html>
 <head>
     <TITLE>OxCad</TITLE>
-    <meta name="version" content="0.38">
+    <meta name="version" content="0.39">
     <meta charset="utf-8">
     <meta name="author" content="Bill Ola Rasmussen">
     <meta name="keywords" content="cad svg javascript">
@@ -13,8 +13,13 @@
     <script async type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.3/ace.js"></script>
 </head>
 <body>
-    <h1 id="page-title"></h1>
-    <div id="version"></div>
+    <div class="header-row">
+        <div>
+            <h1 id="page-title"></h1>
+            <div id="version"></div>
+        </div>
+        <button onclick="toggleTheme();">Theme</button>
+    </div>
     <table>
         <tr>
             <td colspan="2">

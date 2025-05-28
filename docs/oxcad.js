@@ -252,6 +252,10 @@ function runCode() {
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=- main -=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+function toggleTheme() {
+    logMsg("Theme toggle button clicked (no theme logic implemented).");
+}
+
 function setupCodeWindow() {
     codeEdit = ace.edit("codeWindow");
     codeEdit.setTheme("ace/theme/chrome");
