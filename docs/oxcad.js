@@ -252,10 +252,6 @@ function runCode() {
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=- main -=-=-=-=-=-=-=-=-=-=-=-=-=-
 
-function toggleTheme() {
-    logMsg("Theme toggle button clicked (no theme logic implemented).");
-}
-
 function setupCodeWindow() {
     codeEdit = ace.edit("codeWindow");
     codeEdit.setTheme("ace/theme/chrome");
@@ -276,7 +272,20 @@ function setupSvgWindow() {
     svgClear();
 }
 
+function toggleTheme() {
+    const root = document.documentElement;
+    const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+    root.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
+function setupTheme() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+}
+
 window.onload = function () {
+    setupTheme();
     setupCodeWindow();
     setupLogWindow();
     setupSvgWindow();
