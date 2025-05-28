@@ -1,5 +1,16 @@
+:root {
+    --background: #FFF;
+    --foreground: #000;
+}
+[data-theme="dark"] {
+    --background: #000;
+    --foreground: #FFF;
+}
 body {
     font-family: Verdana, sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    /* transition: background-color 0.2s, color 0.2s; */
 }
 .header-row {
     display: flex;
