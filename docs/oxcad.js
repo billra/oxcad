@@ -2,10 +2,12 @@
 
 // -=-=-=-=-=- Application Setup, App Logic, Window Events -=-=-=-=-=-=-
 
-// todo: workaround for current code examples strategy
-// Assign all svg.js functions to window for dynamic user code compatibility
 import * as svg from './svg.js';
+import * as log from './log.js';
+
+// Assign all svg.js and log.js functions to window for dynamic user code compatibility
 Object.assign(window, svg);
+Object.assign(window, log);
 
 // Theme toggling
 function toggleTheme() {
@@ -24,7 +26,7 @@ function setupTheme() {
 window.onload = function () {
     setupTheme();
     window.setupCodeWindow();   // loaded via edit.js - still attached to window for now
-    window.setupLogWindow();    // loaded via log.js  - still attached to window for now
+    log.setupLogWindow();
     svg.setupSvgWindow();
     window.dynCode = document.getElementById("dynamicCode");
 
@@ -33,11 +35,15 @@ window.onload = function () {
     const metaVersion = document.querySelector('meta[name="version"]');
     document.getElementById('version').innerText = 'v' + metaVersion.content;
 
-    // Attach SVG control functions to window for HTML button onclicks (temporary during migration)
+    // Attach SVG and Log control functions to window for HTML button onclicks (temporary)
     window.svgClear = svg.svgClear;
     window.svgSmaller = svg.svgSmaller;
     window.svgLarger = svg.svgLarger;
-}
+
+    window.logClear = log.logClear;
+    window.logSmaller = log.logSmaller;
+    window.logLarger = log.logLarger;
+};
 
 // Attach functions used by HTML/UI (theme toggle)
 window.toggleTheme = toggleTheme;

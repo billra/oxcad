@@ -1,50 +1,43 @@
 // log.js
-(function () {
-    // -=-=-=-=-=- Logging and Log Window Utilities -=-=-=-=-=-=-
 
-    function logMsg() {
-        const args = Array.prototype.slice.call(arguments);
-        const session = window.logEdit.getSession();
-        session.insert({
-            row: session.getLength(),
-            column: 0
-        }, args.join(' ') + "\n");
-    }
+// -=-=-=-=-=- Logging and Log Window Utilities -=-=-=-=-=-=-
 
-    function logClear() {
-        const metaVersion = document.querySelector('meta[name="version"]');
-        window.logEdit.setValue('OxCad v' + metaVersion.content + ', Log Entries:\n');
-        window.logEdit.clearSelection();
-    }
+let logEdit = null;
 
-    function logSmaller() {
-        const height = document.getElementById('codeWindow').clientHeight;
-        if (height < 200) { return; }
-        document.getElementById("codeWindow").style.height = height - 100 + 'px';
-        document.getElementById("logWindow").style.height = height - 100 + 'px';
-        window.codeEdit.resize();
-        window.logEdit.resize();
-    }
+export function logMsg(...args) {
+    const session = logEdit.getSession();
+    session.insert({
+        row: session.getLength(),
+        column: 0
+    }, args.join(' ') + "\n");
+}
 
-    function logLarger() {
-        const height = document.getElementById('codeWindow').clientHeight;
-        document.getElementById("codeWindow").style.height = height + 100 + 'px';
-        document.getElementById("logWindow").style.height = height + 100 + 'px';
-        window.codeEdit.resize();
-        window.logEdit.resize();
-    }
+export function logClear() {
+    const metaVersion = document.querySelector('meta[name="version"]');
+    logEdit.setValue('OxCad v' + metaVersion.content + ', Log Entries:\n');
+    logEdit.clearSelection();
+}
 
-    function setupLogWindow() {
-        window.logEdit = ace.edit("logWindow");
-        window.logEdit.setTheme("ace/theme/chrome");
-        window.logEdit.setReadOnly(true);
-        logClear();
-    }
+export function logSmaller() {
+    const height = document.getElementById('codeWindow').clientHeight;
+    if (height < 200) { return; }
+    document.getElementById("codeWindow").style.height = height - 100 + 'px';
+    document.getElementById("logWindow").style.height = height - 100 + 'px';
+    window.codeEdit.resize();
+    logEdit.resize();
+}
 
-    // Attach publicly-used functions to window
-    window.logMsg = logMsg;
-    window.logClear = logClear;
-    window.logSmaller = logSmaller;
-    window.logLarger = logLarger;
-    window.setupLogWindow = setupLogWindow;
-})();
+export function logLarger() {
+    const height = document.getElementById('codeWindow').clientHeight;
+    document.getElementById("codeWindow").style.height = height + 100 + 'px';
+    document.getElementById("logWindow").style.height = height + 100 + 'px';
+    window.codeEdit.resize();
+    logEdit.resize();
+}
+
+export function setupLogWindow() {
+    logEdit = ace.edit("logWindow");
+    logEdit.setTheme("ace/theme/chrome");
+    logEdit.setReadOnly(true);
+    logClear();
+}
