@@ -1,5 +1,7 @@
 // log.js
 
+import { getCodeEdit } from "./edit.js";
+
 // -=-=-=-=-=- Logging and Log Window Utilities -=-=-=-=-=-=-
 
 let logEdit = null;
@@ -23,7 +25,7 @@ export function logSmaller() {
     if (height < 200) { return; }
     document.getElementById("codeWindow").style.height = height - 100 + 'px';
     document.getElementById("logWindow").style.height = height - 100 + 'px';
-    window.codeEdit.resize();
+    getCodeEdit().resize();
     logEdit.resize();
 }
 
@@ -31,7 +33,7 @@ export function logLarger() {
     const height = document.getElementById('codeWindow').clientHeight;
     document.getElementById("codeWindow").style.height = height + 100 + 'px';
     document.getElementById("logWindow").style.height = height + 100 + 'px';
-    window.codeEdit.resize();
+    getCodeEdit().resize();
     logEdit.resize();
 }
 

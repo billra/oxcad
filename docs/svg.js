@@ -190,6 +190,3 @@ export function svgAppend(code) {
         svgEdit.appendChild(el);
     });
 }
-
-// Optionally export svgEdit accessor
-export function getSvgEdit() { return svgEdit; }

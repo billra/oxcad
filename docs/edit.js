@@ -3,6 +3,7 @@
 // -=-=-=-=-=- Ace Code Window (User Code Editing) -=-=-=-=-=-=-
 
 let codeEdit = null;
+export function getCodeEdit() { return codeEdit; }
 
 export function codeUndo() {
     codeEdit.undo();

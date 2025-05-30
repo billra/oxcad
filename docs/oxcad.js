@@ -36,4 +36,4 @@ window.onload = function () {
 };
 
 // Attach functions used by HTML/UI (theme toggle)
-window.toggleTheme = toggleTheme;
+document.getElementById('toggleThemeBtn').addEventListener('click', toggleTheme);
