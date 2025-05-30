@@ -7,6 +7,10 @@ let svgEdit = null;
 export function setupSvgWindow() {
     svgEdit = document.getElementById("svgWindow");
     svgClear();
+    // Attach UI event handlers
+    document.getElementById('svgClearBtn').addEventListener('click', svgClear);
+    document.getElementById('svgSmallerBtn').addEventListener('click', svgSmaller);
+    document.getElementById('svgLargerBtn').addEventListener('click', svgLarger);
 }
 
 // -=-=-=-=-=- Edge/Geometry Utilities -=-=-=-=-=-

@@ -33,20 +33,6 @@ window.onload = function () {
     document.getElementById('page-title').innerText = document.title;
     const metaVersion = document.querySelector('meta[name="version"]');
     document.getElementById('version').innerText = 'v' + metaVersion.content;
-
-    // Attach SVG and Log and Edit control functions to window for HTML button onclicks (temporary)
-    window.svgClear = svg.svgClear;
-    window.svgSmaller = svg.svgSmaller;
-    window.svgLarger = svg.svgLarger;
-
-    window.logClear = log.logClear;
-    window.logSmaller = log.logSmaller;
-    window.logLarger = log.logLarger;
-
-    window.codeUndo = edit.codeUndo;
-    window.codeRedo = edit.codeRedo;
-    window.runCode = edit.runCode;
-    window.exampleChangeFunc = edit.exampleChangeFunc;
 };
 
 // Attach functions used by HTML/UI (theme toggle)

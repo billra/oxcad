@@ -41,4 +41,9 @@ export function setupCodeWindow() {
     codeEdit.getSession().setMode("ace/mode/javascript");
     fillExampleDropdown();
     exampleChangeFunc('mirrordemo'); // preload sample code
+    // Attach code window UI buttons
+    document.getElementById('runCodeBtn').addEventListener('click', runCode);
+    document.getElementById('codeUndoBtn').addEventListener('click', codeUndo);
+    document.getElementById('codeRedoBtn').addEventListener('click', codeRedo);
+    document.getElementById('selectBox').addEventListener('change', (e) => exampleChangeFunc(e.target.value));
 }

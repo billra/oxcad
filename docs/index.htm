@@ -2,7 +2,7 @@
 <html>
 <head>
     <TITLE>OxCad</TITLE>
-    <meta name="version" content="0.45">
+    <meta name="version" content="0.46">
     <meta charset="utf-8">
     <meta name="author" content="Bill Ola Rasmussen">
     <meta name="keywords" content="cad svg javascript">
@@ -25,23 +25,22 @@
             <td colspan="2">
                 <svg id="svgWindow" class="expand" xmlns="http://www.w3.org/2000/svg" version="1.1"
                     xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
-                <button onclick="svgClear();">Clear</button>
-                <button onclick="svgSmaller();">Smaller</button><button onclick="svgLarger();">Larger</button>
+                <button id="svgClearBtn">Clear</button>
+                <button id="svgSmallerBtn">Smaller</button><button id="svgLargerBtn">Larger</button>
             </td>
         </tr>
         <tr>
             <td class="half">
                 <div id="codeWindow" class="acedit"></div>
-                <button onclick="runCode();">Run</button> examples: <select id="selectBox"
-                    onchange="exampleChangeFunc(value);">
+                <button id="runCodeBtn">Run</button> examples: <select id="selectBox">
                     <option disabled selected>-- choose --</option>
                 </select>
-                <button onclick="codeUndo();">Undo</button><button onclick="codeRedo();">Redo</button>
+                <button id="codeUndoBtn">Undo</button><button id="codeRedoBtn">Redo</button>
             </td>
             <td class="half">
                 <div id="logWindow" class="acedit"></div>
-                <button onclick="logClear();">Clear</button>
-                <button onclick="logSmaller();">Smaller</button><button onclick="logLarger();">Larger</button>
+                <button id="logClearBtn">Clear</button>
+                <button id="logSmallerBtn">Smaller</button><button id="logLargerBtn">Larger</button>
             </td>
         </tr>
     </table>
