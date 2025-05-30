@@ -42,6 +42,7 @@ export function setupLogWindow() {
     logEdit.setTheme("ace/theme/chrome");
     logEdit.setReadOnly(true);
     logClear();
+    console.log('ace version:', ace.version)
     // Attach log window UI buttons
     document.getElementById('logClearBtn').addEventListener('click', logClear);
     document.getElementById('logSmallerBtn').addEventListener('click', logSmaller);

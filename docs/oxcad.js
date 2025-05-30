@@ -1,13 +1,27 @@
 // oxcad.js
 
+// Dynamic code expects function names in window namespace. This workaround
+// copies all the ES module names to the windows namespace until we have a
+// better solution.
 import * as svg from './svg.js';
 import * as log from './log.js';
 import * as edit from './edit.js';
-
-// Assign all ES module exports to window for compatibility with dynamic user code and existing inline event handlers
 Object.assign(window, svg);
 Object.assign(window, log);
 Object.assign(window, edit);
+
+// Ace does not have ES module versions.
+// We load the 'normal' JavaScript by hand.
+function loadScript(src) {
+    return new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = src;
+        script.onload = resolve;
+        script.onerror = reject;
+        document.head.appendChild(script);
+    });
+}
+await loadScript('https://cdn.jsdelivr.net/npm/ace-builds@1.41.0/src-min-noconflict/ace.js');
 
 function toggleTheme() {
     const root = document.documentElement;

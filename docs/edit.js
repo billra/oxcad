@@ -39,7 +39,7 @@ export function fillExampleDropdown() {
 export function setupCodeWindow() {
     codeEdit = ace.edit("codeWindow");
     codeEdit.setTheme("ace/theme/chrome");
-    codeEdit.getSession().setMode("ace/mode/javascript");
+    codeEdit.session.setMode("ace/mode/javascript");
     fillExampleDropdown();
     exampleChangeFunc('mirrordemo'); // preload sample code
     // Attach code window UI buttons
