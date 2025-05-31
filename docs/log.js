@@ -1,5 +1,4 @@
-// log.js
-
+import './acewrap.mjs';
 import { getCodeEdit } from "./edit.js";
 
 // -=-=-=-=-=- Logging and Log Window Utilities -=-=-=-=-=-=-
@@ -45,7 +44,6 @@ export function setupLogWindow() {
     logEdit = ace.edit("logWindow");
     logEdit.setReadOnly(true);
     logClear();
-    console.log('ace version:', ace.version)
     // Attach log window UI buttons
     document.getElementById('logClearBtn').addEventListener('click', logClear);
     document.getElementById('logSmallerBtn').addEventListener('click', logSmaller);
