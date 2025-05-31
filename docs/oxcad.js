@@ -31,7 +31,6 @@ function setupTheme() {
 
 // Main onload function -- bootstraps the app
 window.onload = function () {
-    edit.setupCodeWindow();
     log.setupLogWindow();
     setupTheme();
     window.dynCode = document.getElementById("dynamicCode");
