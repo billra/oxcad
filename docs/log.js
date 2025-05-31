@@ -3,8 +3,6 @@ import { getCodeEdit } from "./edit.js";
 
 // -=-=-=-=-=- Logging and Log Window Utilities -=-=-=-=-=-=-
 
-let logEdit = null;
-
 export function setTheme(name) {
     logEdit.setTheme("ace/theme/" + name);
 }
@@ -40,12 +38,11 @@ export function logLarger() {
     logEdit.resize();
 }
 
-export function setupLogWindow() {
-    logEdit = ace.edit("logWindow");
-    logEdit.setReadOnly(true);
-    logClear();
-    // Attach log window UI buttons
-    document.getElementById('logClearBtn').addEventListener('click', logClear);
-    document.getElementById('logSmallerBtn').addEventListener('click', logSmaller);
-    document.getElementById('logLargerBtn').addEventListener('click', logLarger);
-}
+const logEdit = ace.edit("logWindow");
+logEdit.setReadOnly(true);
+logClear();
+
+// UI event handlers
+document.getElementById('logClearBtn').addEventListener('click', logClear);
+document.getElementById('logSmallerBtn').addEventListener('click', logSmaller);
+document.getElementById('logLargerBtn').addEventListener('click', logLarger);

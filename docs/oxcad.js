@@ -29,9 +29,7 @@ function setupTheme() {
     setEditorsTheme(savedTheme);
 }
 
-// Main onload function -- bootstraps the app
 window.onload = function () {
-    log.setupLogWindow();
     setupTheme();
     window.dynCode = document.getElementById("dynamicCode");
 
