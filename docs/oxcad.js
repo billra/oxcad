@@ -48,7 +48,6 @@ function setupTheme() {
 window.onload = function () {
     edit.setupCodeWindow();
     log.setupLogWindow();
-    svg.setupSvgWindow();
     setupTheme();
     window.dynCode = document.getElementById("dynamicCode");
 

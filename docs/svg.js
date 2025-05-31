@@ -1,18 +1,3 @@
-// svg.js
-
-// -=-=-=-=-=- SVG and Geometry Utilities -=-=-=-=-=-
-
-let svgEdit = null;
-
-export function setupSvgWindow() {
-    svgEdit = document.getElementById("svgWindow");
-    svgClear();
-    // Attach UI event handlers
-    document.getElementById('svgClearBtn').addEventListener('click', svgClear);
-    document.getElementById('svgSmallerBtn').addEventListener('click', svgSmaller);
-    document.getElementById('svgLargerBtn').addEventListener('click', svgLarger);
-}
-
 // -=-=-=-=-=- Edge/Geometry Utilities -=-=-=-=-=-
 
 export function radians(degrees) { return degrees * Math.PI / 180; }
@@ -190,3 +175,11 @@ export function svgAppend(code) {
         svgEdit.appendChild(el);
     });
 }
+
+const svgEdit = document.getElementById("svgWindow");
+svgClear();
+
+// UI event handlers
+document.getElementById('svgClearBtn').addEventListener('click', svgClear);
+document.getElementById('svgSmallerBtn').addEventListener('click', svgSmaller);
+document.getElementById('svgLargerBtn').addEventListener('click', svgLarger);
