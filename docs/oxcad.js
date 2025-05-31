@@ -23,24 +23,33 @@ function loadScript(src) {
 }
 await loadScript('https://cdn.jsdelivr.net/npm/ace-builds@1.41.0/src-min-noconflict/ace.js');
 
+function setEditorsTheme(theme) {
+    // Sets both Ace editors to correct theme
+    const aceTheme = theme === 'dark' ? 'tomorrow_night_bright' : 'chrome';
+    edit.setTheme(aceTheme);
+    log.setTheme(aceTheme);
+}
+
 function toggleTheme() {
     const root = document.documentElement;
     const newTheme = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
     root.setAttribute('data-theme', newTheme);
     localStorage.setItem('theme', newTheme);
+    setEditorsTheme(newTheme);
 }
 
 function setupTheme() {
     const savedTheme = localStorage.getItem('theme') || 'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
+    setEditorsTheme(savedTheme);
 }
 
 // Main onload function -- bootstraps the app
 window.onload = function () {
-    setupTheme();
     edit.setupCodeWindow();
     log.setupLogWindow();
     svg.setupSvgWindow();
+    setupTheme();
     window.dynCode = document.getElementById("dynamicCode");
 
     // Set page title and version label

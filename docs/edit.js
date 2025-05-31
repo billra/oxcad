@@ -5,6 +5,10 @@
 let codeEdit = null;
 export function getCodeEdit() { return codeEdit; }
 
+export function setTheme(name) {
+    codeEdit.setTheme("ace/theme/" + name);
+}
+
 export function codeUndo() {
     codeEdit.undo();
 }
@@ -38,7 +42,6 @@ export function fillExampleDropdown() {
 
 export function setupCodeWindow() {
     codeEdit = ace.edit("codeWindow");
-    codeEdit.setTheme("ace/theme/chrome");
     codeEdit.session.setMode("ace/mode/javascript");
     fillExampleDropdown();
     exampleChangeFunc('mirrordemo'); // preload sample code

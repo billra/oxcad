@@ -6,6 +6,10 @@ import { getCodeEdit } from "./edit.js";
 
 let logEdit = null;
 
+export function setTheme(name) {
+    logEdit.setTheme("ace/theme/" + name);
+}
+
 export function logMsg(...args) {
     const session = logEdit.getSession();
     session.insert({
@@ -39,7 +43,6 @@ export function logLarger() {
 
 export function setupLogWindow() {
     logEdit = ace.edit("logWindow");
-    logEdit.setTheme("ace/theme/chrome");
     logEdit.setReadOnly(true);
     logClear();
     console.log('ace version:', ace.version)
