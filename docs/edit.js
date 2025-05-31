@@ -20,8 +20,9 @@ export function runCode() {
     const code = codeEdit.getValue();
     const script = document.createElement('script');
     script.innerHTML = 'try{' + code + '}catch(e){logMsg("Code Error:",e.message);}';
-    window.dynCode.innerHTML = ''; // clear previous children
-    window.dynCode.appendChild(script);
+    const dynCode = document.getElementById("dynamicCode");
+    dynCode.innerHTML = ''; // clear previous children
+    dynCode.appendChild(script);
 }
 
 export function exampleChangeFunc(id) {

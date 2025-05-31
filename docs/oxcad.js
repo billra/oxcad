@@ -29,15 +29,12 @@ function setupTheme() {
     setEditorsTheme(savedTheme);
 }
 
-window.onload = function () {
-    setupTheme();
-    window.dynCode = document.getElementById("dynamicCode");
+setupTheme();
 
-    // Set page title and version label
-    document.getElementById('page-title').innerText = document.title;
-    const metaVersion = document.querySelector('meta[name="version"]');
-    document.getElementById('version').innerText = 'v' + metaVersion.content;
-};
+// Set page title and version label
+document.getElementById('page-title').innerText = document.title;
+const metaVersion = document.querySelector('meta[name="version"]');
+document.getElementById('version').innerText = 'v' + metaVersion.content;
 
-// Attach functions used by HTML/UI (theme toggle)
+// UI event handlers
 document.getElementById('toggleThemeBtn').addEventListener('click', toggleTheme);
