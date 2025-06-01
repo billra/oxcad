@@ -3,9 +3,7 @@
 export function radians(degrees) { return degrees * Math.PI / 180; }
 export function degrees(radians) { return radians * 180 / Math.PI; }
 
-export function svgSurface(x, y, edge1, edge2, color, width) {
-    color = typeof color === 'undefined' ? 'black' : color;
-    width = typeof width === 'undefined' ? '1pt' : width;
+export function svgSurface(x, y, edge1, edge2, color = 'black', width = '1pt') {
     // todo: center drawing on nearest major grid line
     const outline = edge1.concat(edge2);
     const str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z" stroke="' + color + '" stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
@@ -18,9 +16,7 @@ export function drawSurface(x, y, edge1, edge2, color, width) {
     return str;
 }
 
-export function drawPath(x, y, objs, color, width) {
-    color = typeof color === 'undefined' ? 'black' : color;
-    width = typeof width === 'undefined' ? '1pt' : width;
+export function drawPath(x, y, objs, color = 'black', width = '1pt') {
     const str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '" stroke="' + color + '" stroke-width="' + width + '" fill="none"/>';
     svgAppend(str);
     return str;
@@ -30,13 +26,12 @@ export function drawPath(x, y, objs, color, width) {
 export function edgeLength(objs) { return objs.reduce(function (x, elem) { return x + elem.edgeLen; }, 0); }
 export function clone(objs, scale, mirrorAngleDeg) { return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); }); }
 export function extent(objs) { return objs.reduce(function (sum, elem) { return { x: sum.x + elem.x, y: sum.y + elem.y }; }, { x: 0, y: 0 }); }
-export function reflect(objs, mirrorAngleDeg) {
-    mirrorAngleDeg = typeof mirrorAngleDeg === 'undefined' ? 90 : mirrorAngleDeg; // mirror default Y axis
+export function reflect(objs, mirrorAngleDeg = 90) { // mirror default Y axis
     const tail = clone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
     return objs.concat(tail);
 }
 export function mirror(angleDeg, mirrorAngleDeg) { // undefined mirrorAngleDeg returns original angleDeg
-    return typeof mirrorAngleDeg === 'undefined' ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
+    return mirrorAngleDeg === undefined ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
 }
 export function makeEdge(angleDeg, length) {
     const end = move(angleDeg, length);
@@ -45,7 +40,7 @@ export function makeEdge(angleDeg, length) {
         edgeLen: length,
         clone: function (scale, mirrorAngleDeg) {
             return makeEdge(mirror(angleDeg,
-                typeof mirrorAngleDeg === 'undefined' ? mirrorAngleDeg : mirrorAngleDeg + 90 // todo!
+                mirrorAngleDeg === undefined ? mirrorAngleDeg : mirrorAngleDeg + 90 // todo!
             ), length * scale);
         },
         x: end.x, y: end.y
@@ -76,9 +71,8 @@ export function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
     };
     // todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
-export function move(angleDeg, length, from) {
+export function move(angleDeg, length, from = { x: 0, y: 0 }) {
     const angleRad = radians(angleDeg);
-    from = typeof from === 'undefined' ? { x: 0, y: 0 } : from;
     return {
         x: length * Math.cos(angleRad) + from.x,
         y: length * Math.sin(angleRad) + from.y
