@@ -3,10 +3,13 @@
 export function radians(degrees) { return degrees * Math.PI / 180; }
 export function degrees(radians) { return radians * 180 / Math.PI; }
 
-export function svgSurface(x, y, edge1, edge2, color = 'black', width = '1pt') {
+export function svgSurface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {
     // todo: center drawing on nearest major grid line
+    const fill = 'var(--svg-fill)';
+    const fillOpacity = 'var(--svg-fill-opacity)';
     const outline = edge1.concat(edge2);
-    const str = outline.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + 'Z" stroke="' + color + '" stroke-width="' + width + '" fill="#0000FF" fill-opacity="0.04"/>';
+    const str = outline.reduce(function (x, elem) { return x + elem.part; }, `<path d="M${x},${y}`) +
+        `Z" stroke="${color}" stroke-width="${width}" fill="${fill}" fill-opacity="${fillOpacity}"/>`;
     return str;
 }
 
@@ -16,8 +19,9 @@ export function drawSurface(x, y, edge1, edge2, color, width) {
     return str;
 }
 
-export function drawPath(x, y, objs, color = 'black', width = '1pt') {
-    const str = objs.reduce(function (x, elem) { return x + elem.part; }, '<path d="M' + x + ',' + y) + '" stroke="' + color + '" stroke-width="' + width + '" fill="none"/>';
+export function drawPath(x, y, objs, color = 'var(--svg-stroke)', width = '1pt') {
+    const str = objs.reduce(function (x, elem) { return x + elem.part; }, `<path d="M${x},${y}`) +
+        `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
     svgAppend(str);
     return str;
 }
@@ -147,14 +151,15 @@ export function svgLarger() {
 }
 
 export function svgGrid(size) {
+    const gridColor = 'var(--svg-grid)';
     const code =
         '<defs>\n' +
-        '<pattern id="smallGrid" width="' + size + '" height="' + size + '" patternUnits="userSpaceOnUse">\n' +
-        '<path d="M ' + size + ' 0 L 0 0 0 ' + size + '" fill="none" stroke="gray" stroke-width="0.5"/>\n' +
+        `<pattern id="smallGrid" width="${size}" height="${size}" patternUnits="userSpaceOnUse">\n` +
+        `<path d="M ${size} 0 L 0 0 0 ${size}" fill="none" stroke="${gridColor}" stroke-width="0.5"/>\n` +
         '</pattern>\n' +
-        '<pattern id="grid" width="' + 10 * size + '" height="' + 10 * size + '" patternUnits="userSpaceOnUse">\n' +
-        '<rect width="' + 10 * size + '" height="' + 10 * size + '" fill="url(#smallGrid)"/>\n' +
-        '<path d="M ' + 10 * size + ' 0 L 0 0 0 ' + 10 * size + '" fill="none" stroke="gray" stroke-width="1"/>\n' +
+        `<pattern id="grid" width="${10 * size}" height="${10 * size}" patternUnits="userSpaceOnUse">\n` +
+        `<rect width="${10 * size}" height="${10 * size}" fill="url(#smallGrid)"/>\n` +
+        `<path d="M ${10 * size} 0 L 0 0 0 ${10 * size}" fill="none" stroke="${gridColor}" stroke-width="1"/>\n` +
         '</pattern>\n' +
         '</defs>\n' +
         '<rect width="100%" height="100%" fill="url(#grid)" />';
