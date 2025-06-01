@@ -4,10 +4,12 @@
     --table-cell: #FFF;
     --button-background: #CCC;
     --button-hover: #4F4;
-    --svg-grid: #888;
     --svg-stroke: #000;
+    scrollbar-color: #777 #CCC;
+    /* theme independent: */
+    --svg-grid: #888;
     --svg-fill: #0000FF;
-    --svg-fill-opacity: 0.04;
+    --svg-fill-opacity: 0.2;
 }
 [data-theme="dark"] {
     --background: #000;
@@ -15,10 +17,8 @@
     --table-cell: #000;
     --button-background: #333;
     --button-hover: #080;
-    --svg-grid: #444;
     --svg-stroke: #FFF;
-    --svg-fill: #22AADD;
-    --svg-fill-opacity: 0.07;
+    scrollbar-color: #444 #111;
 }
 .small {
     font-size: 0.65em;
