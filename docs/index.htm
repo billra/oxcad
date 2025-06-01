@@ -2,7 +2,7 @@
 <html>
 <head>
     <TITLE>OxCad</TITLE>
-    <meta name="version" content="0.57">
+    <meta name="version" content="0.58">
     <meta charset="utf-8">
     <meta name="author" content="Bill Ola Rasmussen">
     <meta name="keywords" content="cad svg javascript">
@@ -17,29 +17,32 @@
             <h1 id="page-title"></h1>
             <div id="version"></div>
         </div>
-        <button id="toggleThemeBtn">Theme</button>
+        <div class="button" id="toggleThemeBtn">Theme</div>
     </div>
     <table>
         <tr>
             <td colspan="2">
                 <svg id="svgWindow" class="expand" xmlns="http://www.w3.org/2000/svg" version="1.1"
                     xmlns:xlink="http://www.w3.org/1999/xlink"></svg>
-                <button id="svgClearBtn">Clear</button>
-                <button id="svgSmallerBtn">Smaller</button><button id="svgLargerBtn">Larger</button>
+                <div class="button" id="svgClearBtn">Clear</div>
+                <div class="button" id="svgSmallerBtn">Smaller</div>
+                <div class="button" id="svgLargerBtn">Larger</div>
             </td>
         </tr>
         <tr>
             <td class="half">
                 <div id="codeWindow" class="acedit"></div>
-                <button id="runCodeBtn">Run</button> examples: <select id="selectBox">
+                <div class="button" id="runCodeBtn">Run</div> examples: <select id="selectBox">
                     <option disabled selected>-- choose --</option>
                 </select>
-                <button id="codeUndoBtn">Undo</button><button id="codeRedoBtn">Redo</button>
+                <div class="button" id="codeUndoBtn">Undo</div>
+                <div class="button" id="codeRedoBtn">Redo</div>
             </td>
             <td class="half">
                 <div id="logWindow" class="acedit"></div>
-                <button id="logClearBtn">Clear</button>
-                <button id="logSmallerBtn">Smaller</button><button id="logLargerBtn">Larger</button>
+                <div class="button" id="logClearBtn">Clear</div>
+                <div class="button" id="logSmallerBtn">Smaller</div>
+                <div class="button" id="logLargerBtn">Larger</div>
             </td>
         </tr>
     </table>
