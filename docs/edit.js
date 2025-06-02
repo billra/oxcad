@@ -29,20 +29,22 @@ export function exampleChangeFunc(id) {
     codeEdit.clearSelection();
 }
 
-export function fillExampleDropdown() {
+export function fillExampleDropdown(selectedKey) {
     const select = document.getElementById("selectBox");
     for (const key in window.codeExamples) {
         const el = document.createElement("option");
         el.textContent = key;
         el.value = key;
+        if (key === selectedKey) { el.selected = true; }
         select.appendChild(el);
     }
 }
 
 const codeEdit = ace.edit("codeWindow");
 codeEdit.session.setMode("ace/mode/javascript");
-fillExampleDropdown();
-exampleChangeFunc('mirrordemo'); // preload sample code
+const demo = 'mirrordemo';
+fillExampleDropdown(demo);
+exampleChangeFunc(demo); // preload sample code
 
 // UI event handlers
 document.getElementById('runCodeBtn').addEventListener('click', runCode);
