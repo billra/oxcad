@@ -1,5 +1,5 @@
 import './acewrap.mjs';
-import { getCodeEdit } from "./edit.js";
+import { getCodeEdit } from "./edit.mjs";
 
 // -=-=-=-=-=- Logging and Log Window Utilities -=-=-=-=-=-=-
 

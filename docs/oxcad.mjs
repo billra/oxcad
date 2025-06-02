@@ -1,9 +1,9 @@
 // Dynamic code expects function names in window namespace. This workaround
 // copies all the ES module names to the windows namespace until we have a
 // better solution.
-import * as svg from './svg.js';
-import * as log from './log.js';
-import * as edit from './edit.js';
+import * as svg from './svg.mjs';
+import * as log from './log.mjs';
+import * as edit from './edit.mjs';
 Object.assign(window, svg);
 Object.assign(window, log);
 Object.assign(window, edit);
