@@ -59,7 +59,7 @@ function runCode() {
         // Pass modules as context to user code. User must use svg.*, log.*
         Function('svg', 'log', code)(svg, log);
     } catch (e) {
-        log.logMsg("Code Error:", e.message);
+        log.print(`${e.name}: ${e.message}`);
     }
 }
 

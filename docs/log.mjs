@@ -5,7 +5,7 @@ export function setTheme(name) {
     logEdit.setTheme("ace/theme/" + name);
 }
 
-export function logMsg(...args) {
+export function print(...args) {
     const session = logEdit.getSession();
     session.insert({
         row: session.getLength(),

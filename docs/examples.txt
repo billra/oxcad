@@ -7,7 +7,7 @@ const edges = svg.makeRange(6, svg.makeEdge, 0, 40);
 const notches = svg.makeRange(5, svg.makeNotch, 90, 20, 200, { first: 0, last: 1 });
 const le = svg.merge(edges, notches);
 const path = svg.drawPath(10, 50, le);
-log.logMsg("done.");
+log.print("done.");
 
 K: reflect demo
 V:
@@ -17,10 +17,10 @@ const notches = svg.makeRange(2, svg.makeNotch, { first: 75, last: 85 }, 20, 100
 const side = svg.merge(edges, notches);
 const le = svg.reflect(side);
 const path = svg.drawPath(10, 200, le);
-log.logMsg("edge length:", svg.edgeLength(le));
+log.print("edge length:", svg.edgeLength(le));
 const leExt = svg.extent(le);
-log.logMsg("leading edge extent:", leExt.x, leExt.y);
-log.logMsg("done.");
+log.print("leading edge extent:", leExt.x, leExt.y);
+log.print("done.");
 
 K: alfa
 V:
@@ -35,13 +35,13 @@ const teNotches = svg.makeNotch(255, 30, 50, 2 / 3);
 const te = svg.reflect(svg.merge(teEdges, teNotches));
 // scale trailing edge to match leading edge extent
 const scale = svg.extent(le).x / -svg.extent(te).x;
-log.logMsg("trailing edge scale factor:", scale);
+log.print("trailing edge scale factor:", scale);
 const teScaled = svg.clone(te, scale);
 // draw canopy
 const xpos = 600 - svg.extent(le).x / 2; // center at major grid line
 svg.drawSurface(xpos, 110, le, teScaled);
 //svg.printPlans();
-log.logMsg("done.");
+log.print("done.");
 
 K: svgAppend
 V:
@@ -54,12 +54,12 @@ const len = curve.getTotalLength();
 const pos = curve.getPointAtLength(len);
 const bbox = curve.getBBox();
 // note that properties ignores surrounding transform
-log.logMsg("path len", len, "end xy", pos.x, pos.y, "bbox:", bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);
+log.print("path len", len, "end xy", pos.x, pos.y, "bbox:", bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);
 
 K: svg serialize
 V:
 const svgXml = (new XMLSerializer).serializeToString(svg.svgEdit);
-log.logMsg(svgXml);
+log.print(svgXml);
 
 K: blank
 V:
