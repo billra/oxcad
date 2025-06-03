@@ -42,18 +42,18 @@ export function setTheme(name) {
     codeEdit.setTheme("ace/theme/" + name);
 }
 
-export function codeUndo() {
+function codeUndo() {
     codeEdit.undo();
 }
 
-export function codeRedo() {
+function codeRedo() {
     codeEdit.redo();
 }
 
 // Execute user code within a temporary function:
 // User code can only see the API surface we present.
 // No pollution of global namespace when executing.
-export function runCode() {
+function runCode() {
     const code = codeEdit.getValue();
     try {
         // Pass modules as context to user code. User must use svg.*, log.*
@@ -63,12 +63,12 @@ export function runCode() {
     }
 }
 
-export function exampleChangeFunc(id) {
+function exampleChangeFunc(id) {
     codeEdit.setValue(codeExamples[id]);
     codeEdit.clearSelection();
 }
 
-export function fillExampleDropdown(selectedKey) {
+function fillExampleDropdown(selectedKey) {
     const select = document.getElementById("selectBox");
     for (const key in codeExamples) {
         const el = document.createElement("option");
@@ -81,7 +81,7 @@ export function fillExampleDropdown(selectedKey) {
 
 const codeEdit = ace.edit("codeWindow");
 codeEdit.session.setMode("ace/mode/javascript");
-const demo = 'mirrordemo';
+const demo = 'reflect demo';
 fillExampleDropdown(demo);
 exampleChangeFunc(demo); // preload sample code
 

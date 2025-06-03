@@ -1,8 +1,6 @@
 import './acewrap.mjs';
 import { getCodeEdit } from "./edit.mjs";
 
-// -=-=-=-=-=- Logging and Log Window Utilities -=-=-=-=-=-=-
-
 export function setTheme(name) {
     logEdit.setTheme("ace/theme/" + name);
 }
@@ -15,13 +13,13 @@ export function logMsg(...args) {
     }, args.join(' ') + "\n");
 }
 
-export function logClear() {
+function logClear() {
     const metaVersion = document.querySelector('meta[name="version"]');
     logEdit.setValue('OxCad v' + metaVersion.content + ', Log Entries:\n');
     logEdit.clearSelection();
 }
 
-export function logSmaller() {
+function logSmaller() {
     const height = document.getElementById('codeWindow').clientHeight;
     if (height < 200) { return; }
     document.getElementById("codeWindow").style.height = height - 100 + 'px';
@@ -30,7 +28,7 @@ export function logSmaller() {
     logEdit.resize();
 }
 
-export function logLarger() {
+function logLarger() {
     const height = document.getElementById('codeWindow').clientHeight;
     document.getElementById("codeWindow").style.height = height + 100 + 'px';
     document.getElementById("logWindow").style.height = height + 100 + 'px';

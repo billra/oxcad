@@ -1,8 +1,6 @@
 // --- utility ---
 
-export function radians(degrees) { return degrees * Math.PI / 180; }
-
-export function degrees(radians) { return radians * 180 / Math.PI; }
+function radians(degrees) { return degrees * Math.PI / 180; }
 
 export function merge(...args) { // generic merge any number of arrays
     args = args.map(x => [].concat(x));
@@ -35,7 +33,7 @@ export function makeRange(count, func, ...rest) { // plus additional parameters 
     return ret;
 }
 
-export function minEncode(str) { // see https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
+function minEncode(str) { // see https://codepen.io/tigt/post/optimizing-svgs-in-data-uris
     str = str.replace(/"/g, "'");
     str = str.replace(/</g, "%3C");
     str = str.replace(/>/g, "%3E");
@@ -55,7 +53,7 @@ export function svgAppend(code) {
     });
 }
 
-export function svgSurface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {
+function svgSurface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {
     // todo: center drawing on nearest major grid line
     const fill = 'var(--svg-fill)';
     const fillOpacity = 'var(--svg-fill-opacity)';
@@ -86,7 +84,7 @@ export function reflect(objs, mirrorAngleDeg = 90) { // mirror default Y axis
     const tail = clone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
     return objs.concat(tail);
 }
-export function mirror(angleDeg, mirrorAngleDeg) { // undefined mirrorAngleDeg returns original angleDeg
+function mirror(angleDeg, mirrorAngleDeg) { // undefined mirrorAngleDeg returns original angleDeg
     return mirrorAngleDeg === undefined ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
 }
 export function makeEdge(angleDeg, length) {
@@ -127,7 +125,7 @@ export function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
     };
     // todo: special case smooth <= 0 and smooth >=1 with fewer segments
 }
-export function move(angleDeg, length, from = { x: 0, y: 0 }) {
+function move(angleDeg, length, from = { x: 0, y: 0 }) {
     const angleRad = radians(angleDeg);
     return {
         x: length * Math.cos(angleRad) + from.x,
@@ -135,7 +133,7 @@ export function move(angleDeg, length, from = { x: 0, y: 0 }) {
     };
 }
 
-export function svgGrid(size) {
+function svgGrid(size) {
     const gridColor = 'var(--svg-grid)';
     const code =
         '<defs>\n' +
@@ -165,18 +163,18 @@ export function printPlans(svgStr) {
 
 // --- UI handlers ---
 
-export function svgClear() {
+function svgClear() {
     svgEdit.innerHTML = '';
     svgAppend(svgGrid(10));
 }
 
-export function svgSmaller() {
+function svgSmaller() {
     const bcr = svgEdit.getBoundingClientRect();
     if (bcr.height < 200) { return; }
     svgEdit.style.height = bcr.height - 100 + 'px';
 }
 
-export function svgLarger() {
+function svgLarger() {
     const bcr = svgEdit.getBoundingClientRect();
     svgEdit.style.height = bcr.height + 100 + 'px';
 }

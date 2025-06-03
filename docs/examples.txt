@@ -1,6 +1,6 @@
 Example code for OxCad designs.
 
-K: notchdemo
+K: notch demo
 V:
 // demo notch smoothness range
 var edges = svg.makeRange(6, svg.makeEdge, 0, 40);
@@ -9,9 +9,9 @@ var le = svg.merge(edges, notches);
 var path = svg.drawPath(10, 50, le);
 log.logMsg("done.");
 
-K: mirrordemo
+K: reflect demo
 V:
-// example using mirror
+// example using reflect
 var edges = svg.makeRange(3, svg.makeEdge, { first: -20, last: 0 }, 200);
 var notches = svg.makeRange(2, svg.makeNotch, { first: 75, last: 85 }, 20, 100, 2 / 3);
 var side = svg.merge(edges, notches);
@@ -43,7 +43,7 @@ svg.drawSurface(xpos, 110, le, teScaled);
 //svg.printPlans();
 log.logMsg("done.");
 
-K: svgappend
+K: svgAppend
 V:
 // demo raw svg usage
 svg.svgAppend('<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>');
