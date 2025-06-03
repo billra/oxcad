@@ -1,4 +1,4 @@
-export function svgAppend(code) {
+export function append(code) {
     // svg from string, one way to do it: render and copy
     const container = document.createElement('div');
     container.innerHTML = '<svg>' + code + '</svg>';
@@ -7,7 +7,7 @@ export function svgAppend(code) {
     });
 }
 
-function svgGrid(size) {
+function grid(size) {
     const gridColor = 'var(--svg-grid)';
     const code =
         '<defs>\n' +
@@ -48,7 +48,7 @@ export function printPlans(svgStr) {
 
 function svgClear() {
     svgEdit.innerHTML = '';
-    svgAppend(svgGrid(10));
+    append(grid(10));
 }
 
 function svgSmaller() {

@@ -1,4 +1,4 @@
-import { svgAppend } from './svg.mjs';
+import { append } from './svg.mjs';
 
 export function merge(...args) { // generic merge any number of arrays
     args = args.map(x => [].concat(x));
@@ -43,14 +43,14 @@ function svgSurface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1p
 
 export function drawSurface(x, y, edge1, edge2, color, width) {
     const str = svgSurface(x, y, edge1, edge2, color, width);
-    svgAppend(str);
+    append(str);
     return str;
 }
 
 export function drawPath(x, y, objs, color = 'var(--svg-stroke)', width = '1pt') {
     const str = objs.reduce(function (x, elem) { return x + elem.part; }, `<path d="M${x},${y}`) +
         `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
-    svgAppend(str);
+    append(str);
     return str;
 }
 

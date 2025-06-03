@@ -43,12 +43,12 @@ ox.drawSurface(xpos, 110, le, teScaled);
 //svg.printPlans();
 log.print("done.");
 
-K: svgAppend
+K: svg append
 V:
 // demo raw svg usage
-svg.svgAppend('<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>');
-svg.svgAppend('<circle id="orangeCircle1" style="stroke:blue;stroke-width:4;fill:darkorange;" cx="230" cy="200" r="20"/>');
-svg.svgAppend('<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>');
+svg.append('<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>');
+svg.append('<circle id="orangeCircle1" style="stroke:blue;stroke-width:4;fill:darkorange;" cx="230" cy="200" r="20"/>');
+svg.append('<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>');
 const curve = document.getElementById("testPath");
 const len = curve.getTotalLength();
 const pos = curve.getPointAtLength(len);
