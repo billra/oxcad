@@ -187,5 +187,5 @@ document.getElementById('svgLargerBtn').addEventListener('click', svgLarger);
 
 // --- setup ---
 
-const svgEdit = document.getElementById("svgWindow");
+export const svgEdit = document.getElementById("svgWindow");
 svgClear();

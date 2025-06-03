@@ -3,63 +3,63 @@ Example code for OxCad designs.
 K: notchdemo
 V:
 // demo notch smoothness range
-var edges = makeRange(6, makeEdge, 0, 40);
-var notches = makeRange(5, makeNotch, 90, 20, 200, { first: 0, last: 1 });
-var le = merge(edges, notches);
-var path = drawPath(10, 50, le);
-logMsg("done.");
+var edges = svg.makeRange(6, svg.makeEdge, 0, 40);
+var notches = svg.makeRange(5, svg.makeNotch, 90, 20, 200, { first: 0, last: 1 });
+var le = svg.merge(edges, notches);
+var path = svg.drawPath(10, 50, le);
+log.logMsg("done.");
 
 K: mirrordemo
 V:
 // example using mirror
-var edges = makeRange(3, makeEdge, { first: -20, last: 0 }, 200);
-var notches = makeRange(2, makeNotch, { first: 75, last: 85 }, 20, 100, 2 / 3);
-var side = merge(edges, notches);
-var le = reflect(side);
-var path = drawPath(10, 200, le);
-logMsg("edge length:", edgeLength(le));
-var leExt = extent(le);
-logMsg("leading edge extent:", leExt.x, leExt.y);
-logMsg("done.");
+var edges = svg.makeRange(3, svg.makeEdge, { first: -20, last: 0 }, 200);
+var notches = svg.makeRange(2, svg.makeNotch, { first: 75, last: 85 }, 20, 100, 2 / 3);
+var side = svg.merge(edges, notches);
+var le = svg.reflect(side);
+var path = svg.drawPath(10, 200, le);
+log.logMsg("edge length:", svg.edgeLength(le));
+var leExt = svg.extent(le);
+log.logMsg("leading edge extent:", leExt.x, leExt.y);
+log.logMsg("done.");
 
 K: alfa
 V:
 // --- Alfa ---
 // leading edge
-var leEdges = makeRange(3, makeEdge, { first: -20, last: 0 }, 180);
-var leNotches = makeRange(2, makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);
-var le = reflect(merge(leEdges, leNotches));
+var leEdges = svg.makeRange(3, svg.makeEdge, { first: -20, last: 0 }, 180);
+var leNotches = svg.makeRange(2, svg.makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);
+var le = svg.reflect(svg.merge(leEdges, leNotches));
 // trailing edge
-var teEdges = makeRange(2, makeEdge, { first: 135, last: 180 }, 100);
-var teNotches = makeNotch(255, 30, 50, 2 / 3);
-var te = reflect(merge(teEdges, teNotches));
+var teEdges = svg.makeRange(2, svg.makeEdge, { first: 135, last: 180 }, 100);
+var teNotches = svg.makeNotch(255, 30, 50, 2 / 3);
+var te = svg.reflect(svg.merge(teEdges, teNotches));
 // scale trailing edge to match leading edge extent
-var scale = extent(le).x / -extent(te).x;
-logMsg("trailing edge scale factor:", scale);
-var teScaled = clone(te, scale);
+var scale = svg.extent(le).x / -svg.extent(te).x;
+log.logMsg("trailing edge scale factor:", scale);
+var teScaled = svg.clone(te, scale);
 // draw canopy
-var xpos = 600 - extent(le).x / 2; // center at major grid line
-drawSurface(xpos, 110, le, teScaled);
-//printPlans();
-logMsg("done.");
+var xpos = 600 - svg.extent(le).x / 2; // center at major grid line
+svg.drawSurface(xpos, 110, le, teScaled);
+//svg.printPlans();
+log.logMsg("done.");
 
 K: svgappend
 V:
 // demo raw svg usage
-svgAppend('<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>');
-svgAppend('<circle id="orangeCircle1" style="stroke:blue;stroke-width:4;fill:darkorange;" cx="230" cy="200" r="20"/>');
-svgAppend('<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>');
+svg.svgAppend('<circle id="yellowCircle1" style="stroke:blue;stroke-width:4;fill:yellow;" cx="170" cy="200" r="20"/>');
+svg.svgAppend('<circle id="orangeCircle1" style="stroke:blue;stroke-width:4;fill:darkorange;" cx="230" cy="200" r="20"/>');
+svg.svgAppend('<g transform="scale(5)"><path id="testPath" d="M10,10 l20,10 l-10,10" style="stroke: #0000cc; stroke-width: 2px; fill:#ccccff;"/></g>');
 var curve = document.getElementById("testPath");
 var len = curve.getTotalLength();
 var pos = curve.getPointAtLength(len);
 var bbox = curve.getBBox();
 // note that properties ignores surrounding transform
-logMsg("path len", len, "end xy", pos.x, pos.y, "bbox:", bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);
+log.logMsg("path len", len, "end xy", pos.x, pos.y, "bbox:", bbox.x, bbox.y, bbox.x + bbox.width, bbox.y + bbox.height, bbox.style);
 
 K: svg serialize
 V:
-var svgXml = (new XMLSerializer).serializeToString(svgEdit);
-logMsg(svgXml);
+var svgXml = (new XMLSerializer).serializeToString(svg.svgEdit);
+log.logMsg(svgXml);
 
 K: blank
 V:

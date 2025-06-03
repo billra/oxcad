@@ -1,4 +1,7 @@
 import './acewrap.mjs';
+// context for dynamic code execution
+import * as svg from './svg.mjs';
+import * as log from './log.mjs';
 
 // --- load code examples ---
 function parseKeyValueText(txt) {
@@ -47,12 +50,17 @@ export function codeRedo() {
     codeEdit.redo();
 }
 
+// Execute user code within a temporary function:
+// User code can only see the API surface we present.
+// No pollution of global namespace when executing.
 export function runCode() {
     const code = codeEdit.getValue();
-    const script = document.createElement('script');
-    script.innerHTML = 'try{' + code + '}catch(e){logMsg("Code Error:",e.message);}';
-    document.body.appendChild(script);
-    document.body.removeChild(script);
+    try {
+        // Pass modules as context to user code. User must use svg.*, log.*
+        Function('svg', 'log', code)(svg, log);
+    } catch (e) {
+        log.logMsg("Code Error:", e.message);
+    }
 }
 
 export function exampleChangeFunc(id) {

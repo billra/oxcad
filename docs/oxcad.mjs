@@ -1,18 +1,11 @@
-// Dynamic code expects function names in window namespace. This workaround
-// copies all the ES module names to the windows namespace until we have a
-// better solution.
-import * as svg from './svg.mjs';
-import * as log from './log.mjs';
-import * as edit from './edit.mjs';
-Object.assign(window, svg);
-Object.assign(window, log);
-Object.assign(window, edit);
+import { setTheme as setLogTheme } from './log.mjs';
+import { setTheme as setCodeTheme } from './edit.mjs';
 
 function setEditorsTheme(theme) {
     // Sets both Ace editors to correct theme
     const aceTheme = theme === 'dark' ? 'tomorrow_night_bright' : 'chrome';
-    edit.setTheme(aceTheme);
-    log.setTheme(aceTheme);
+    setLogTheme(aceTheme);
+    setCodeTheme(aceTheme);
 }
 
 function toggleTheme() {
