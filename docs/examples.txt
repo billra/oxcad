@@ -3,22 +3,22 @@ Example code for OxCad designs.
 K: notch demo
 V:
 // demo notch smoothness range
-const edges = svg.makeRange(6, svg.makeEdge, 0, 40);
-const notches = svg.makeRange(5, svg.makeNotch, 90, 20, 200, { first: 0, last: 1 });
-const le = svg.merge(edges, notches);
-const path = svg.drawPath(10, 50, le);
+const edges = ox.makeRange(6, ox.makeEdge, 0, 40);
+const notches = ox.makeRange(5, ox.makeNotch, 90, 20, 200, { first: 0, last: 1 });
+const le = ox.merge(edges, notches);
+const path = ox.drawPath(10, 50, le);
 log.print("done.");
 
 K: reflect demo
 V:
 // example using reflect
-const edges = svg.makeRange(3, svg.makeEdge, { first: -20, last: 0 }, 200);
-const notches = svg.makeRange(2, svg.makeNotch, { first: 75, last: 85 }, 20, 100, 2 / 3);
-const side = svg.merge(edges, notches);
-const le = svg.reflect(side);
-const path = svg.drawPath(10, 200, le);
-log.print("edge length:", svg.edgeLength(le));
-const leExt = svg.extent(le);
+const edges = ox.makeRange(3, ox.makeEdge, { first: -20, last: 0 }, 200);
+const notches = ox.makeRange(2, ox.makeNotch, { first: 75, last: 85 }, 20, 100, 2 / 3);
+const side = ox.merge(edges, notches);
+const le = ox.reflect(side);
+const path = ox.drawPath(10, 200, le);
+log.print("edge length:", ox.edgeLength(le));
+const leExt = ox.extent(le);
 log.print("leading edge extent:", leExt.x, leExt.y);
 log.print("done.");
 
@@ -26,20 +26,20 @@ K: alfa
 V:
 // --- Alfa ---
 // leading edge
-const leEdges = svg.makeRange(3, svg.makeEdge, { first: -20, last: 0 }, 180);
-const leNotches = svg.makeRange(2, svg.makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);
-const le = svg.reflect(svg.merge(leEdges, leNotches));
+const leEdges = ox.makeRange(3, ox.makeEdge, { first: -20, last: 0 }, 180);
+const leNotches = ox.makeRange(2, ox.makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);
+const le = ox.reflect(ox.merge(leEdges, leNotches));
 // trailing edge
-const teEdges = svg.makeRange(2, svg.makeEdge, { first: 135, last: 180 }, 100);
-const teNotches = svg.makeNotch(255, 30, 50, 2 / 3);
-const te = svg.reflect(svg.merge(teEdges, teNotches));
+const teEdges = ox.makeRange(2, ox.makeEdge, { first: 135, last: 180 }, 100);
+const teNotches = ox.makeNotch(255, 30, 50, 2 / 3);
+const te = ox.reflect(ox.merge(teEdges, teNotches));
 // scale trailing edge to match leading edge extent
-const scale = svg.extent(le).x / -svg.extent(te).x;
+const scale = ox.extent(le).x / -ox.extent(te).x;
 log.print("trailing edge scale factor:", scale);
-const teScaled = svg.clone(te, scale);
+const teScaled = ox.clone(te, scale);
 // draw canopy
-const xpos = 600 - svg.extent(le).x / 2; // center at major grid line
-svg.drawSurface(xpos, 110, le, teScaled);
+const xpos = 600 - ox.extent(le).x / 2; // center at major grid line
+ox.drawSurface(xpos, 110, le, teScaled);
 //svg.printPlans();
 log.print("done.");
 
