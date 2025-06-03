@@ -1,8 +1,4 @@
 import './acewrap.mjs';
-// context for dynamic code execution
-import * as ox from './ox.mjs';
-import * as svg from './svg.mjs';
-import * as log from './log.mjs';
 
 // --- load code examples ---
 function parseKeyValueText(txt) {
@@ -51,19 +47,6 @@ function codeRedo() {
     codeEdit.redo();
 }
 
-// Execute user code within a temporary function:
-// User code can only see the API surface we present.
-// No pollution of global namespace when executing.
-function runCode() {
-    const code = codeEdit.getValue();
-    try {
-        // Pass modules as context to user code. User must use svg.*, log.*
-        Function('ox', 'svg', 'log', code)(ox, svg, log);
-    } catch (e) {
-        log.print(`${e.name}: ${e.message}`);
-    }
-}
-
 function exampleChangeFunc(id) {
     codeEdit.setValue(codeExamples[id]);
     codeEdit.clearSelection();
@@ -87,7 +70,6 @@ fillExampleDropdown(demo);
 exampleChangeFunc(demo); // preload sample code
 
 // UI event handlers
-document.getElementById('runCodeBtn').addEventListener('click', runCode);
 document.getElementById('codeUndoBtn').addEventListener('click', codeUndo);
 document.getElementById('codeRedoBtn').addEventListener('click', codeRedo);
 document.getElementById('selectBox').addEventListener('change', (e) => exampleChangeFunc(e.target.value));

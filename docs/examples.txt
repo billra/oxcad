@@ -58,7 +58,7 @@ log.print("path len", len, "end xy", pos.x, pos.y, "bbox:", bbox.x, bbox.y, bbox
 
 K: svg serialize
 V:
-const svgXml = (new XMLSerializer).serializeToString(svg.svgEdit);
+const svgXml = (new XMLSerializer).serializeToString(svg.getContainer());
 log.print(svgXml);
 
 K: blank

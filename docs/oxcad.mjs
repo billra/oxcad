@@ -1,5 +1,6 @@
 import { setTheme as setLogTheme } from './log.mjs';
 import { setTheme as setCodeTheme } from './edit.mjs';
+import './run.mjs';
 
 function setEditorsTheme(theme) {
     // Sets both Ace editors to correct theme

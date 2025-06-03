@@ -44,6 +44,10 @@ export function printPlans(svgStr) {
     document.body.removeChild(link);
 }
 
+export function getContainer(){
+    return svgEdit;
+}
+
 // --- UI handlers ---
 
 function svgClear() {
@@ -68,5 +72,5 @@ document.getElementById('svgLargerBtn').addEventListener('click', svgLarger);
 
 // --- setup ---
 
-export const svgEdit = document.getElementById("svgWindow");
+const svgEdit = document.getElementById("svgWindow");
 svgClear();
