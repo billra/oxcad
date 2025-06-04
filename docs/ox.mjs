@@ -1,5 +1,3 @@
-import { render } from './svg.mjs';
-
 // ['a', 'b', 'c'], [1, 2] -> ['a', 1, 'b', 2, 'c']
 export function interleave(a, b) {
     return a.flatMap((x, i) => i < b.length ? [x, b[i]] : [x]);
@@ -18,7 +16,7 @@ export function callRange(count, func, ...rest) {
     );
 }
 
-function svgSurface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {
+export function surface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {
     // todo: center drawing on nearest major grid line
     const fill = 'var(--svg-fill)';
     const fillOpacity = 'var(--svg-fill-opacity)';
@@ -28,16 +26,9 @@ function svgSurface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1p
     return str;
 }
 
-export function drawSurface(x, y, edge1, edge2, color, width) {
-    const str = svgSurface(x, y, edge1, edge2, color, width);
-    render(str);
-    return str;
-}
-
-export function drawPath(x, y, objs, color = 'var(--svg-stroke)', width = '1pt') {
+export function path(x, y, objs, color = 'var(--svg-stroke)', width = '1pt') {
     const str = objs.reduce(function (x, elem) { return x + elem.part; }, `<path d="M${x},${y}`) +
         `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
-    render(str);
     return str;
 }
 
