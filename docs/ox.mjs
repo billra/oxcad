@@ -5,24 +5,17 @@ export function interleave(a, b) {
     return a.flatMap((x, i) => i < b.length ? [x, b[i]] : [x]);
 }
 
-// callRange: call function with a range of values
-export function makeRange(count, func, ...rest) { // plus additional parameters for func
-    const parm = [];
-    const inc = [];
-    const ret = [];
-    // setup parameters for call to func
-    rest.forEach(function (arg) {
-        // func parameters are single number or {first:n,last:n} objects
-        arg = typeof arg === 'number' ? { first: arg, last: arg } : arg;
-        parm.push(arg.first);
-        inc.push((arg.last - arg.first) / (count - 1));
-    });
-    // make calls to func
-    for (let i = 0; i < count; ++i) {
-        ret.push(func.apply(this, parm));
-        parm.forEach(function (x, j, vec) { vec[j] += inc[j]; });
-    }
-    return ret;
+// Call function with a range of values, produce an array of results. Each parameter
+// is either a fixed value, or an object with 'first' and 'last' numeric values.
+// Example: callRange(5, (a, b) => [a, b], 'x', { first: 0, last: 10 });
+// Result: [['x', 0], ['x', 2.5], ['x', 5], ['x', 7.5], ['x', 10]]
+export function callRange(count, func, ...rest) {
+    return Array.from({ length: count }, (_, i) =>
+        func(...rest.map(arg => {
+            const { first, last } = typeof arg === "object" ? arg : { first: arg, last: arg };
+            return count === 1 ? first : first + (last - first) * (i / (count - 1));
+        }))
+    );
 }
 
 function svgSurface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {

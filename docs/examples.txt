@@ -3,8 +3,8 @@ Example code for OxCad designs.
 K: notch demo
 V:
 // demo notch smoothness range
-const edges = ox.makeRange(6, ox.makeEdge, 0, 40);
-const notches = ox.makeRange(5, ox.makeNotch, 90, 20, 200, { first: 0, last: 1 });
+const edges = ox.callRange(6, ox.makeEdge, 0, 40);
+const notches = ox.callRange(5, ox.makeNotch, 90, 20, 200, { first: 0, last: 1 });
 const le = ox.interleave(edges, notches);
 const path = ox.drawPath(10, 50, le);
 log.print("done.");
@@ -12,8 +12,8 @@ log.print("done.");
 K: reflect demo
 V:
 // example using reflect
-const edges = ox.makeRange(3, ox.makeEdge, { first: -20, last: 0 }, 200);
-const notches = ox.makeRange(2, ox.makeNotch, { first: 75, last: 85 }, 20, 100, 2 / 3);
+const edges = ox.callRange(3, ox.makeEdge, { first: -20, last: 0 }, 200);
+const notches = ox.callRange(2, ox.makeNotch, { first: 75, last: 85 }, 20, 100, 2 / 3);
 const side = ox.interleave(edges, notches);
 const le = ox.reflect(side);
 const path = ox.drawPath(10, 200, le);
@@ -26,12 +26,12 @@ K: alfa
 V:
 // --- Alfa ---
 // leading edge
-const leEdges = ox.makeRange(3, ox.makeEdge, { first: -20, last: 0 }, 180);
-const leNotches = ox.makeRange(2, ox.makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);
+const leEdges = ox.callRange(3, ox.makeEdge, { first: -20, last: 0 }, 180);
+const leNotches = ox.callRange(2, ox.makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);
 const le = ox.reflect(ox.interleave(leEdges, leNotches));
 // trailing edge
-const teEdges = ox.makeRange(2, ox.makeEdge, { first: 135, last: 180 }, 100);
-const teNotches = ox.makeNotch(255, 30, 50, 2 / 3);
+const teEdges = ox.callRange(2, ox.makeEdge, { first: 135, last: 180 }, 100);
+const teNotches = [ ox.makeNotch(255, 30, 50, 2 / 3) ]; // single notch in array
 const te = ox.reflect(ox.interleave(teEdges, teNotches));
 // scale trailing edge to match leading edge extent
 const scale = ox.extent(le).x / -ox.extent(te).x;
