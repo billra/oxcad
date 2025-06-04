@@ -1,10 +1,14 @@
-export function append(code) {
-    // svg from string, one way to do it: render and copy
-    const container = document.createElement('div');
-    container.innerHTML = '<svg>' + code + '</svg>';
-    Array.from(container.childNodes[0].childNodes).forEach(function (el) {
-        svgEdit.appendChild(el);
+export function render(code) {
+    // Parse code as SVG fragment and get real SVG elements
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${code}</svg>`, 'image/svg+xml');
+    // Fragment for performance (batch render)
+    const fragment = document.createDocumentFragment();
+    // Copy all child nodes of the parsed SVG root
+    [...doc.documentElement.childNodes].forEach(node => {
+      fragment.appendChild(document.importNode(node, true));
     });
+    svgEdit.appendChild(fragment);
 }
 
 function grid(size) {
@@ -52,7 +56,7 @@ export function getContainer(){
 
 function svgClear() {
     svgEdit.innerHTML = '';
-    append(grid(10));
+    render(grid(10));
 }
 
 function svgSmaller() {
