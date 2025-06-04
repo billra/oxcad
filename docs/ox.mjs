@@ -1,17 +1,11 @@
 import { append } from './svg.mjs';
 
-export function merge(...args) { // generic merge any number of arrays
-    args = args.map(x => [].concat(x));
-    const maxLen = args.reduce((p, c) => Math.max(p, c.length), 0);
-    const ret = [];
-    for (let i = 0; i < maxLen; ++i) {
-        for (let j = 0; j < args.length; ++j) {
-            if (i < args[j].length) { ret.push(args[j][i]); }
-        }
-    }
-    return ret;
+// ['a', 'b', 'c'], [1, 2] -> ['a', 1, 'b', 2, 'c']
+export function interleave(a, b) {
+    return a.flatMap((x, i) => i < b.length ? [x, b[i]] : [x]);
 }
 
+// callRange: call function with a range of values
 export function makeRange(count, func, ...rest) { // plus additional parameters for func
     const parm = [];
     const inc = [];
