@@ -41,8 +41,12 @@ export function clone(objs, scale, mirrorAngleDeg) {
     return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); });
 }
 
-export function extent(objs) {
-    return objs.reduce(function (sum, elem) { return { x: sum.x + elem.x, y: sum.y + elem.y }; }, { x: 0, y: 0 });
+export function endPoint(objs) {
+    const x = objs.reduce(
+        (sum, { x, y }) => ({ x: sum.x + x, y: sum.y + y }),
+        { x: 0, y: 0 }
+    );
+    return x;
 }
 
 export function reflect(objs, mirrorAngleDeg = 90) { // mirror default Y axis
@@ -93,7 +97,7 @@ export function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
     const m4 = move(angleDeg - 180, lenB);
     const m5 = move(a56, lenB, m4);
     const m6 = move(a56, lenV);
-    const end = extent([m1, m3, m5, m6]);
+    const end = endPoint([m1, m3, m5, m6]);
     return {
         part:
             `l${m1.x},${m1.y}` +

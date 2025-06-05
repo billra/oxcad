@@ -18,8 +18,8 @@ const side = ox.interleave(edges, notches);
 const le = ox.reflect(side);
 svg.render(ox.path(10, 200, le));
 log.print("edge length:", ox.edgeLength(le));
-const leExt = ox.extent(le);
-log.print("leading edge extent:", leExt.x, leExt.y);
+const leEnd = ox.endPoint(le);
+log.print("relative leading edge endPoint:", leEnd.x, leEnd.y);
 log.print("done.");
 
 K: alfa
@@ -33,12 +33,12 @@ const le = ox.reflect(ox.interleave(leEdges, leNotches));
 const teEdges = ox.callRange(2, ox.makeEdge, { first: 135, last: 180 }, 100);
 const teNotches = [ ox.makeNotch(255, 30, 50, 2 / 3) ]; // single notch in array
 const te = ox.reflect(ox.interleave(teEdges, teNotches));
-// scale trailing edge to match leading edge extent
-const scale = ox.extent(le).x / -ox.extent(te).x;
+// scale trailing edge to match leading edge width
+const scale = ox.endPoint(le).x / -ox.endPoint(te).x;
 log.print("trailing edge scale factor:", scale);
 const teScaled = ox.clone(te, scale);
 // draw canopy
-const xpos = 600 - ox.extent(le).x / 2; // center at major grid line
+const xpos = 600 - ox.endPoint(le).x / 2; // center at major grid line
 svg.render(ox.surface(xpos, 110, le, teScaled));
 //svg.printPlans();
 log.print("done.");
