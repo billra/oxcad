@@ -19,10 +19,10 @@ export function callRange(count, func, ...rest) {
 export function surface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {
     // todo: center drawing on nearest major grid line
     const fill = 'var(--svg-fill)';
-    const fillOpacity = 'var(--svg-fill-opacity)';
+    const opacity = 'var(--svg-fill-opacity)';
     const outline = edge1.concat(edge2);
     const str = outline.reduce(function (x, elem) { return x + elem.part; }, `<path d="M${x},${y}`) +
-        `Z" stroke="${color}" stroke-width="${width}" fill="${fill}" fill-opacity="${fillOpacity}"/>`;
+        `Z" stroke="${color}" stroke-width="${width}" fill="${fill}" fill-opacity="${opacity}"/>`;
     return str;
 }
 
@@ -57,7 +57,7 @@ function mirror(angleDeg, mirrorAngleDeg) { // undefined mirrorAngleDeg returns 
 export function makeEdge(angleDeg, length) {
     const end = move(angleDeg, length);
     return {
-        part: 'l' + end.x + ',' + end.y,
+        part: `l${end.x},${end.y}`,
         edgeLen: length,
         clone: function (scale, mirrorAngleDeg) {
             return makeEdge(mirror(angleDeg,
@@ -95,10 +95,11 @@ export function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
     const m6 = move(a56, lenV);
     const end = extent([m1, m3, m5, m6]);
     return {
-        part: 'l' + m1.x + ',' + m1.y +
-            'q' + m2.x + ',' + m2.y + ' ' + m3.x + ',' + m3.y +
-            'q' + m4.x + ',' + m4.y + ' ' + m5.x + ',' + m5.y +
-            'l' + m6.x + ',' + m6.y,
+        part:
+            `l${m1.x},${m1.y}` +
+            `q${m2.x},${m2.y} ${m3.x},${m3.y}` +
+            `q${m4.x},${m4.y} ${m5.x},${m5.y}` +
+            `l${m6.x},${m6.y}`,
         edgeLen: 0,
         clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, length * scale, smooth); },
         x: end.x, y: end.y
