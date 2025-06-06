@@ -32,21 +32,21 @@ export function path(x, y, objs, color = 'var(--svg-stroke)', width = '1pt') {
     return str;
 }
 
-// helper functions for edge part array
+// return the entire edge length of the drawing element
 export function edgeLength(objs) {
-    return objs.reduce(function (x, elem) { return x + elem.edgeLen; }, 0);
+    return objs.reduce((sum, obj) => sum + obj.edgeLen, 0);
+}
+
+// return the end position of the drawing element relative to the start
+export function endPoint(objs) {
+    return objs.reduce(
+        (sum, obj) => ({ x: sum.x + obj.x, y: sum.y + obj.y }),
+        { x: 0, y: 0 }
+    );
 }
 
 export function clone(objs, scale, mirrorAngleDeg) {
     return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); });
-}
-
-export function endPoint(objs) {
-    const x = objs.reduce(
-        (sum, { x, y }) => ({ x: sum.x + x, y: sum.y + y }),
-        { x: 0, y: 0 }
-    );
-    return x;
 }
 
 export function reflect(objs, mirrorAngleDeg = 90) { // mirror default Y axis
