@@ -45,36 +45,14 @@ export function endPoint(objs) {
     );
 }
 
-export function clone(objs, scale, mirrorAngleDeg) {
-    return objs.map(function (obj) { return obj.clone(scale, mirrorAngleDeg); });
-}
-
 export function reflect(objs, mirrorAngleDeg = 90) { // mirror default Y axis
     const tail = clone(objs.slice(0, -1).reverse(), 1, mirrorAngleDeg); // no reflection on center item
     return objs.concat(tail);
 }
 
-// mirrorAngleDeg: the mirror *tangent* (along the mirror surface)
-// e.g. angleDeg of 120° mirrored about mirrorAngleDeg of 90° (vertical mirror) is 60°
-// undefined mirrorAngleDeg returns original angleDeg
-function mirror(angleDeg, mirrorAngleDeg) {
-    return mirrorAngleDeg === undefined ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
-}
-
-export function makeEdge(angleDeg, length) {
-    const end = move(angleDeg, length);
-    return {
-        part: `l${end.x},${end.y}`,
-        edgeLen: length,
-        clone: function (scale, mirrorAngleDeg) {
-            return makeEdge(mirror(angleDeg,
-                // mirrorAngleDeg: the mirror *normal* (perpendicular to mirror surface)
-                // mirror() expects the *tangent*, add 90° to convert normal to tangent
-                mirrorAngleDeg === undefined ? mirrorAngleDeg : mirrorAngleDeg + 90
-            ), length * scale);
-        },
-        x: end.x, y: end.y
-    };
+// mirror angle across axis
+function mirror(angle, axis) {
+  return 2 * axis - angle;
 }
 
 function radians(degrees) {
@@ -89,29 +67,76 @@ function move(angleDeg, length, from = { x: 0, y: 0 }) {
     };
 }
 
-export function makeNotch(angleDeg, angleOpenDeg, length, smooth) {
-    const resLen = length / (1 + smooth); // make overall length the same for straight and smooth notches
-    const halfAngleOpenDeg = angleOpenDeg / 2;
-    const a12 = angleDeg - halfAngleOpenDeg;
-    const a56 = angleDeg + halfAngleOpenDeg - 180;
-    const lenV = resLen * (1 - smooth);
-    const lenB = resLen * smooth;
-    const m1 = move(a12, lenV);
-    const m2 = move(a12, lenB);
-    const m3 = move(angleDeg, lenB, m2);
-    const m4 = move(angleDeg - 180, lenB);
-    const m5 = move(a56, lenB, m4);
-    const m6 = move(a56, lenV);
-    const end = endPoint([m1, m3, m5, m6]);
-    return {
-        part:
+class Edge {
+    constructor(angleDeg, length) {
+        const end = move(angleDeg, length);
+        this.part = `l${end.x},${end.y}`;
+        this.edgeLen = length;
+        this.scale = factor => new Edge(angleDeg, length * factor);
+        this.mirror = axis => new Edge(mirror(angleDeg, axis), length);
+        this.x = end.x;
+        this.y = end.y;
+    }
+}
+
+export function makeEdge(
+    angleDeg = required('angleDeg'),
+    length = required('length')) {
+    return new Edge(angleDeg, length);
+}
+
+// todo: special case smooth <= 0 and smooth >=1 with fewer segments
+class Notch {
+    constructor(angleDeg, angleOpenDeg, length, smooth) {
+        const resLen = length / (1 + smooth); // make overall length the same for straight and smooth notches
+        const halfAngleOpenDeg = angleOpenDeg / 2;
+        const a12 = angleDeg - halfAngleOpenDeg;
+        const a56 = angleDeg + halfAngleOpenDeg - 180;
+        const lenV = resLen * (1 - smooth);
+        const lenB = resLen * smooth;
+        const m1 = move(a12, lenV);
+        const m2 = move(a12, lenB);
+        const m3 = move(angleDeg, lenB, m2);
+        const m4 = move(angleDeg - 180, lenB);
+        const m5 = move(a56, lenB, m4);
+        const m6 = move(a56, lenV);
+        const end = endPoint([m1, m3, m5, m6]);
+        this.part =
             `l${m1.x},${m1.y}` +
             `q${m2.x},${m2.y} ${m3.x},${m3.y}` +
             `q${m4.x},${m4.y} ${m5.x},${m5.y}` +
-            `l${m6.x},${m6.y}`,
-        edgeLen: 0,
-        clone: function (scale, mirrorAngleDeg) { return makeNotch(mirror(angleDeg, mirrorAngleDeg), angleOpenDeg, length * scale, smooth); },
-        x: end.x, y: end.y
-    };
-    // todo: special case smooth <= 0 and smooth >=1 with fewer segments
+            `l${m6.x},${m6.y}`;
+        this.edgeLen = 0;
+        this.scale = factor => new Notch(angleDeg, angleOpenDeg, length * factor, smooth);
+        this.mirror = axis => new Notch(mirror(angleDeg, axis), angleOpenDeg, length, smooth);
+        this.x = end.x;
+        this.y = end.y;
+    }
+}
+
+export function makeNotch(
+    angleDeg = required('angleDeg'),
+    angleOpenDeg = required('angleOpenDeg'),
+    length = required('length'),
+    smooth = required('smooth')) {
+    return new Notch(angleDeg, angleOpenDeg, length, smooth);
+}
+
+// JavaScript silently accepts missing parameters.
+// Use default parameters to throw required parameter errors.
+function required(name) {
+    throw new Error(`missing '${name}' parameter`);
+}
+
+class Container {
+    #items;
+    constructor(items) {
+        this.#items = items;
+    }
+    scale(factor) {
+        return new Container(this.#items.map(item => item.scale(factor)));
+    }
+    mirror(axis) {
+        return new Container(this.#items.map(item => item.mirror(axis)));
+    }
 }
