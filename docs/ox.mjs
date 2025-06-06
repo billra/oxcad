@@ -54,7 +54,10 @@ export function reflect(objs, mirrorAngleDeg = 90) { // mirror default Y axis
     return objs.concat(tail);
 }
 
-function mirror(angleDeg, mirrorAngleDeg) { // undefined mirrorAngleDeg returns original angleDeg
+// mirrorAngleDeg: the mirror *tangent* (along the mirror surface)
+// e.g. angleDeg of 120° mirrored about mirrorAngleDeg of 90° (vertical mirror) is 60°
+// undefined mirrorAngleDeg returns original angleDeg
+function mirror(angleDeg, mirrorAngleDeg) {
     return mirrorAngleDeg === undefined ? angleDeg : 2 * mirrorAngleDeg - angleDeg;
 }
 
@@ -65,7 +68,9 @@ export function makeEdge(angleDeg, length) {
         edgeLen: length,
         clone: function (scale, mirrorAngleDeg) {
             return makeEdge(mirror(angleDeg,
-                mirrorAngleDeg === undefined ? mirrorAngleDeg : mirrorAngleDeg + 90 // todo!
+                // mirrorAngleDeg: the mirror *normal* (perpendicular to mirror surface)
+                // mirror() expects the *tangent*, add 90° to convert normal to tangent
+                mirrorAngleDeg === undefined ? mirrorAngleDeg : mirrorAngleDeg + 90
             ), length * scale);
         },
         x: end.x, y: end.y
