@@ -1,4 +1,5 @@
-// --- utilities ---
+// --- utility ---
+
 // JavaScript silently accepts missing parameters.
 // Use default parameters to throw required parameter errors.
 function required(name) {
@@ -18,12 +19,13 @@ function assert(
 // Example: callRange(5, (a, b) => [a, b], 'x', { first: 0, last: 10 });
 // Result: [['x', 0], ['x', 2.5], ['x', 5], ['x', 7.5], ['x', 10]]
 export function callRange(count, func, ...rest) {
-    return Array.from({ length: count }, (_, i) =>
+    const items = Array.from({ length: count }, (_, i) =>
         func(...rest.map(arg => {
             const { first, last } = typeof arg === "object" ? arg : { first: arg, last: arg };
             return count === 1 ? first : first + (last - first) * (i / (count - 1));
         }))
     );
+    return new Container(items);
 }
 
 // --- generate SVG ---
@@ -38,13 +40,15 @@ export function surface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width =
     return str;
 }
 
-export function path(x, y, objs, color = 'var(--svg-stroke)', width = '1pt') {
-    const str = objs.reduce(function (x, elem) { return x + elem.part; }, `<path d="M${x},${y}`) +
-        `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
-    return str;
-}
-
 // --- classes ---
+
+// return the end position of the drawing element relative to the start
+function endPoint(items) {
+    return items.reduce(
+        (sum, item) => ({ x: sum.x + item.x, y: sum.y + item.y }),
+        { x: 0, y: 0 }
+    );
+}
 
 class Container {
     #items;
@@ -55,17 +59,16 @@ class Container {
     edgeLength() {
         return this.#items.reduce((sum, obj) => sum + obj.edgeLen, 0);
     }
-    // return the end position of the drawing element relative to the start
     endPoint() {
-        return this.#items.reduce(
-            (sum, item) => ({ x: sum.x + item.x, y: sum.y + item.y }),
-            { x: 0, y: 0 }
-        );
+        return endPoint(this.#items);
     }
     // ['a', 'b', 'c'], [1, 2] -> ['a', 1, 'b', 2, 'c']
     interleave(rhs) {
-        assert(this.#items.length - 1 === rhs.length, `bad lengths: ${this.#items.length}, ${rhs.length}`);
-        return new Container(this.#items.flatMap((item, i) => i < rhs.length ? [item, rhs[i]] : [item]));
+        console.log('rhs', rhs);
+        assert(this.#items.length - 1 === rhs.#items.length, `bad lengths: ${this.#items.length}, ${rhs.#items.length}`);
+        const a = new Container(this.#items.flatMap((item, i) => i < rhs.#items.length ? [item, rhs.#items[i]] : [item]));
+        console.log('interleaved',a);
+        return a;
     }
     scale(factor) {
         return new Container(this.#items.map(item => item.scale(factor)));
@@ -78,6 +81,14 @@ class Container {
         const items = this.#items.slice(0, -1).reverse(); // collect tail items
         const tail = items.map(item => item.mirror(axis)); // reverse each tail item
         return new Container(this.#items.concat(tail));
+    }
+    // SVG string
+    svgPath(x, y, color = 'var(--svg-stroke)', width = '1pt') {
+        console.log('#items',this.#items);
+        const str = this.#items.reduce(function (parts, item) { return parts + item.part; }, `<path d="M${x},${y}`) +
+            `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
+        console.log(str);
+        return str;
     }
 }
 
