@@ -67,7 +67,7 @@ class Container {
         console.log('rhs', rhs);
         assert(this.#items.length - 1 === rhs.#items.length, `bad lengths: ${this.#items.length}, ${rhs.#items.length}`);
         const a = new Container(this.#items.flatMap((item, i) => i < rhs.#items.length ? [item, rhs.#items[i]] : [item]));
-        console.log('interleaved',a);
+        console.log('interleaved', a);
         return a;
     }
     scale(factor) {
@@ -84,7 +84,7 @@ class Container {
     }
     // SVG string
     svgPath(x, y, color = 'var(--svg-stroke)', width = '1pt') {
-        console.log('#items',this.#items);
+        console.log('#items', this.#items);
         const str = this.#items.reduce(function (parts, item) { return parts + item.part; }, `<path d="M${x},${y}`) +
             `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
         console.log(str);
@@ -115,7 +115,7 @@ class Edge {
         this.part = `l${end.x},${end.y}`;
         this.edgeLen = length;
         this.scale = factor => new Edge(angle, length * factor);
-        this.mirror = axis => new Edge(mirrorAngle(angle, axis), length);
+        this.mirror = axis => new Edge(mirrorAngle(angle, axis - 90), length); // why -90?
         this.x = end.x;
         this.y = end.y;
     }
