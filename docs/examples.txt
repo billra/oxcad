@@ -28,18 +28,23 @@ V:
 // leading edge
 const leEdges = ox.callRange(3, ox.makeEdge, { first: -20, last: 0 }, 180);
 const leNotches = ox.callRange(2, ox.makeNotch, { first: 75, last: 85 }, 20, { first: 100, last: 140 }, 2 / 3);
-const le = ox.reflect(ox.interleave(leEdges, leNotches));
+const leSide = leEdges.interleave(leNotches);
+const le = leSide.reflect(90);
 // trailing edge
 const teEdges = ox.callRange(2, ox.makeEdge, { first: 135, last: 180 }, 100);
-const teNotches = [ ox.makeNotch(255, 30, 50, 2 / 3) ]; // single notch in array
-const te = ox.reflect(ox.interleave(teEdges, teNotches));
+const teNotches = ox.callRange(1, ox.makeNotch, 255, 30, 50, 2 / 3);
+const teSide = teEdges.interleave(teNotches);
+const te = teSide.reflect(90);
 // scale trailing edge to match leading edge width
-const scale = ox.endPoint(le).x / -ox.endPoint(te).x;
-log.print("trailing edge scale factor:", scale);
-const teScaled = ox.clone(te, scale);
+const factor = le.endPoint().x / -te.endPoint().x;
+log.print("trailing edge scale factor:", factor);
+const teScaled = te.scale(factor);
+log.print(`le end: ${le.endPoint().x},${le.endPoint().y}`);
+log.print(`te end: ${teScaled.endPoint().x},${teScaled.endPoint().y}`);
 // draw canopy
-const xpos = 600 - ox.endPoint(le).x / 2; // center at major grid line
-svg.render(ox.surface(xpos, 110, le, teScaled));
+const outline = le.concat(teScaled);
+const xpos = 600 - le.endPoint().x / 2; // center at major grid line
+svg.render(outline.svgSurface(xpos, 110));
 //svg.printPlans();
 log.print("done.");
 

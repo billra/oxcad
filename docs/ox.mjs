@@ -28,18 +28,6 @@ export function callRange(count, func, ...rest) {
     return new Container(items);
 }
 
-// --- generate SVG ---
-
-export function surface(x, y, edge1, edge2, color = 'var(--svg-stroke)', width = '1pt') {
-    // todo: center drawing on nearest major grid line
-    const fill = 'var(--svg-fill)';
-    const opacity = 'var(--svg-fill-opacity)';
-    const outline = edge1.concat(edge2);
-    const str = outline.reduce(function (x, elem) { return x + elem.part; }, `<path d="M${x},${y}`) +
-        `Z" stroke="${color}" stroke-width="${width}" fill="${fill}" fill-opacity="${opacity}"/>`;
-    return str;
-}
-
 // --- classes ---
 
 // return the end position of the drawing element relative to the start
@@ -62,12 +50,13 @@ class Container {
     endPoint() {
         return endPoint(this.#items);
     }
+    concat(rhs){
+        return new Container(this.#items.concat(rhs.#items));
+    }
     // ['a', 'b', 'c'], [1, 2] -> ['a', 1, 'b', 2, 'c']
     interleave(rhs) {
-        console.log('rhs', rhs);
         assert(this.#items.length - 1 === rhs.#items.length, `bad lengths: ${this.#items.length}, ${rhs.#items.length}`);
         const a = new Container(this.#items.flatMap((item, i) => i < rhs.#items.length ? [item, rhs.#items[i]] : [item]));
-        console.log('interleaved', a);
         return a;
     }
     scale(factor) {
@@ -82,12 +71,20 @@ class Container {
         const tail = items.map(item => item.mirror(axis)); // reverse each tail item
         return new Container(this.#items.concat(tail));
     }
-    // SVG string
+    // SVG strings
     svgPath(x, y, color = 'var(--svg-stroke)', width = '1pt') {
-        console.log('#items', this.#items);
         const str = this.#items.reduce(function (parts, item) { return parts + item.part; }, `<path d="M${x},${y}`) +
             `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
-        console.log(str);
+        console.log('svgPath',str);
+        return str;
+    }
+    svgSurface(x, y, color = 'var(--svg-stroke)', width = '1pt') {
+        // todo: center drawing on nearest major grid line
+        const fill = 'var(--svg-fill)';
+        const opacity = 'var(--svg-fill-opacity)';
+        const str = this.#items.reduce(function (parts, elem) { return parts + elem.part; }, `<path d="M${x},${y}`) +
+            `Z" stroke="${color}" stroke-width="${width}" fill="${fill}" fill-opacity="${opacity}"/>`;
+        console.log('svgSurface',str);
         return str;
     }
 }
@@ -114,8 +111,11 @@ class Edge {
         const end = move(angle, length);
         this.part = `l${end.x},${end.y}`;
         this.edgeLen = length;
-        this.scale = factor => new Edge(angle, length * factor);
-        this.mirror = axis => new Edge(mirrorAngle(angle, axis - 90), length); // why -90?
+        this.scale = factor => {
+            console.log('edge scale by',factor);
+            return new Edge(angle, length * factor);
+        }
+        this.mirror = axis => {return new Edge(mirrorAngle(angle, axis - 90), length);} // why -90?
         this.x = end.x;
         this.y = end.y;
     }
@@ -149,8 +149,11 @@ class Notch {
             `q${m4.x},${m4.y} ${m5.x},${m5.y}` +
             `l${m6.x},${m6.y}`;
         this.edgeLen = 0;
-        this.scale = factor => new Notch(angle, openAngle, length * factor, smooth);
-        this.mirror = axis => new Notch(mirrorAngle(angle, axis), openAngle, length, smooth);
+        this.scale = factor => {
+            console.log('notch scale by',factor);
+            return new Notch(angle, openAngle, length * factor, smooth);
+        }
+        this.mirror = axis => {return new Notch(mirrorAngle(angle, axis), openAngle, length, smooth);}
         this.x = end.x;
         this.y = end.y;
     }
