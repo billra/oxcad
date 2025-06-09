@@ -39,13 +39,10 @@ class Container {
     #items;
     constructor(items) {
         this.#items = items;
-    }
-    // return the entire edge length of the drawing element
-    edgeLength() {
-        return this.#items.reduce((sum, obj) => sum + obj.edgeLen, 0);
-    }
-    end() {
-        return this.#items.reduce(
+        // entire edge length of the drawing element
+        this.edgeLength = this.#items.reduce((sum, obj) => sum + obj.edgeLen, 0);
+        // end position of the drawing element relative to the start
+        this.end = this.#items.reduce(
             (sum, item) => ({ x: sum.x + item.end.x, y: sum.y + item.end.y }),
             { x: 0, y: 0 }
         );
