@@ -111,11 +111,8 @@ class Edge {
         const end = move(angle, length);
         this.part = `l${end.x},${end.y}`;
         this.edgeLen = length;
-        this.scale = factor => {
-            console.log('edge scale by',factor);
-            return new Edge(angle, length * factor);
-        }
-        this.mirror = axis => {return new Edge(mirrorAngle(angle, axis - 90), length);} // why -90?
+        this.scale = factor => new Edge(angle, length * factor);
+        this.mirror = axis => new Edge(mirrorAngle(angle, axis - 90), length); // why -90?
         this.x = end.x;
         this.y = end.y;
     }
@@ -149,11 +146,8 @@ class Notch {
             `q${m4.x},${m4.y} ${m5.x},${m5.y}` +
             `l${m6.x},${m6.y}`;
         this.edgeLen = 0;
-        this.scale = factor => {
-            console.log('notch scale by',factor);
-            return new Notch(angle, openAngle, length * factor, smooth);
-        }
-        this.mirror = axis => {return new Notch(mirrorAngle(angle, axis), openAngle, length, smooth);}
+        this.scale = factor => new Notch(angle, openAngle, length * factor, smooth);
+        this.mirror = axis => new Notch(mirrorAngle(angle, axis), openAngle, length, smooth);
         this.x = end.x;
         this.y = end.y;
     }
