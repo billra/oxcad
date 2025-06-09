@@ -16,15 +16,15 @@ export function render(code) {
 function grid(size) {
     const gridColor = 'var(--svg-grid)';
     const code =
-        '<defs>\n' +
-        `<pattern id="smallGrid" width="${size}" height="${size}" patternUnits="userSpaceOnUse">\n` +
-        `<path d="M ${size} 0 L 0 0 0 ${size}" fill="none" stroke="${gridColor}" stroke-width="0.5"/>\n` +
-        '</pattern>\n' +
-        `<pattern id="grid" width="${10 * size}" height="${10 * size}" patternUnits="userSpaceOnUse">\n` +
-        `<rect width="${10 * size}" height="${10 * size}" fill="url(#smallGrid)"/>\n` +
-        `<path d="M ${10 * size} 0 L 0 0 0 ${10 * size}" fill="none" stroke="${gridColor}" stroke-width="1"/>\n` +
-        '</pattern>\n' +
-        '</defs>\n' +
+        '<defs>' +
+        `<pattern id="smallGrid" width="${size}" height="${size}" patternUnits="userSpaceOnUse">` +
+        `<path d="M ${size} 0 L 0 0 0 ${size}" fill="none" stroke="${gridColor}" stroke-width="0.5"/>` +
+        '</pattern>' +
+        `<pattern id="grid" width="${10 * size}" height="${10 * size}" patternUnits="userSpaceOnUse">` +
+        `<rect width="${10 * size}" height="${10 * size}" fill="url(#smallGrid)"/>` +
+        `<path d="M ${10 * size} 0 L 0 0 0 ${10 * size}" fill="none" stroke="${gridColor}" stroke-width="1"/>` +
+        '</pattern>' +
+        '</defs>' +
         '<rect width="100%" height="100%" fill="url(#grid)" />';
     return code;
 }
@@ -74,7 +74,7 @@ function svgLarger() {
 
 function makeSvgElement(height) {
     const doc = new DOMParser().parseFromString(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="${height}" style="display: block;"></svg>`,
+        `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="${height}"></svg>`,
         'image/svg+xml');
     return doc.documentElement;
 }
