@@ -43,8 +43,10 @@ log.print(`le end: ${le.endPoint().x},${le.endPoint().y}`);
 log.print(`te end: ${teScaled.endPoint().x},${teScaled.endPoint().y}`);
 // draw canopy
 const outline = le.concat(teScaled);
-const xpos = 600 - le.endPoint().x / 2; // center at major grid line
+const xMid = 600
+const xpos = xMid - le.endPoint().x / 2; // center at major grid line
 svg.render(outline.svgSurface(xpos, 110));
+svg.render(ox.svgText(xMid-18, 200, 'Alfa', 20));
 //svg.printPlans();
 log.print("done.");
 

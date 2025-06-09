@@ -28,6 +28,11 @@ export function callRange(count, func, ...rest) {
     return new Container(items);
 }
 
+export function svgText(x, y, text, size = 12, color = 'var(--svg-stroke)') {
+    const str = `<text x="${x}" y="${y}" font-family="Verdana, sans-serif" font-size="${size}" fill="${color}">${text}</text>`;
+    return str;
+}
+
 // --- classes ---
 
 // return the end position of the drawing element relative to the start
