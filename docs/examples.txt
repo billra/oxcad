@@ -18,8 +18,8 @@ const side = edges.interleave(notches);
 const le = side.reflect(90);
 svg.render(le.svgPath(10, 200));
 log.print("edge length:", le.edgeLength());
-const leEnd = le.endPoint();
-log.print("relative leading edge endPoint:", leEnd.x, leEnd.y);
+const leEnd = le.end();
+log.print("relative leading edge end:", leEnd.x, leEnd.y);
 log.print("done.");
 
 K: alfa
@@ -36,15 +36,15 @@ const teNotches = ox.callRange(1, ox.makeNotch, 255, 30, 50, 2 / 3);
 const teSide = teEdges.interleave(teNotches);
 const te = teSide.reflect(90);
 // scale trailing edge to match leading edge width
-const factor = le.endPoint().x / -te.endPoint().x;
+const factor = le.end().x / -te.end().x;
 log.print("trailing edge scale factor:", factor);
 const teScaled = te.scale(factor);
-log.print(`le end: ${le.endPoint().x},${le.endPoint().y}`);
-log.print(`te end: ${teScaled.endPoint().x},${teScaled.endPoint().y}`);
+log.print(`le end: ${le.end().x},${le.end().y}`);
+log.print(`te end: ${teScaled.end().x},${teScaled.end().y}`);
 // draw canopy
 const outline = le.concat(teScaled);
 const xMid = 600
-const xpos = xMid - le.endPoint().x / 2; // center at major grid line
+const xpos = xMid - le.end().x / 2; // center at major grid line
 svg.render(outline.svgSurface(xpos, 110));
 svg.render(ox.svgText(xMid-18, 200, 'Alfa', 20));
 //svg.printPlans();

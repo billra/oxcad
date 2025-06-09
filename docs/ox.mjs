@@ -35,14 +35,6 @@ export function svgText(x, y, text, size = 12, color = 'var(--svg-stroke)') {
 
 // --- classes ---
 
-// return the end position of the drawing element relative to the start
-function endPoint(items) {
-    return items.reduce(
-        (sum, item) => ({ x: sum.x + item.x, y: sum.y + item.y }),
-        { x: 0, y: 0 }
-    );
-}
-
 class Container {
     #items;
     constructor(items) {
@@ -52,8 +44,11 @@ class Container {
     edgeLength() {
         return this.#items.reduce((sum, obj) => sum + obj.edgeLen, 0);
     }
-    endPoint() {
-        return endPoint(this.#items);
+    end() {
+        return this.#items.reduce(
+            (sum, item) => ({ x: sum.x + item.end.x, y: sum.y + item.end.y }),
+            { x: 0, y: 0 }
+        );
     }
     concat(rhs){
         return new Container(this.#items.concat(rhs.#items));
@@ -113,13 +108,11 @@ function mirrorAngle(angle, axis) {
 
 class Edge {
     constructor(angle, length) {
-        const end = move(angle, length);
-        this.part = `l${end.x},${end.y}`;
+        this.end = move(angle, length);
+        this.part = `l${this.end.x},${this.end.y}`;
         this.edgeLen = length;
         this.scale = factor => new Edge(angle, length * factor);
         this.mirror = axis => new Edge(mirrorAngle(angle, axis - 90), length); // why -90?
-        this.x = end.x;
-        this.y = end.y;
     }
 }
 
@@ -127,6 +120,14 @@ export function makeEdge(
     angle = required('angle'),
     length = required('length')) {
     return new Edge(angle, length);
+}
+
+// return the end position of the drawing element relative to the start
+function xyEnd(items) {
+    return items.reduce(
+        (sum, item) => ({ x: sum.x + item.x, y: sum.y + item.y }),
+        { x: 0, y: 0 }
+    );
 }
 
 // todo: special case smooth <= 0 and smooth >=1 with fewer segments
@@ -144,7 +145,7 @@ class Notch {
         const m4 = move(angle - 180, lenB);
         const m5 = move(a56, lenB, m4);
         const m6 = move(a56, lenV);
-        const end = endPoint([m1, m3, m5, m6]);
+        this.end = xyEnd([m1, m3, m5, m6]);
         this.part =
             `l${m1.x},${m1.y}` +
             `q${m2.x},${m2.y} ${m3.x},${m3.y}` +
@@ -153,8 +154,6 @@ class Notch {
         this.edgeLen = 0;
         this.scale = factor => new Notch(angle, openAngle, length * factor, smooth);
         this.mirror = axis => new Notch(mirrorAngle(angle, axis), openAngle, length, smooth);
-        this.x = end.x;
-        this.y = end.y;
     }
 }
 
