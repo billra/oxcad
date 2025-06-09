@@ -78,8 +78,3 @@ td.half {
     position: relative;
     height: 300px;
 }
-svg.expand {
-    width: 100%;
-    height: 401px;
-    display: block;
-}

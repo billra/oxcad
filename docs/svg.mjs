@@ -1,3 +1,5 @@
+// No viewBox specified, drawing units = SVG user units = pixels.
+
 export function render(code) {
     // Parse code as SVG fragment and get real SVG elements
     const parser = new DOMParser();
@@ -70,11 +72,22 @@ function svgLarger() {
     svgEdit.style.height = bcr.height + 100 + 'px';
 }
 
+function makeSvgElement(height) {
+    const doc = new DOMParser().parseFromString(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="${height}" style="display: block;"></svg>`,
+        'image/svg+xml');
+    return doc.documentElement;
+}
+
 document.getElementById('svgClearBtn').addEventListener('click', svgClear);
 document.getElementById('svgSmallerBtn').addEventListener('click', svgSmaller);
 document.getElementById('svgLargerBtn').addEventListener('click', svgLarger);
 
 // --- setup ---
 
-const svgEdit = document.getElementById("svgWindow");
+ // include top and bottom major grid lines
+const svgEdit = makeSvgElement(401);
+// create top level SVG element inside DIV
+document.getElementById("svgDiv").appendChild(svgEdit);
+
 svgClear();
