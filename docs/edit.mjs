@@ -5,7 +5,7 @@ import './acewrap.mjs';
 const exampleFilenames = [
     "notch_demo",
     "reflect_demo",
-    // "alfa",
+    "alfa",
     "svg_render",
     "svg_serialize"
 ];
