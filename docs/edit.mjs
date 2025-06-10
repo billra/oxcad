@@ -1,37 +1,32 @@
 import './acewrap.mjs';
 
-// --- load code examples ---
-function parseKeyValueText(txt) {
-    // normalize line endings
-    txt = txt.replace(/\r\n?/g, '\n');
+// --- load examples --
 
-    const pattern = new RegExp(
-        [
-            '(?:^|\\n)',            // start of file or after a newline
-            'K:\\s*',               // 'K:' key marker, optional whitespace
-            '(?<key>.*?)',          // non-greedy capture for key
-            '\\s*\\n',              // optional whitespace, newline
-            'V:\\s*\\n',            // 'V:', optional whitespace, newline
-            '(?<value>[\\s\\S]*?)', // non-greedy value, anything including newlines
-            '(?=(?:\\nK:)|$)'       // Lookahead for next "\nK:" or end of string
-        ].join(''), 'g'
-    );
+const exampleFilenames = [
+    "notch_demo",
+    "reflect_demo",
+    // "alfa",
+    "svg_render",
+    "svg_serialize"
+];
 
-    const result = {};
-
-    for (const match of txt.matchAll(pattern)) {
-        const { key, value } = match.groups;
-        result[key] = value;
-    }
-
-    return result;
+async function loadExamples() {
+    const fetchPromises = exampleFilenames.map(async (fname) => {
+        const url = `./examples/${fname}.js`;
+        const resp = await fetch(url);
+        if (!resp.ok) {
+            return [fname, `// Unable to load: ${fname}.js\n`];
+        }
+        const text = await resp.text();
+        return [fname, text];
+    });
+    const entries = await Promise.all(fetchPromises);
+    const codeExamples = Object.fromEntries(entries);
+    codeExamples["blank"] = "";
+    return codeExamples;
 }
 
-const response = await fetch('./examples.txt');
-const responseText = await response.text();
-const codeExamples = parseKeyValueText(responseText);
-
-// --- code editing ---
+// --- setup editor ---
 
 export function getCodeEdit() { return codeEdit; }
 
@@ -56,7 +51,7 @@ function fillExampleDropdown(selectedKey) {
     const select = document.getElementById("selectBox");
     for (const key in codeExamples) {
         const el = document.createElement("option");
-        el.textContent = key;
+        el.textContent = key.replace(/_/g, ' '); // display without underscores
         el.value = key;
         if (key === selectedKey) { el.selected = true; }
         select.appendChild(el);
@@ -65,9 +60,12 @@ function fillExampleDropdown(selectedKey) {
 
 const codeEdit = ace.edit("codeWindow");
 codeEdit.session.setMode("ace/mode/javascript");
-const demo = 'reflect demo';
+
+// setup examples
+const codeExamples = await loadExamples();
+const demo = 'reflect_demo';
 fillExampleDropdown(demo);
-exampleChangeFunc(demo); // preload sample code
+exampleChangeFunc(demo);
 
 // UI event handlers
 document.getElementById('codeUndoBtn').addEventListener('click', codeUndo);
