@@ -43,7 +43,8 @@ function codeLoad() {
 }
 
 function codeSave() {
-    console.log('code save');
+    const code = codeEdit.getValue();
+    File.save(code, 'design.js');
 }
 
 function codeUndo() {
