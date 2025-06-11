@@ -13,7 +13,7 @@
 // are left hanging.
 
 export default class File {
-    static #selectDialog(onSelect, accept = 'text/plain') {
+    static #selectDialog(onSelect, accept) {
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = accept;
@@ -37,8 +37,8 @@ export default class File {
         reader.readAsText(file, 'UTF-8');
     }
 
-    static selectAndRead(onLoad, onError = console.error) {
-        this.#selectDialog(file => this.read(file, onLoad, onError));
+    static selectAndRead(onLoad, accept, onError = console.error) {
+        this.#selectDialog(file => this.read(file, onLoad, onError), accept);
         // If file selection is canceled, file callback doesn't fire,
         // so read never executes.
     }

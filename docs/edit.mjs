@@ -36,8 +36,10 @@ export function setTheme(name) {
 }
 
 function codeLoad() {
-    File.selectAndRead(text => codeEdit.setValue(text));
-    codeEdit.clearSelection();
+    File.selectAndRead(text => {
+        codeEdit.setValue(text);
+        codeEdit.clearSelection();
+    }, '.js');
 }
 
 function codeSave() {
