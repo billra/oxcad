@@ -1,6 +1,6 @@
 import './acewrap.mjs';
 
-// --- load examples --
+// --- load examples ---
 
 const exampleFilenames = [
     "notch_demo",
@@ -32,6 +32,14 @@ export function getCodeEdit() { return codeEdit; }
 
 export function setTheme(name) {
     codeEdit.setTheme("ace/theme/" + name);
+}
+
+function codeLoad() {
+    console.log('code load');
+}
+
+function codeSave() {
+    console.log('code save');
 }
 
 function codeUndo() {
@@ -68,6 +76,8 @@ fillExampleDropdown(demo);
 exampleChangeFunc(demo);
 
 // UI event handlers
+document.getElementById('codeLoadBtn').addEventListener('click', codeLoad);
+document.getElementById('codeSaveBtn').addEventListener('click', codeSave);
 document.getElementById('codeUndoBtn').addEventListener('click', codeUndo);
 document.getElementById('codeRedoBtn').addEventListener('click', codeRedo);
 document.getElementById('selectBox').addEventListener('change', (e) => exampleChangeFunc(e.target.value));
