@@ -1,4 +1,5 @@
 import './acewrap.mjs';
+import File from './file.mjs';
 
 // --- load examples ---
 
@@ -35,7 +36,8 @@ export function setTheme(name) {
 }
 
 function codeLoad() {
-    console.log('code load');
+    File.selectAndRead(text => codeEdit.setValue(text));
+    codeEdit.clearSelection();
 }
 
 function codeSave() {
