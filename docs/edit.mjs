@@ -1,4 +1,4 @@
-import './acewrap.mjs';
+import { editorTheme } from './acewrap.mjs';
 import File from './file.mjs';
 
 // --- load examples ---
@@ -32,9 +32,7 @@ async function loadExamples() {
 export function getCodeEdit() { return codeEdit; }
 
 export function setTheme(theme) {
-    console.log('editor theme set to', theme);
-    const aceTheme = theme === 'dark' ? 'tomorrow_night_bright' : 'chrome';
-    codeEdit.setTheme("ace/theme/" + aceTheme);
+    codeEdit.setTheme(editorTheme(theme));
 }
 
 function codeLoad() {
@@ -73,9 +71,10 @@ function fillExampleDropdown(selectedKey) {
     }
 }
 
-const codeEdit = ace.edit("codeWindow");
-setTheme(document.documentElement.getAttribute('data-theme'));
-codeEdit.session.setMode("ace/mode/javascript");
+const codeEdit = ace.edit("codeWindow", {
+    theme: editorTheme(document.documentElement.getAttribute('data-theme')),
+    mode: "ace/mode/javascript"
+});
 
 // setup examples
 const codeExamples = await loadExamples();

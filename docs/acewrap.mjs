@@ -1,3 +1,10 @@
+// translate theme into specific editor theme
+// 'dark' -> dark editor theme, everything else -> light editor theme
+export function editorTheme(theme) {
+    const aceTheme = theme === 'dark' ? 'tomorrow_night_bright' : 'chrome';
+    return 'ace/theme/' + aceTheme;
+}
+
 // Ace does not have ES module versions.
 // We load the 'normal' JavaScript by hand.
 function loadScript(src) {

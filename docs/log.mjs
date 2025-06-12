@@ -1,10 +1,8 @@
-import './acewrap.mjs';
+import { editorTheme } from './acewrap.mjs';
 import { getCodeEdit } from "./edit.mjs";
 
 export function setTheme(theme) {
-    console.log('log theme set to', theme);
-    const aceTheme = theme === 'dark' ? 'tomorrow_night_bright' : 'chrome';
-    logEdit.setTheme("ace/theme/" + aceTheme);
+    logEdit.setTheme(editorTheme(theme));
 }
 
 export function print(...args) {
@@ -38,9 +36,10 @@ function logLarger() {
     logEdit.resize();
 }
 
-const logEdit = ace.edit("logWindow");
-setTheme(document.documentElement.getAttribute('data-theme'));
-logEdit.setReadOnly(true);
+const logEdit = ace.edit("logWindow", {
+    theme: editorTheme(document.documentElement.getAttribute('data-theme')),
+    readOnly: true
+});
 logClear();
 
 // UI event handlers
