@@ -4,11 +4,11 @@ import File from './file.mjs';
 // --- load examples ---
 
 const exampleFilenames = [
-    "notch_demo",
-    "reflect_demo",
-    "alfa",
-    "svg_render",
-    "svg_serialize"
+    'notch_demo',
+    'reflect_demo',
+    'alfa',
+    'svg_render',
+    'svg_serialize'
 ];
 
 async function loadExamples() {
@@ -23,7 +23,7 @@ async function loadExamples() {
     });
     const entries = await Promise.all(fetchPromises);
     const codeExamples = Object.fromEntries(entries);
-    codeExamples["blank"] = "";
+    codeExamples['blank'] = '';
     return codeExamples;
 }
 
@@ -61,9 +61,9 @@ function exampleChangeFunc(id) {
 }
 
 function fillExampleDropdown(selectedKey) {
-    const select = document.getElementById("selectBox");
+    const select = document.getElementById('selectBox');
     for (const key in codeExamples) {
-        const el = document.createElement("option");
+        const el = document.createElement('option');
         el.textContent = key.replace(/_/g, ' '); // display without underscores
         el.value = key;
         if (key === selectedKey) { el.selected = true; }
@@ -71,9 +71,9 @@ function fillExampleDropdown(selectedKey) {
     }
 }
 
-const codeEdit = ace.edit("codeWindow", {
+const codeEdit = ace.edit('codeWindow', {
     theme: editorTheme(document.documentElement.getAttribute('data-theme')),
-    mode: "ace/mode/javascript"
+    mode: 'ace/mode/javascript'
 });
 
 // setup examples

@@ -41,10 +41,10 @@ function minEncode(str) { // see https://codepen.io/tigt/post/optimizing-svgs-in
 export function printPlans(svgStr) {
     svgStr = '<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="100cm" height="50cm">' + svgStr + '</svg>';
     svgStr = minEncode(svgStr);
-    const link = document.createElement("a");
-    // link.download = "drawing.svg"; // download
-    link.target = "_blank"; // open in new tab
-    link.href = "data:image/svg+xml;utf8," + svgStr;
+    const link = document.createElement('a');
+    // link.download = 'drawing.svg'; // download
+    link.target = '_blank'; // open in new tab
+    link.href = 'data:image/svg+xml;utf8,' + svgStr;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -88,6 +88,6 @@ document.getElementById('svgLargerBtn').addEventListener('click', svgLarger);
  // include top and bottom major grid lines
 const svgEdit = makeSvgElement(401);
 // create top level SVG element inside DIV
-document.getElementById("svgDiv").appendChild(svgEdit);
+document.getElementById('svgDiv').appendChild(svgEdit);
 
 svgClear();

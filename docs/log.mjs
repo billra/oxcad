@@ -1,5 +1,5 @@
 import { editorTheme } from './acewrap.mjs';
-import { getCodeEdit } from "./edit.mjs";
+import { getCodeEdit } from './edit.mjs';
 
 export function setTheme(theme) {
     logEdit.setTheme(editorTheme(theme));
@@ -10,7 +10,7 @@ export function print(...args) {
     session.insert({
         row: session.getLength(),
         column: 0
-    }, args.join(' ') + "\n");
+    }, args.join(' ') + '\n');
 }
 
 function logClear() {
@@ -22,21 +22,21 @@ function logClear() {
 function logSmaller() {
     const height = document.getElementById('codeWindow').clientHeight;
     if (height < 200) { return; }
-    document.getElementById("codeWindow").style.height = height - 100 + 'px';
-    document.getElementById("logWindow").style.height = height - 100 + 'px';
+    document.getElementById('codeWindow').style.height = height - 100 + 'px';
+    document.getElementById('logWindow').style.height = height - 100 + 'px';
     getCodeEdit().resize();
     logEdit.resize();
 }
 
 function logLarger() {
     const height = document.getElementById('codeWindow').clientHeight;
-    document.getElementById("codeWindow").style.height = height + 100 + 'px';
-    document.getElementById("logWindow").style.height = height + 100 + 'px';
+    document.getElementById('codeWindow').style.height = height + 100 + 'px';
+    document.getElementById('logWindow').style.height = height + 100 + 'px';
     getCodeEdit().resize();
     logEdit.resize();
 }
 
-const logEdit = ace.edit("logWindow", {
+const logEdit = ace.edit('logWindow', {
     theme: editorTheme(document.documentElement.getAttribute('data-theme')),
     readOnly: true
 });

@@ -21,7 +21,7 @@ function assert(
 export function callRange(count, func, ...rest) {
     const items = Array.from({ length: count }, (_, i) =>
         func(...rest.map(arg => {
-            const { first, last } = typeof arg === "object" ? arg : { first: arg, last: arg };
+            const { first, last } = typeof arg === 'object' ? arg : { first: arg, last: arg };
             return count === 1 ? first : first + (last - first) * (i / (count - 1));
         }))
     );

@@ -11,7 +11,7 @@ const teSide = teEdges.interleave(teNotches);
 const te = teSide.reflect(90);
 // scale trailing edge to match leading edge width
 const factor = le.end.x / -te.end.x;
-log.print("trailing edge scale factor:", factor);
+log.print('trailing edge scale factor:', factor);
 const teScaled = te.scale(factor);
 log.print(`le end: ${le.end.x},${le.end.y}`);
 log.print(`te end: ${teScaled.end.x},${teScaled.end.y}`);
@@ -22,4 +22,4 @@ const xpos = xMid - le.end.x / 2; // center at major grid line
 svg.render(outline.svgSurface(xpos, 110));
 svg.render(ox.svgText(xMid - 18, 200, 'Alfa', 20));
 //svg.printPlans();
-log.print("done.");
+log.print('done.');
