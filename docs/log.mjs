@@ -1,8 +1,10 @@
 import './acewrap.mjs';
 import { getCodeEdit } from "./edit.mjs";
 
-export function setTheme(name) {
-    logEdit.setTheme("ace/theme/" + name);
+export function setTheme(theme) {
+    console.log('log theme set to', theme);
+    const aceTheme = theme === 'dark' ? 'tomorrow_night_bright' : 'chrome';
+    logEdit.setTheme("ace/theme/" + aceTheme);
 }
 
 export function print(...args) {
@@ -37,6 +39,7 @@ function logLarger() {
 }
 
 const logEdit = ace.edit("logWindow");
+setTheme(document.documentElement.getAttribute('data-theme'));
 logEdit.setReadOnly(true);
 logClear();
 

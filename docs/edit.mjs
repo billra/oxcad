@@ -31,8 +31,10 @@ async function loadExamples() {
 
 export function getCodeEdit() { return codeEdit; }
 
-export function setTheme(name) {
-    codeEdit.setTheme("ace/theme/" + name);
+export function setTheme(theme) {
+    console.log('editor theme set to', theme);
+    const aceTheme = theme === 'dark' ? 'tomorrow_night_bright' : 'chrome';
+    codeEdit.setTheme("ace/theme/" + aceTheme);
 }
 
 function codeLoad() {
@@ -72,6 +74,7 @@ function fillExampleDropdown(selectedKey) {
 }
 
 const codeEdit = ace.edit("codeWindow");
+setTheme(document.documentElement.getAttribute('data-theme'));
 codeEdit.session.setMode("ace/mode/javascript");
 
 // setup examples
