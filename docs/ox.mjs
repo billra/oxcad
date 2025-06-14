@@ -209,3 +209,24 @@ export function makeNotch(
     assert(0 <= smooth && smooth <= 1, `smooth: ${length}, must be in the range 0 to 1`);
     return new Notch(angle, openAngle, length, smooth);
 }
+
+class Point {
+    constructor(x, y, text) {
+        this.x = x;
+        this.y = y;
+        this.text = text;
+    }
+}
+
+export function makePoint(
+    x = required('x'),
+    y = required('y'),
+    text = '') {
+    return new Point(x, y, text);
+}
+
+export function svgPoints(points, radius = '3') {
+    const str = points.map(pt => `<circle class="point" cx="${pt.x}" cy="${pt.y}" r="${radius}" data-help="${pt.text}" />`).join('');
+    console.log('svgPoints', str);
+    return str;
+}

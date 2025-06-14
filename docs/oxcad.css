@@ -82,3 +82,8 @@ td.half {
     /* avoid extra vertical whitespace on svg element */
     display: block;
 }
+.point {
+    cursor: pointer;
+    stroke-width: 0;
+    fill: var(--foreground);
+}
