@@ -116,6 +116,7 @@ class Edge {
 export function makeEdge(
     angle = required('angle'),
     length = required('length')) {
+    assert(length > 0, `length: ${length}, must be greater than zero`);
     return new Edge(angle, length);
 }
 
@@ -204,5 +205,7 @@ export function makeNotch(
     openAngle = required('openAngle'),
     length = required('length'),
     smooth = required('smooth')) {
+    assert(length > 0, `length: ${length}, must be greater than zero`);
+    assert(0 <= smooth && smooth <= 1, `smooth: ${length}, must be in the range 0 to 1`);
     return new Notch(angle, openAngle, length, smooth);
 }
