@@ -127,6 +127,7 @@ function xyEnd(items) {
     );
 }
 
+// for reference: same result as Notch where smooth = 0
 class NotchFlat {
     constructor(angle, openAngle, length) {
         const halfOpenAngle = openAngle / 2;
@@ -146,17 +147,18 @@ class NotchFlat {
     }
 }
 
+// for reference: same result as Notch where smooth = 1
 class NotchCurve {
     constructor(angle, openAngle, length) {
         const halfOpenAngle = openAngle / 2;
         const a12 = angle - halfOpenAngle;
         const a56 = angle + halfOpenAngle - 180;
 
-        const resLen = length / 2;
-        const m2 = move(a12, resLen);         // Bézier control point
-        const m3 = move(angle, resLen, m2);   // bottom of notch, Bézier end and start point
-        const m4 = move(angle - 180, resLen); // Bézier control point
-        const m5 = move(a56, resLen, m4);     // top end of notch, Bézier end point
+        const af = length / 2;
+        const m2 = move(a12, af);         // Bézier control point
+        const m3 = move(angle, af, m2);   // bottom of notch, Bézier end and start point
+        const m4 = move(angle - 180, af); // Bézier control point
+        const m5 = move(a56, af, m4);     // top end of notch, Bézier end point
         this.end = xyEnd([m3, m5]);
         this.part =
             `q${m2.x},${m2.y} ${m3.x},${m3.y}` +
@@ -168,28 +170,28 @@ class NotchCurve {
     }
 }
 
-// todo: special case smooth <= 0 and smooth >=1 with fewer segments
 class Notch {
     constructor(angle, openAngle, length, smooth) {
         const halfOpenAngle = openAngle / 2;
         const a12 = angle - halfOpenAngle;
         const a56 = angle + halfOpenAngle - 180;
 
-        const resLen = length / (1 + smooth); // overall length similar for straight and smooth notches
-        const lenV = resLen * (1 - smooth);
-        const lenB = resLen * smooth;
-        const m1 = move(a12, lenV);              // x,y: end of straight line segment
-        const m2 = move(a12, lenB);              // x,y: quadratic Bézier control point
-        const m3 = move(angle, lenB, m2);        // x,y: bottom of notch, end of old and start of new quadratic Bézier
-        const m4 = move(angle - 180, lenB);      // x,y: quadratic Bézier control point
-        const m5 = move(a56, lenB, m4);          // x,y: end of quadratic Bézier, start of straight line segment
-        const m6 = move(a56, lenV);              // x,y: end of straight line segment
+        // adjustment factor: straight and curved notches have similar length
+        const af = length / (1 + smooth);
+        const lenV = af * (1 - smooth);     // 0 when smooth = 1
+        const lenB = af * smooth;           // 0 when smooth = 0
+        const m1 = move(a12, lenV);         // end of line segment
+        const m2 = move(a12, lenB);         // Bézier control point
+        const m3 = move(angle, lenB, m2);   // bottom of notch, Bézier end and start point
+        const m4 = move(angle - 180, lenB); // Bézier control point
+        const m5 = move(a56, lenB, m4);     // end of Bézier, start of line segment
+        const m6 = move(a56, lenV);         // end of line segment
         this.end = xyEnd([m1, m3, m5, m6]);
-        this.part =
-            `l${m1.x},${m1.y}` +
-            `q${m2.x},${m2.y} ${m3.x},${m3.y}` +
-            `q${m4.x},${m4.y} ${m5.x},${m5.y}` +
-            `l${m6.x},${m6.y}`;
+        this.part =                         // special case line only and curve only
+            (lenV ? `l${m1.x},${m1.y}` : '') +
+            (lenB ? `q${m2.x},${m2.y} ${m3.x},${m3.y}` : '') +
+            (lenB ? `q${m4.x},${m4.y} ${m5.x},${m5.y}` : '') +
+            (lenV ? `l${m6.x},${m6.y}` : '');
 
         this.edgeLen = 0;
         this.scale = factor => new Notch(angle, openAngle, length * factor, smooth);
