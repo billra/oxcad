@@ -47,7 +47,7 @@ class Container {
             { x: 0, y: 0 }
         );
     }
-    concat(rhs){
+    concat(rhs) {
         return new Container(this.#items.concat(rhs.#items));
     }
     // ['a', 'b', 'c'], [1, 2] -> ['a', 1, 'b', 2, 'c']
@@ -72,7 +72,7 @@ class Container {
     svgPath(x, y, color = 'var(--svg-stroke)', width = '1pt') {
         const str = this.#items.reduce(function (parts, item) { return parts + item.part; }, `<path d="M${x},${y}`) +
             `" stroke="${color}" stroke-width="${width}" fill="none"/>`;
-        console.log('svgPath',str);
+        console.log('svgPath', str);
         return str;
     }
     svgSurface(x, y, color = 'var(--svg-stroke)', width = '1pt') {
@@ -81,7 +81,7 @@ class Container {
         const opacity = 'var(--svg-fill-opacity)';
         const str = this.#items.reduce(function (parts, elem) { return parts + elem.part; }, `<path d="M${x},${y}`) +
             `Z" stroke="${color}" stroke-width="${width}" fill="${fill}" fill-opacity="${opacity}"/>`;
-        console.log('svgSurface',str);
+        console.log('svgSurface', str);
         return str;
     }
 }
@@ -127,16 +127,57 @@ function xyEnd(items) {
     );
 }
 
+class NotchFlat {
+    constructor(angle, openAngle, length) {
+        const halfOpenAngle = openAngle / 2;
+        const a12 = angle - halfOpenAngle;
+        const a56 = angle + halfOpenAngle - 180;
+
+        const m1 = move(a12, length); // bottom of notch
+        const m6 = move(a56, length); // top end of notch
+        this.end = xyEnd([m1, m6]);
+        this.part =
+            `l${m1.x},${m1.y}` +
+            `l${m6.x},${m6.y}`;
+
+        this.edgeLen = 0;
+        this.scale = factor => new Notch(angle, openAngle, length * factor);
+        this.mirror = axis => new Notch(mirrorAngle(angle, axis), openAngle, length);
+    }
+}
+
+class NotchCurve {
+    constructor(angle, openAngle, length) {
+        const halfOpenAngle = openAngle / 2;
+        const a12 = angle - halfOpenAngle;
+        const a56 = angle + halfOpenAngle - 180;
+
+        const resLen = length / 2;
+        const m2 = move(a12, resLen);         // Bézier control point
+        const m3 = move(angle, resLen, m2);   // bottom of notch, Bézier end and start point
+        const m4 = move(angle - 180, resLen); // Bézier control point
+        const m5 = move(a56, resLen, m4);     // top end of notch, Bézier end point
+        this.end = xyEnd([m3, m5]);
+        this.part =
+            `q${m2.x},${m2.y} ${m3.x},${m3.y}` +
+            `q${m4.x},${m4.y} ${m5.x},${m5.y}`;
+
+        this.edgeLen = 0;
+        this.scale = factor => new Notch(angle, openAngle, length * factor);
+        this.mirror = axis => new Notch(mirrorAngle(angle, axis), openAngle, length);
+    }
+}
+
 // todo: special case smooth <= 0 and smooth >=1 with fewer segments
 class Notch {
     constructor(angle, openAngle, length, smooth) {
-        // make overall length the same for straight and smooth notches
-        const resLen = length / (1 + smooth);    // 100 / (1 + 0.8) -> 55.56
-        const halfOpenAngle = openAngle / 2;     // 20 / 2 -> 10
-        const a12 = angle - halfOpenAngle;       // 20 - 10 -> 10
-        const a56 = angle + halfOpenAngle - 180; // 20 + 10 - 180 -> -150
-        const lenV = resLen * (1 - smooth);      // 55.56 * (1 - 0.8) -> 11.11
-        const lenB = resLen * smooth;            // 55.56 * 0.8 -> 44.44
+        const halfOpenAngle = openAngle / 2;
+        const a12 = angle - halfOpenAngle;
+        const a56 = angle + halfOpenAngle - 180;
+
+        const resLen = length / (1 + smooth); // overall length similar for straight and smooth notches
+        const lenV = resLen * (1 - smooth);
+        const lenB = resLen * smooth;
         const m1 = move(a12, lenV);              // x,y: end of straight line segment
         const m2 = move(a12, lenB);              // x,y: quadratic Bézier control point
         const m3 = move(angle, lenB, m2);        // x,y: bottom of notch, end of old and start of new quadratic Bézier
@@ -149,6 +190,7 @@ class Notch {
             `q${m2.x},${m2.y} ${m3.x},${m3.y}` +
             `q${m4.x},${m4.y} ${m5.x},${m5.y}` +
             `l${m6.x},${m6.y}`;
+
         this.edgeLen = 0;
         this.scale = factor => new Notch(angle, openAngle, length * factor, smooth);
         this.mirror = axis => new Notch(mirrorAngle(angle, axis), openAngle, length, smooth);
